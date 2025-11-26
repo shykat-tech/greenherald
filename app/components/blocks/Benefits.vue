@@ -268,6 +268,8 @@ onMounted(() => {
         },
       });
 
+      $gsap.set(stepsRef.value, { x: "150%" });
+
       tl.to(dupBenefitsRef.value, { clipPath: isMobile ? "circle(12% at 15% 80%)" : "circle(12% at 75% 65%)" })
         .to(circleBlockRef.value, {
           opacity: 0,
@@ -292,10 +294,8 @@ onMounted(() => {
           "<"
         )
         .to([line1.value, line2.value], { duration: 0.4 }, "<")
-        .fromTo(
-          stepsRef.value,
-          { x: "110%" },
-          { x: "95%" },
+        .to(stepsRef.value, { x: "95%" },
+
         );
 
       const tl2 = $gsap.timeline({
@@ -316,7 +316,7 @@ onMounted(() => {
         },
       });
 
-      tl2.fromTo(stepsRef.value, { x: "95%" }, { x: "0%" })
+      tl2.to(stepsRef.value, { x: "0%" })
         .to(
           progressRef.value,
           {
@@ -506,13 +506,13 @@ onMounted(() => {
             }
 
             .line-2 {
-              margin-left: 5px;
+              margin-left: 8px;
             }
           }
 
           @media screen and (min-width: 2561px) {
             .line-2 {
-              margin-left: 6px;
+              margin-left: 7px;
             }
           }
         }
@@ -601,7 +601,7 @@ onMounted(() => {
         display: flex;
         flex-direction: column;
         align-items: center;
-      @include clamp-property("font-size", 1, 2);
+        @include clamp-property("font-size", 1, 2);
 
 
         @media screen and (min-width: 481px) and (max-width: 768px) {
@@ -674,7 +674,7 @@ onMounted(() => {
       // bottom: 0%;
       top: calc(100% - 30px);
 
-      left: 58%;
+      left: 58.5%;
       transform: translateX(-50%);
       z-index: -10;
 
@@ -696,6 +696,19 @@ onMounted(() => {
         top: calc(110% + 20px);
 
         left: 50%;
+        transform: translateX(-50%);
+
+        .back-line {
+          width: 100%;
+        }
+      }
+
+      @media screen and (min-width: 2561) {
+        // top: unset;
+        // bottom: -120%;
+        top: calc(110% + 20px);
+
+        left: 60%;
         transform: translateX(-50%);
 
         .back-line {
