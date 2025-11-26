@@ -1,0 +1,62 @@
+@use "~/assets/mixins" as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: $font-manrope;
+  overflow-x: hidden;
+}
+
+.font-heading {
+  font-family: $font-gloock;
+  font-weight: 400;
+}
+
+button {
+  cursor: pointer;
+  font-family: $font-manrope;
+  font-weight: 500;
+  position: relative;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  position: relative !important;
+  width: 52px;
+  height: 52px;
+  @include flex-center;
+  border: none;
+  border-radius: 50%;
+  background: #7e6b47;
+  flex-shrink: 0;
+  color: transparent !important;
+  padding: 8px;
+}
+
+.swiper-pagination-bullet {
+  background: #e8eae8;
+}
+
+.swiper-pagination-bullet-active {
+  background: #7e6b47 !important;
+
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    background: transparent;
+    border-radius: 50%;
+    border: 2px solid #7e6b47;
+  }
+}

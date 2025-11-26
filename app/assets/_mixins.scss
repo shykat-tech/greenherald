@@ -1,0 +1,99 @@
+@use "sass:math";
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media screen and (max-width: 1024px) {
+    & {
+      flex-direction: column;
+    }
+  }
+}
+
+@mixin flex-start {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+@mixin button-default {
+  @include clamp-property("padding-block", 0.375, 0.5);
+  @include clamp-property("padding-left", 1.25, 1.5);
+  @include clamp-property("padding-right", 0.375, 0.5);
+  border-radius: 5rem;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-wrap: nowrap;
+  @include clamp-property("font-size", 0.875, 1.125);
+}
+
+@mixin clamp-property(
+  $property,
+  $min-value,
+  $max-value,
+  $min-width-px: 389,
+  $max-width-px: 1920
+) {
+  $pixels-per-rem: 16;
+
+  // Convert px → rem for viewport breakpoints
+  $min-width: math.div($min-width-px, $pixels-per-rem);
+  $max-width: math.div($max-width-px, $pixels-per-rem);
+
+  // Main slope + intercept for the fluid range
+  $slope: math.div(($max-value - $min-value), ($max-width - $min-width));
+  $intercept: -$min-width * $slope + $min-value;
+
+  // Main clamp between $min-width-px and $max-width-px
+  & {
+    #{$property}: clamp(
+      #{$min-value}rem,
+      #{$intercept}rem + #{$slope * 100}vw,
+      #{$max-value}rem
+    );
+  }
+
+  // Mini screens: below $min-width-px
+  @media (max-width: #{$min-width-px}px) {
+    $mini-min: math.div($min-value * 80, 100); // 80% of min-value
+    $mini-max: $min-value;
+
+    $mini-start: math.div(320, $pixels-per-rem); // 320px in rem
+    $mini-end: math.div(395, $pixels-per-rem); // 395px in rem
+
+    $mini-slope: math.div(($mini-max - $mini-min), ($mini-end - $mini-start));
+    $mini-intercept: -$mini-start * $mini-slope + $mini-min;
+
+    & {
+      #{$property}: clamp(
+        #{$mini-min}rem,
+        #{$mini-intercept}rem + #{$mini-slope * 100}vw,
+        #{$mini-max}rem
+      );
+    }
+  }
+
+  // Ultra-wide screens: above $max-width-px
+  @media (min-width: #{$max-width-px}px) {
+    $uw-min: $max-value;
+    $uw-max: math.div($max-value * 150, 100); // 150% of max-value
+
+    $uw-start: math.div(1921, $pixels-per-rem); // 1921px in rem
+    $uw-end: math.div(3840, $pixels-per-rem); // 3840px in rem
+
+    $uw-slope: math.div(($uw-max - $uw-min), ($uw-end - $uw-start));
+    $uw-intercept: -$uw-start * $uw-slope + $uw-min;
+
+    & {
+      #{$property}: clamp(
+        #{$uw-min}rem,
+        #{$uw-intercept}rem + #{$uw-slope * 100}vw,
+        #{$uw-max}rem
+      );
+    }
+  }
+}
