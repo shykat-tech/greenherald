@@ -268,8 +268,6 @@ onMounted(() => {
         },
       });
 
-      $gsap.set(stepsRef.value, { x: "150%" });
-
       tl.to(dupBenefitsRef.value, { clipPath: isMobile ? "circle(12% at 15% 80%)" : "circle(12% at 75% 65%)" })
         .to(circleBlockRef.value, {
           opacity: 0,
@@ -294,9 +292,12 @@ onMounted(() => {
           "<"
         )
         .to([line1.value, line2.value], { duration: 0.4 }, "<")
-        .to(stepsRef.value, { x: "95%" },
 
-        );
+
+      $gsap.set(
+        stepsRef.value,
+        { x: "150%" },
+      );
 
       const tl2 = $gsap.timeline({
         scrollTrigger: {
@@ -466,7 +467,7 @@ onMounted(() => {
             display: inline-block;
             position: relative;
             font-size: 4rem;
-            line-height: 1.1;
+            line-height: 1.2;
             font-weight: 600;
             color: #08110b;
 
@@ -486,7 +487,7 @@ onMounted(() => {
 
           @media screen and (max-width: 480px) {
             .line-2 {
-              margin-left: 5px;
+              margin-left: 0.2em;
             }
           }
 
@@ -496,7 +497,7 @@ onMounted(() => {
             }
 
             .line-2 {
-              margin-left: 8px;
+              margin-left: 0.2em;
             }
           }
 
@@ -506,13 +507,13 @@ onMounted(() => {
             }
 
             .line-2 {
-              margin-left: 8px;
+              margin-left: 0.2em;
             }
           }
 
           @media screen and (min-width: 2561px) {
             .line-2 {
-              margin-left: 7px;
+              margin-left: 0.2em;
             }
           }
         }
@@ -634,7 +635,8 @@ onMounted(() => {
       }
 
       .step-desc {
-        width: 310px;
+                  @include clamp-property("width", 18, 20);
+
 
         h3 {
           @include clamp-property("font-size", 1, 2);
@@ -674,7 +676,7 @@ onMounted(() => {
       // bottom: 0%;
       top: calc(100% - 30px);
 
-      left: 58.5%;
+      left: 59%;
       transform: translateX(-50%);
       z-index: -10;
 
@@ -696,19 +698,6 @@ onMounted(() => {
         top: calc(110% + 20px);
 
         left: 50%;
-        transform: translateX(-50%);
-
-        .back-line {
-          width: 100%;
-        }
-      }
-
-      @media screen and (min-width: 2561) {
-        // top: unset;
-        // bottom: -120%;
-        top: calc(110% + 20px);
-
-        left: 60%;
         transform: translateX(-50%);
 
         .back-line {

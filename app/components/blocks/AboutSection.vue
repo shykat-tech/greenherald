@@ -1,5 +1,6 @@
 <template>
   <section id="about" ref="aboutRef">
+    <div class="gradient-back" ref="gradientBack" />
     <div class="container" ref="containerRef">
       <h2 class="text" ref="textRef">
         Welcome to the SFX Greenherald International School Alumni Association.
@@ -20,8 +21,18 @@ const { $gsap, $SplitText, $ScrollTrigger } = useNuxtApp();
 const aboutRef = ref(null);
 const containerRef = ref(null);
 const textRef = ref(null);
+const gradientBack = ref(null);
+
 
 onMounted(() => {
+  const upcomingHeight =
+    document.getElementById("upcoming-events")?.getBoundingClientRect().height || 0;
+
+  const totalHeight = window.innerHeight + upcomingHeight + 20;
+
+  gradientBack.value.style.height = `${totalHeight}px`;
+
+
   const target = textRef.value;
   if (!target) return;
 
@@ -56,30 +67,31 @@ onMounted(() => {
   const tl = $gsap.timeline({
     scrollTrigger: {
       trigger: aboutRef.value,
-      start: "-10% top",
+      start: "top top",
       end: "center",
       toggleActions: "play none none reverse",
     },
   });
 
-  tl.to([aboutRef.value, "#upcoming-events"], {
-    background: "#142819",
-    duration: 0.5,
-  }).to(
-    textRef.value,
-    {
-      color: "#fcfcfc",
-      duration: 0.5,
-    },
-    "<"
-  );
+  tl.to(".gradient-back", {
+    background: "linear-gradient(to top, #142819 60%, #f7f5f0)",
+    duration: 0.4,
+  })
+    .to(
+      textRef.value,
+      {
+        color: "#fcfcfc",
+        duration: 0.4,
+      },
+      "<"
+    );
 
   $gsap.to(containerRef.value, {
     y: 0,
     scrollTrigger: {
       trigger: aboutRef.value,
       start: "-10% center",
-      toggleActions: "play none none reverse",
+      toggleActions: "play none none play",
     },
   });
 });
@@ -96,6 +108,15 @@ onMounted(() => {
   align-items: center;
   position: relative;
   background: #f7f5f0;
+
+  .gradient-back {
+    width: 100%;
+    // height: 200vh; // -> handled by JS
+    background: linear-gradient(to top, #f7f5f0, #f7f5f0);
+    position: absolute;
+    bottom: 0;
+    z-index: -5;
+  }
 
   .container {
     transform: translateY(50%);

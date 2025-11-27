@@ -287,7 +287,7 @@ onMounted(() => {
   z-index: 5;
   @include flex-center;
   overflow: hidden;
-  background: #f7f5f0;
+  background: transparent;
 
   .main-container {
     max-width: 1376px;

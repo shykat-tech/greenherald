@@ -32,8 +32,8 @@
             </div>
 
             <!-- Right Image -->
-            <div class="img-container slide-img">
-              <img src="/assets/images/testimonial1.png" alt="story1" />
+            <div class="img-container ">
+              <img src="/assets/images/testimonial1.png" alt="story1" class="slide-img" />
             </div>
           </div>
         </div>
@@ -70,8 +70,9 @@ import { ref, onMounted } from "vue";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import "swiper/css/effect-fade";
 import Swiper from "swiper";
-import { Pagination, Navigation } from "swiper/modules";
+import { Pagination, Navigation, EffectFade } from "swiper/modules";
 
 const { $gsap } = useNuxtApp();
 
@@ -82,9 +83,13 @@ const slides = ref(Array.from({ length: 3 }));
 
 onMounted(() => {
   swiper.value = new Swiper(".swiper", {
-    modules: [Pagination, Navigation],
-    speed: 900,
-    spaceBetween: 100,
+    modules: [Pagination, Navigation, EffectFade],
+    effect: "fade",        
+    fadeEffect: {
+      crossFade: true      
+    },
+    speed: 0,            
+    spaceBetween: 100,      
     pagination: {
       el: ".swiper-pagination",
       clickable: true,
@@ -116,27 +121,26 @@ onMounted(() => {
 
       const tl = $gsap.timeline({
         scrollTrigger: {
-          trigger: storiesRef.value,
-          start: "-60% top",
+          trigger: "gallery",
+          start: "center top",
           toggleActions: "play none none reverse",
         },
       });
 
       tl.to(storiesContainerRef.value, { y: 0 })
-        .to(
-          storiesRef.value,
-          { duration: 0.3, background: "#f7f5f0" },
-          "<"
-        )
-        .to(
-          "#gallery",
-          { background: isDesktop && "#f7f5f0", duration: 0.3 },
-          "<"
-        );
+        // .to(
+        //   storiesRef.value,
+        //   { duration: 0.3, background: "#f7f5f0" },
+        //   "<"
+        // )
+      //   .to(
+      //     "#gallery",
+      //     { background: isDesktop && "#f7f5f0", duration: 0.3 },
+      //     "<"
+      //   );
     }
   );
 });
-
 function animateSlide(swiperInstance) {
   const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
   if (!activeSlide) return;
@@ -148,14 +152,15 @@ function animateSlide(swiperInstance) {
 
 
 
-  $gsap.set( img, { y: 300, opacity: 0 });
-  $gsap.set( text, { y: -300, opacity: 0 });
+  $gsap.set( img, { x: 200, opacity: 0 });
+  $gsap.set( text, { x: -200, opacity: 0 });
 
   const tl = $gsap.timeline();
 
-  tl.to(text, { y: 0, opacity: 1, duration: 1, ease: "power3.out", })
-  .to(img, { y: 0,opacity: 1, duration: 0.7, ease: "power3.out", }, "-=0.4");
+  tl.to(text, { x: 0, opacity: 1, duration: 1, ease: "power3.out", })
+  .to(img, { x: 0,opacity: 1, duration: 0.7, ease: "power3.out", }, "<");
 }
+
 </script>
 
 <style scoped lang="scss">
@@ -163,7 +168,7 @@ function animateSlide(swiperInstance) {
   width: 100vw;
   @include clamp-property("padding-inline", 1.25, 8.12);
   @include clamp-property("padding-block", 6.25, 11.56);
-  background: #142819;
+  // background: #142819;
   @include flex-center;
 
   .container {

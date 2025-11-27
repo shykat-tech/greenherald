@@ -57,7 +57,6 @@ const hiddenLogoRef = ref(null);
 const headerContentRef = ref(null);
 const imagesRef = ref(null);
 const headerRef = ref(null);
-const gradientRef = ref(null);
 
 onMounted(() => {
   const viewportHeight = window.innerHeight;
@@ -162,7 +161,7 @@ onMounted(() => {
 
       tl2
         .to(headerContentRef.value, {
-          yPercent: lg && -50,
+          yPercent: lg && -30,
         })
         .to(
           logoRef.value,
@@ -171,12 +170,10 @@ onMounted(() => {
           },
           "<"
         )
-        .to(gradientRef.value, { opacity: 1 }, "<")
-
         // Parallax depth layers
-        .to([imgs[0], imgs[4]], { yPercent: -90 }, "<")
-        .to([imgs[1], imgs[3]], { yPercent: sm ? -30 : md ? -15 : -80 }, "<")
-        .to([imgs[2]], { yPercent: lg && -30 }, "<");
+        .to([imgs[0], imgs[4]], { yPercent: -60 }, "<")
+        .to([imgs[1], imgs[3]], { yPercent: sm ? -30 : md ? -15 : -40 }, "<")
+        .to([imgs[2]], { yPercent: lg ? -30 : -10  }, "<");
     }
   );
 });
@@ -184,7 +181,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 header {
-  height: 100vh;
+  height: 110vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -192,6 +189,23 @@ header {
   overflow: hidden;
   @include clamp-property("padding-top", 1.5, 6);
   background: #f7f5f0;
+
+  @media screen and (max-width: 320px) {
+    height: 110vh;
+  }
+
+  @media screen and (min-width: 321px) and (max-width: 768px) {
+    height: 100vh;
+  }
+
+  @media screen and (min-width: 769px) and (max-width: 1366px) {
+    height: 130vh;
+  }
+
+  @media screen and (min-width: 1367px) and (max-width: 1920px) {
+    height: 110vh;
+  }
+
 
   .header-content {
     @include clamp-property("padding-inline", 1.25, 26.19);

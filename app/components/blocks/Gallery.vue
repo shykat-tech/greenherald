@@ -1,5 +1,7 @@
 <template>
   <section id="gallery" ref="galleryRef">
+    <div class="gallery-gradient-back" ref="gradientBack" />
+
     <div class="title-container" ref="titleContainerRef">
       <div class="connect-text" ref="connectRef">
         <h2 class="title font-heading">
@@ -11,22 +13,8 @@
       </div>
     </div>
 
-    <!-- <div class="images-wrapper" ref="imageWrapperRef">
-      <div class="images-container" ref="imageContainerRef" v-for="(pos, i) in positions" :key="i" :style="{
-        top: windowWidth <= 480 ? pos.mTop + '%' : pos.top + '%',
-        left: windowWidth <= 480 ? pos.mLeft + '%' : (pos.left ? pos.left + '%' : 'unset'),
-        right: windowWidth <= 480 ? 'unset' : (pos.right ? pos.right + '%' : 'unset'),
-        width: pos.width + 'px',
-        height: pos.height + 'px',
-        zIndex: pos.zIndex,
-      }">
-        <img :src="`/gallery/gallery${i + 1}.jpg`" class="img" />
-      </div>
-
-    </div> -->
-
     <div class="images-wrapper" ref="imageWrapperRef">
-      <div class="images-container" ref="imageContainerRef" v-for="(pos, i) in positions" :key="i">
+      <div class="images-container" ref="imageContainerRef" v-for="(_, i) in 7" :key="i">
         <img :src="`/gallery/gallery${i + 1}.jpg`" class="img" />
       </div>
     </div>
@@ -38,28 +26,25 @@ import { ref, onMounted } from "vue";
 
 const { $gsap, $ScrollTrigger } = useNuxtApp();
 
-const positions = [
-  { top: 0, left: 40, width: 550, height: 854, zIndex: 1, mTop: 5, mLeft: -20 },
-  { top: 20, left: 0, width: 436, height: 236, zIndex: 1, mTop: 15, mLeft: -55 },
-  { top: 10, right: 20, width: 252, height: 252, zIndex: 1, mTop: 10, mRight: -25 },
-  { top: 15, left: 15, width: 484, height: 306, zIndex: 1, mTop: 20, mLeft: -50 },
-  { top: 20, right: -2, width: 394, height: 424, zIndex: 1, mTop: 25, mRight: -5 },
-  { top: 55, left: 15, width: 440, height: 440, zIndex: 1, mTop: 15, mLeft: -60 },
-  { top: 50, right: 5, width: 392, height: 480, zIndex: 1, mTop: 10, mRight: -25 },
-];
-
-
 const galleryRef = ref(null);
-// const titleRef = ref(null);
 const connectRef = ref(null);
 const imageWrapperRef = ref(null);
 const imageContainerRef = ref(null);
 const titleContainerRef = ref(null);
 const joinButtonRef = ref(null);
+const gradientBack = ref(null);
+
 
 const windowWidth = ref(0);
 
 onMounted(() => {
+  const upcomingHeight =
+    document.getElementById("stories")?.getBoundingClientRect().height || 0;
+  const totalHeight = window.innerHeight + upcomingHeight;
+
+  gradientBack.value.style.height = `${totalHeight}px`;
+
+
   // Set initial width on client
   windowWidth.value = window.innerWidth;
 
@@ -91,12 +76,14 @@ onMounted(() => {
 
   mm.add(
     {
-      sm: "(max-width: 480px)",
+      xs: "(max-width: 365px)",
+      sm: "(min-width: 366px) and (max-width: 480px)",
       md: "(min-width: 481px) and (max-width: 1024px)",
-      lg: "(min-width: 1025px)",
+      lg: "(min-width: 1025px) and (max-width: 1920px)",
+      xl: "(min-width: 1921px)",
     },
     (context) => {
-      const { sm, md } = context.conditions;
+      const { xs, sm, md, lg } = context.conditions;
 
       const tl = $gsap.timeline({
         ease: "none",
@@ -109,67 +96,86 @@ onMounted(() => {
         },
       });
 
-      tl.to([images[0]], {
-        top: sm ? "5%" : md ? "10%" : "3%",
-      })
+      tl
+        .to([images[0]], {
+          top: xs ? "7%" : sm ? "8%" : md ? "10%" : lg ? "5%" : "5%",
+        })
         .to(
           [images[1]],
           {
-            top: sm ? "10%" : md ? "15%" : "20%",
-            left: sm ? "5%" : md ? "10%" : "15%",
+            top: xs ? "20%" : sm ? "20%" : md ? "25%" : lg ? "25%" : "20%",
+            left: xs ? "-12%" : sm ? "-12%" : md ? "8%" : lg ? "10%" : "15%",
+            scale: xs ? 0.9 : sm ? 0.9 : 1,
           },
           "<"
         )
         .to(
           [images[2]],
           {
-            top: sm ? "10%" : md ? "15%" : "20%",
-            right: sm ? "5%" : md ? "15%" : "25%",
+            top: xs ? "22%" : sm ? "22%" : md ? "25%" : lg ? "25%" : "20%",
+            right: xs ? "-10%" : sm ? "-10%" : md ? "5%" : lg ? "13%" : "10%",
           },
           "<"
         ).to(
           [images[3]],
           {
-            top: sm ? "45%" : md ? "40%" : "45%",
-            left: sm ? "-3%" : "10%"
+            top: xs ? "45%" : sm ? "45%" : md ? "48%" : lg ? "57%" : "48%",
+            left: xs ? "-50%" : sm ? "-50%" : md ? "-5%" : lg ? "2%" : "10%",
+            scale: lg ? 0.8 : 1
           },
           "<"
         )
         .to(
           [images[4]],
           {
-            top: sm ? "30%" : md ? "40%" : "55%",
-            right: sm ? "-10%" : md ? "-15%" : "10%",
+            top: xs ? "35%" : sm ? "40%" : md ? "50%" : lg ? "58%" : "55%",
+            right: xs ? "-22%" : sm ? "-25%" : md ? "-8%" : lg ? "5%" : "5%",
+            scale: lg ? 0.8 : 1
+
           },
           "<"
         )
         .to(
           [images[5]],
           {
-            top: sm ? "75%" : md ? "55%" : "80%",
-            left: sm ? "-20%" : md ? "-10%" : "5%"
+            top: xs ? "75%" : sm ? "70%" : md ? "75%" : lg ? "85%" : "80%",
+            left: xs ? "-30%" : sm ? "-30%" : md ? "-15%" : lg ? "0%" : "5%",
+            scale: lg ? 0.6 : 1
           },
           "<"
         )
         .to(
           [images[6]],
           {
-            top: sm ? "60%" : md ? "55%" : "80%",
-            right: sm ? "-20%" : md ? "0%" : "5%",
-            scale: sm ? 0.8 : md ? 0.9 : 0.7,
+            top: xs ? "60%" : sm ? "65%" : md ? "70%" : lg ? "85%" : "80%",
+            right: xs ? "-40%" : sm ? "-40%" : md ? "-20%" : lg ? "0%" : "0%",
+            scale: xs ? 1 : sm ? 1 : md ? 0.9 : lg ? 0.7 : 1,
           },
           "<"
         );
 
       $gsap.to(connectRef.value, {
         y: "0%",
-        duration: "0.3",
+        duration: 0.3,
         scrollTrigger: {
           trigger: connectRef.value,
           start: "top 70%",
           toggleActions: "play none none reverse",
         },
       });
+
+      $gsap.to(gradientBack.value, {
+        background: "linear-gradient(to top, #f7f5f0 100%, #142819)",
+        duration: 0.4,
+        
+        scrollTrigger: {
+          trigger: galleryRef.value,
+          start: "center top",
+          toggleActions: "play none none reverse",
+          ease: "none",
+        },
+      });
+
 
     })
 });
@@ -180,9 +186,7 @@ onMounted(() => {
   width: 100vw;
   height: 100vh;
   @include clamp-property("padding-inline", 0, 10.76);
-  background: #142819;
   position: relative;
-
   @include flex-center;
 
   .texture {
@@ -200,14 +204,16 @@ onMounted(() => {
     transform: translateY(-50%);
     z-index: 10;
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 480px) {
       top: 80%;
+    }
 
+    @media screen and (min-width: 481px) and (max-width: 768px) {
+      top: 80%;
     }
 
     @media screen and (min-width: 1024px) and (max-width: 1920px) {
-      top: 90%;
-
+      top: 80%;
     }
 
     .title {
@@ -223,6 +229,15 @@ onMounted(() => {
       @include clamp-property("gap", 1, 1.5);
       transform: translateY(100%);
     }
+  }
+
+  .gallery-gradient-back {
+    width: 100%;
+    // height: 200vh; // -> handled by JS
+    background: linear-gradient(to top, #142819, #142819);
+    position: absolute;
+    top: 0;
+    z-index: -15;
   }
 
   .images-wrapper {
@@ -244,22 +259,32 @@ onMounted(() => {
       top: 5%;
       left: 50%;
       transform: translateX(-50%);
-      width: 34rem;
+      width: 30%;
+      height: 60%;
 
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 365px) {
         width: 12rem;
+        height: 20rem;
       }
 
-      @media screen and (min-width: 480px) and (max-width: 768px) {
-        width: 18rem;
+      @media screen and (min-width: 366px) and (max-width: 480px) {
+        width: 65%;
+        height: 57%;
+      }
+
+      @media screen and (min-width: 481px) and (max-width: 768px) {
+        width: 23rem;
+        height: 35rem;
       }
 
       @media screen and (min-width: 769px) and (max-width: 1366px) {
-        width: 18rem;
+        width: 30%;
+        height: 57%;
       }
 
       @media screen and (min-width: 1367px) and (max-width: 1920px) {
-        width: 28rem;
+        width: 30%;
+        height: 57%;
       }
     }
 
@@ -267,7 +292,7 @@ onMounted(() => {
       left: 0%;
       top: 15%;
       transform: translateY(-50%);
-      @include clamp-property("width", 10, 27);
+      @include clamp-property("width", 12, 28);
 
     }
 
@@ -276,7 +301,7 @@ onMounted(() => {
       top: 15%;
       transform: translateY(-50%) scale(1);
       aspect-ratio: 1;
-      @include clamp-property("width", 6, 15);
+      @include clamp-property("width", 6, 20);
 
     }
 
@@ -284,7 +309,7 @@ onMounted(() => {
       left: -20%;
       top: 45%;
       transform: translateY(-50%);
-      @include clamp-property("width", 12, 30);
+      @include clamp-property("width", 18, 30);
 
     }
 
@@ -293,7 +318,7 @@ onMounted(() => {
       top: 45%;
       transform: translateY(-50%);
       aspect-ratio: 1;
-      @include clamp-property("width", 9.6, 28);
+      @include clamp-property("width", 9.6, 30);
 
 
     }
@@ -303,7 +328,7 @@ onMounted(() => {
       left: -10%;
       transform: translateY(-50%);
       aspect-ratio: 1;
-      @include clamp-property("width", 10, 24);
+      @include clamp-property("width", 10, 28);
 
     }
 
@@ -312,7 +337,7 @@ onMounted(() => {
       right: -10%;
       transform: translateY(-50%);
       aspect-ratio: 4/5;
-      @include clamp-property("width", 13, 24);
+      @include clamp-property("width", 13, 26);
 
     }
   }
