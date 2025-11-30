@@ -338,6 +338,7 @@ onMounted(() => {
         flex-direction: column;
         justify-content: space-between;
         @include clamp-property("gap", 2, 7.875);
+        @include clamp-property("padding-block", 0, 1.5);
 
         @media screen and (max-width: 1024px) {
           width: 100%;

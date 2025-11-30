@@ -117,27 +117,15 @@ onMounted(() => {
       isDesktop: "(min-width: 769px)",
     },
     (context) => {
-      const { isDesktop } = context.conditions;
-
       const tl = $gsap.timeline({
         scrollTrigger: {
-          trigger: "gallery",
+          trigger: "#gallery",
           start: "center top",
           toggleActions: "play none none reverse",
         },
       });
 
       tl.to(storiesContainerRef.value, { y: 0 })
-        // .to(
-        //   storiesRef.value,
-        //   { duration: 0.3, background: "#f7f5f0" },
-        //   "<"
-        // )
-      //   .to(
-      //     "#gallery",
-      //     { background: isDesktop && "#f7f5f0", duration: 0.3 },
-      //     "<"
-      //   );
     }
   );
 });

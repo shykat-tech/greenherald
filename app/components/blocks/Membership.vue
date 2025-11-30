@@ -137,7 +137,7 @@ onMounted(() => {
   width: 100vw;
   @include flex-center;
   @include clamp-property("padding-inline", 1.25, 17);
-  @include clamp-property("padding-bottom", 6.25, 8.05);
+  @include clamp-property("padding-block", 6.25, 8.05);
   background: #f7f5f0;
 
   .container {
@@ -189,6 +189,7 @@ onMounted(() => {
             @include clamp-property("padding-inline", 0.64, 1);
             @include clamp-property("padding-block", 0.32, 0.5);
             @include clamp-property("border-radius", 1.03, 1.62);
+            flex-direction: row;
 
             background: #435347;
             color: #fcfcfc;
@@ -224,7 +225,7 @@ onMounted(() => {
             font-weight: 400;
 
             span {
-              @include clamp-property("font-size", 0.397, 1.125);
+              @include clamp-property("font-size", 1, 1.125);
               line-height: 160%;
               letter-spacing: -1%;
               font-weight: 400;

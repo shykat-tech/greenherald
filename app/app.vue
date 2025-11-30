@@ -1,8 +1,8 @@
 <template>
   <NuxtLayout>
-    <div>
-      <NuxtPage />
-      <div v-if="loading">Loading...</div>
+    <NuxtPage />
+    <div v-show="loading" class="loader-wrapper">
+      <CommonLoader />
     </div>
   </NuxtLayout>
 </template>
@@ -11,10 +11,9 @@
 import { ref } from "vue";
 
 const loading = ref(true);
-const nuxtApp = useNuxtApp();
 
-nuxtApp.hook("page:loading:end", () => {
+setTimeout(() => {
   loading.value = false;
-});
+}, 1000)
 
 </script>

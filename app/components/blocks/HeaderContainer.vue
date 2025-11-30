@@ -36,6 +36,7 @@
       </div>
     </header>
     <UpcomingEvents />
+
     <AboutSection />
     <Gallery />
     <Stories />
@@ -66,6 +67,7 @@ onMounted(() => {
 
   const imgs = imagesRef.value.querySelectorAll("img");
 
+
   mm.add(
     {
       sm: "(max-width: 480px)",
@@ -82,8 +84,9 @@ onMounted(() => {
 
       tl.to(logoRef.value, {
         scale: 1,
-        top: logoPos.height / 2 + logoPos.y,
-      });
+        top: logoPos.height / 2 + logoPos.y
+      })
+        .to([headerContentRef.value, imagesRef.value], { opacity: 1 }, "<");
 
       tl.fromTo(headerContentRef.value, { y: viewportHeight }, { y: 0 }, "<");
 
@@ -173,7 +176,7 @@ onMounted(() => {
         // Parallax depth layers
         .to([imgs[0], imgs[4]], { yPercent: -60 }, "<")
         .to([imgs[1], imgs[3]], { yPercent: sm ? -30 : md ? -15 : -40 }, "<")
-        .to([imgs[2]], { yPercent: lg ? -30 : -10  }, "<");
+        .to([imgs[2]], { yPercent: lg ? -30 : -10 }, "<");
     }
   );
 });
@@ -206,10 +209,10 @@ header {
     height: 110vh;
   }
 
-
   .header-content {
     @include clamp-property("padding-inline", 1.25, 26.19);
     will-change: transform;
+    opacity: 0;
   }
 
   .logo {
@@ -225,9 +228,25 @@ header {
   .animLogo {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 45%;
     z-index: 10;
     transform: translate(-50%, -50%) scale(2);
+
+    @media screen and (max-width: 320px) {
+      top: 45%;
+    }
+
+    @media screen and (min-width: 321px) and (max-width: 768px) {
+      top: 50%;
+    }
+
+    @media screen and (min-width: 769px) and (max-width: 1366px) {
+      top: 45%;
+    }
+
+    @media screen and (min-width: 1367px) and (max-width: 1920px) {
+      top: 45%;
+    }
   }
 
   .heading {
@@ -312,6 +331,7 @@ header {
     position: relative;
     display: flex;
     justify-content: center;
+    opacity: 0;
 
     img {
       aspect-ratio: 4/5;
