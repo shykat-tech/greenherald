@@ -4,7 +4,7 @@
 
     <div class="title-container" ref="titleContainerRef">
       <div class="connect-text" ref="connectRef">
-        <h2 class="title font-heading">
+        <h2 class="title font-heading" ref="connectTitle">
           Ready to <br />
           Reconnect?
         </h2>
@@ -33,6 +33,7 @@ const imageContainerRef = ref(null);
 const titleContainerRef = ref(null);
 const joinButtonRef = ref(null);
 const gradientBack = ref(null);
+const connectTitle = ref(null);
 
 
 const windowWidth = ref(0);
@@ -164,17 +165,22 @@ onMounted(() => {
         },
       });
 
-      $gsap.to(gradientBack.value, {
-        background: "linear-gradient(to top, #f7f5f0 100%, #142819)",
-        duration: 0.4,
-        
+
+      const tl2 = $gsap.timeline({
         scrollTrigger: {
           trigger: galleryRef.value,
-          start: "center top",
+          start: "40% top",
           toggleActions: "play none none reverse",
           ease: "none",
         },
-      });
+      })
+
+      tl2.to(gradientBack.value, {
+        background: "linear-gradient(to top, #f7f5f0 100%, #142819)",
+        duration: 0.2,
+      }).to(connectTitle.value, {
+        color: "#000000"
+      }, "<");
 
 
     })

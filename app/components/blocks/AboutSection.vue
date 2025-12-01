@@ -75,13 +75,13 @@ onMounted(() => {
 
   tl.to(".gradient-back", {
     background: "linear-gradient(to top, #142819 60%, #f7f5f0)",
-    duration: 0.4,
+    duration: 0.2,
   })
     .to(
       textRef.value,
       {
         color: "#fcfcfc",
-        duration: 0.4,
+        duration: 0.2,
       },
       "<"
     );

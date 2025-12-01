@@ -24,7 +24,11 @@
         height: 100vh;
     }
 
-    @media screen and (min-width: 769px) and (max-width: 1366px) {
+    @media screen and (min-width: 769px) and (max-width: 1024px) {
+        height: 150vh;
+    }
+
+    @media screen and (min-width: 1025px) and (max-width: 1366px) {
         height: 130vh;
     }
 

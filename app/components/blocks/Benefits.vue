@@ -273,7 +273,7 @@ onMounted(() => {
     (context) => {
       const { sm, md, lg, xl } = context.conditions;
 
-      if(sm) return;
+      if (sm) return;
 
       const hiddenTitlePosition = hiddenTitleRef.value.getBoundingClientRect();
       stepsRef.value.style.transform = `translateX(100%)`;
@@ -287,7 +287,7 @@ onMounted(() => {
         scrollTrigger: {
           trigger: mainContainerRef.value,
           start: "top top",
-          end: "200%",
+          end: "250%",
           scrub: true,
           pin: true,
           toggleActions: "play none none reverse",
@@ -299,7 +299,7 @@ onMounted(() => {
       });
 
       tl.to(dupBenefitsRef.value, {
-        clipPath: sm ? "circle(12% at 15% 80%)" : "circle(12% at 75% 65%)",
+        clipPath: "circle(12% at 75% 65%)",
       })
         .to(circleBlockRef.value, { opacity: 0 })
         .to(benefitsRef.value, { x: !sm && "-100%", y: sm && "-100%" }, "<")
@@ -312,12 +312,13 @@ onMounted(() => {
         )
         .to(
           nextTitleRef.value,
-          { x: sm ? `${Math.abs(exactXposition)}px` : `-${exactXposition}px`, y: `-${exactYposition}px`, fontSize: sm ? "32px" : md ? "48px" : "64px" },
+          { x: sm ? `${Math.abs(exactXposition)}px` : `-${exactXposition}px`, y: `-${exactYposition}px`, fontSize: sm ? "32px" : md ? "40px" : lg ? "48px" : xl ? "56px" : "64px" },
           "<"
         )
         .to(blockSpanRef.value, { y: `-${exactYposition}px`, x: `-${exactXposition}px`, opacity: 0 }, "<")
         .to(stepsRef.value, {
           x: md ? "-60%" : lg ? "-60%" : xl ? "-40%" : "-40%",
+          duration: 3,
           onUpdate() {
             const tweenProgress = this.progress();
 
@@ -510,20 +511,21 @@ onMounted(() => {
           h3 {
             position: absolute;
             top: 0;
-            letter-spacing: -0.04rem;
+            font-weight: 500;
+            line-height: 120%;
             text-wrap: nowrap;
+            @include clamp-property("font-size", 1.5, 2.5);
 
-            @media screen and (max-width: 768px) {
-              font-size: 2rem;
-              line-height: 2.4rem;
-            }
+            // @media screen and (max-width: 768px) {
+            //   font-size: 2rem;
+            //   line-height: 2.4rem;
+            // }
 
-            @media screen and (min-width: 769px) and (max-width: 1920px) {
-              font-size: 3rem;
-              line-height: 3.6rem;
-            }
+            // @media screen and (min-width: 769px) and (max-width: 1920px) {
+            //   font-size: 40px;
+            //   line-height: 120%;
 
-            // left: 0;
+            // }
           }
         }
       }

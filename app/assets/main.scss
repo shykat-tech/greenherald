@@ -24,39 +24,13 @@ button {
   position: relative;
 }
 
-.swiper-button-prev,
-.swiper-button-next {
-  position: relative !important;
-  width: 52px;
-  height: 52px;
-  @include flex-center;
-  border: none;
-  border-radius: 50%;
-  background: #7e6b47;
-  flex-shrink: 0;
-  color: transparent !important;
-  padding: 8px;
+.line {
+  overflow: hidden !important;
+  display: block;
 }
 
-.swiper-pagination-bullet {
-  background: #e8eae8;
+.word {
+  overflow: hidden !important;
+  display: inline-block;
 }
 
-.swiper-pagination-bullet-active {
-  background: #7e6b47 !important;
-
-  position: relative;
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 16px;
-    height: 16px;
-    background: transparent;
-    border-radius: 50%;
-    border: 2px solid #7e6b47;
-  }
-}

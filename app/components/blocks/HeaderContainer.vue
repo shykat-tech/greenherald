@@ -36,7 +36,6 @@
       </div>
     </header>
     <UpcomingEvents />
-
     <AboutSection />
     <Gallery />
     <Stories />
@@ -201,7 +200,11 @@ header {
     height: 100vh;
   }
 
-  @media screen and (min-width: 769px) and (max-width: 1366px) {
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    height: 150vh;
+  }
+
+  @media screen and (min-width: 1025px) and (max-width: 1366px) {
     height: 130vh;
   }
 
@@ -241,7 +244,7 @@ header {
     }
 
     @media screen and (min-width: 769px) and (max-width: 1366px) {
-      top: 45%;
+      top: 40%;
     }
 
     @media screen and (min-width: 1367px) and (max-width: 1920px) {
