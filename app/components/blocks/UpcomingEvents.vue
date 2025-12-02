@@ -174,7 +174,6 @@ onMounted(() => {
           scrollTrigger: {
             trigger: upcomingEventsRef.value,
             start: isMobile ? "top bottom" : "top 80%",
-            markers: true
           },
         })
         .to(titleRef.value, {
