@@ -118,7 +118,7 @@
       </div>
 
       <div class="navigation">
-        <div class="nav-count">
+        <div class="count">
           <span ref="currentNumRef" class="current">0{{ activeSlide }}</span>
           <span>-</span>
           <span class="total">0{{ stepCards.length }}</span>
@@ -299,7 +299,7 @@ onMounted(() => {
       });
 
       tl.to(dupBenefitsRef.value, {
-        clipPath: md ? "circle(12% at 60% 60%)" : lg ? "circle(12% at 80% 70%)" : "circle(12% at 75% 65%)",
+        clipPath: "circle(12% at 75% 65%)",
       })
         .to(circleBlockRef.value, { opacity: 0 })
         .to(benefitsRef.value, { x: !sm && "-100%", y: sm && "-100%" }, "<")
@@ -319,65 +319,41 @@ onMounted(() => {
         .to(stepsRef.value, {
           x: md ? "-60%" : lg ? "-60%" : xl ? "-40%" : "-40%",
           duration: 3,
+          onUpdate() {
+            const tweenProgress = this.progress();
+
+            if (tweenProgress === 0) {
+              count.value = 0;
+            } else if (tweenProgress > 0.4 && tweenProgress < 0.5) {
+              count.value = 1;
+            } else if (tweenProgress === 1) {
+              count.value = 2;
+            }
+
+          }
         }, "-=0.1")
         .to(
           progressRef.value,
           {
             width: "100%",
             duration: 0.5,
-            delay: 0.3,
-            duration: 2,
+            // delay: 0.1,
             ease: "none",
             onUpdate() {
-              const pg = Math.floor(this.progress() * 100);
-
+              const length = counts.length;
               if (scrollDir.value === "down") {
-                if (pg === 0) {
-                  $gsap.to(counts[0], {
-                    color: "#E7DFCF",
-                    background: "#7E6B47",
-                    duration: 0.2
-                  });
-                }
-                else if (pg === 50) {
-                  $gsap.to(counts[1], {
-                    color: "#E7DFCF",
-                    background: "#7E6B47",
-                    duration: 0.2
-                  });
-                }
-                else if (pg === 100) {
-                  $gsap.to(counts[2], {
-                    color: "#E7DFCF",
-                    background: "#7E6B47",
-                    duration: 0.2
-                  });
-                }
+                $gsap.to(counts.slice(0, count.value + 1), {
+                  color: "#E7DFCF",
+                  background: "#7E6B47",
+                  duration: 0.2
+                });
+              } else {
+                $gsap.to([counts.slice(count.value - length)], {
+                  color: "#08110B",
+                  background: "#E7DFCF",
+                  duration: 0.2
+                });
               }
-              else {
-                if (pg === 0) {
-                  $gsap.to(counts[0], {
-                    color: "#08110B",
-                    background: "#E7DFCF",
-                    duration: 0.2
-                  });
-                }
-                else if (pg === 50) {
-                  $gsap.to(counts[1], {
-                    color: "#08110B",
-                    background: "#E7DFCF",
-                    duration: 0.2
-                  });
-                }
-                else if (pg !== 100) {
-                  $gsap.to(counts[2], {
-                    color: "#08110B",
-                    background: "#E7DFCF",
-                    duration: 0.2
-                  });
-                }
-              }
-
             }
           },
           "<"
@@ -456,7 +432,7 @@ onMounted(() => {
           span {
             font-weight: 400;
             @include clamp-property("font-size", 0.875, 1);
-            color: $gray-500;
+            color: gray-500;
             display: inline-block;
             position: relative;
           }
@@ -491,15 +467,15 @@ onMounted(() => {
     }
 
     @media screen and (min-width: 768px) {
-      clip-path: circle(0% at 55% 55%);
+      clip-path: circle(0% at 55% 60%);
     }
 
     @media screen and (min-width: 769px) and (max-width: 1024px) {
-      clip-path: circle(0% at 55% 80%);
+      clip-path: circle(0% at 55% 55%);
     }
 
-    @media screen and (min-width: 1025px) and (max-width: 1366px) {
-      clip-path: circle(0% at 80% 75%);
+    @media screen and (min-width: 1024px) and (max-width: 1366px) {
+      clip-path: circle(0% at 80% 55%);
     }
 
     @media screen and (min-width: 1367px) and (max-width: 1440px) {
@@ -539,10 +515,17 @@ onMounted(() => {
             line-height: 120%;
             text-wrap: nowrap;
             @include clamp-property("font-size", 1.5, 2.5);
-          }
 
-          span {
-            opacity: 0;
+            // @media screen and (max-width: 768px) {
+            //   font-size: 2rem;
+            //   line-height: 2.4rem;
+            // }
+
+            // @media screen and (min-width: 769px) and (max-width: 1920px) {
+            //   font-size: 40px;
+            //   line-height: 120%;
+
+            // }
           }
         }
       }
@@ -701,7 +684,7 @@ onMounted(() => {
       padding-inline: 1.25rem;
 
 
-      .nav-count {
+      .count {
         font-family: $font-gloock;
         font-size: 1.5rem;
         font-weight: 400;

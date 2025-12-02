@@ -4,6 +4,20 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/main.scss"],
 
+  app: {
+    head: { 
+      title: "GreenHerald",
+      meta: [
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { charset: "utf-8" },
+
+      ],
+      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      ],  
+
+    }
+  },
+
    devServer: {
     host: "0.0.0.0", // expose to network
     port: 3000
@@ -23,11 +37,18 @@ export default defineNuxtConfig({
         path: "~/components/ui",
         global: true,
       },
+      {
+        path: "~/components/dashboard",
+        global: true,
+      },
       "~/components",
     ],
   },
 
-  modules: ["@nuxt/fonts", "nuxt-lazy-hydrate"],
+  modules: ["@nuxt/fonts", 
+    "nuxt-lazy-hydrate",     
+    '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt'],
   fonts: {
     families: [
       {

@@ -53,7 +53,7 @@
           </div>
 
           <!-- Join Button -->
-          <CommonPrimaryButton
+          <CommonPrimaryButton @click="joinMembership"
             ><span>Join as {{ plan.title }} Member</span></CommonPrimaryButton
           >
         </div>
@@ -66,26 +66,12 @@
 import { onMounted, ref } from "vue";
 const { $gsap } = useNuxtApp();
 
+const router = useRouter();
+
 const membershipRef = ref(null);
 const memContainerRef = ref(null);
 
 const membershipPlans = [
-  {
-    title: "Monthly",
-    isPopular: false,
-    planDesc:
-      "Perfect for alumni who want to stay involved, attend events, and remain part of our growing global family — one year at a time.",
-    price: 1000,
-    currency: "BDT",
-    package: "yearly",
-    keyPoints: [
-      "Invitations to alumni reunions and networking events",
-      "Access to the online alumni portal & directory",
-      "Monthly newsletters and school updates",
-      "Eligibility for alumni-only programs & discounts",
-    ],
-    joinLink: "/",
-  },
   {
     title: "Yearly",
     isPopular: false,
@@ -102,6 +88,7 @@ const membershipPlans = [
     ],
     joinLink: "/",
   },
+
   {
     title: "Lifetime",
     isPopular: true,
@@ -120,52 +107,50 @@ const membershipPlans = [
   },
 ];
 
-onMounted(() => {
-  $gsap.to(memContainerRef.value, {
-    y: 0,
-    scrollTrigger: {
-      trigger: membershipRef.value,
-      start: "top 80%",
-      toggleActions: "play none none reverse",
-    },
-  });
-});
+const joinMembership = () => {
+  // Logic to handle membership joining
+  //if the user is not authenticated, redirect to login page
+  const isAuthenticated = false; // Replace with actual authentication check
+  if (!isAuthenticated) {
+    router.push({ path: "/auth/signin" });
+  } else {
+    router.push({ path: "/auth/dashboard" });
+  }
+};
 </script>
 
 <style scoped lang="scss">
 #membership {
-  width: 100vw;
   @include flex-center;
-  @include clamp-property("padding-inline", 1.25, 17);
-  @include clamp-property("padding-block", 6.25, 8.05);
-  background: $yellow-50;
 
   .container {
     width: 100%;
-    transform: translateY(50%);
 
     .sectionTitle {
       @include clamp-property("font-size", 2, 4);
-      @include clamp-property("margin-bottom", 2.5, 5);
       font-weight: 500;
       line-height: 110%;
       text-align: center;
+      @include clamp-property("margin-bottom", 2.5, 5);
     }
 
     .plans {
       width: 100%;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       justify-content: center;
       @include clamp-property("gap", 1, 2.5);
 
-      @media screen and (max-width: 1024px) {
+      @media screen and (max-width: 769px) {
         display: flex;
         flex-direction: column-reverse;
       }
 
       .plan {
-        background: $green-500;
+        // @include clamp-property("width",, 41.75)
+        max-width: 41.75rem;
+        height: auto;
+        background: #142819;
         @include clamp-property("border-radius", 1.25, 2);
         @include clamp-property("padding-inline", 2, 4);
         @include clamp-property("padding-block ", 2, 3.12);
@@ -180,7 +165,7 @@ onMounted(() => {
             font-weight: 550;
             @include clamp-property("font-size", 1.5, 2.5);
             line-height: 110%;
-            color: $gray-100;
+            color: #fcfcfc;
           }
 
           .plan--popular-badge {
@@ -189,13 +174,12 @@ onMounted(() => {
             @include clamp-property("padding-inline", 0.64, 1);
             @include clamp-property("padding-block", 0.32, 0.5);
             @include clamp-property("border-radius", 1.03, 1.62);
-            flex-direction: row;
 
             background: #435347;
-            color: $gray-100;
+            color: #fcfcfc;
 
             span {
-              @include clamp-property("font-size", 0.75, 1.125);
+              @include clamp-property("font-size", 0.125, 0.75);
               font-weight: 400;
             }
           }
@@ -203,15 +187,16 @@ onMounted(() => {
 
         .plan--desc {
           @include clamp-property("font-size", 0.875, 1);
+
           font-weight: 400;
           line-height: 150%;
           color: #b6bcb8;
         }
 
         .dashed-border {
-          @include clamp-property("margin-top", 1.91, 3);
-          @include clamp-property("margin-bottom", 2.54, 4);
-          border: 1px dashed $green-100;
+          margin-top: 48px;
+          margin-bottom: 64px;
+          border: 1px dashed #626f65;
         }
 
         .plan--package {
@@ -220,12 +205,12 @@ onMounted(() => {
             @include clamp-property("font-size", 2, 3);
 
             line-height: 110%;
-            color: $gray-100;
+            color: #fcfcfc;
             margin-bottom: 24px;
             font-weight: 400;
 
             span {
-              @include clamp-property("font-size", 1, 1.125);
+              @include clamp-property("font-size", 0.397, 1.125);
               line-height: 160%;
               letter-spacing: -1%;
               font-weight: 400;
@@ -238,24 +223,24 @@ onMounted(() => {
           }
 
           .plan--key-points {
-            @include clamp-property("margin-bottom", 2.38, 3.75);
+            margin-bottom: 60px;
 
             li {
               display: flex;
               align-items: center;
               gap: 10px;
-              color: $green-50;
+              color: #e8eae8;
 
               .ellipse {
                 width: 8px;
                 height: 8px;
-                background: $green-50;
+                background: #e8eae8;
                 border-radius: 50%;
                 flex-shrink: 0;
               }
 
               span {
-                @include clamp-property("font-size", 0.875, 1.125);
+                font-size: 16px;
                 line-height: 150%;
               }
             }
@@ -267,6 +252,17 @@ onMounted(() => {
             .plan--popular-badge {
               flex-wrap: nowrap;
               flex-direction: row;
+            }
+          }
+
+          .dashed-border {
+            margin-top: 30px;
+            margin-bottom: 40px;
+          }
+
+          .plan--package {
+            .plan--key-points {
+              margin-bottom: 38px;
             }
           }
         }

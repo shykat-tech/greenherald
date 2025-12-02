@@ -1,6 +1,9 @@
 $font-manrope: "Manrope", sans-serif;
 $font-gloock: "Gloock", serif;
 
+$white: rgba(255, 255, 255, 1);
+$neutral-white: #fff;
+
 // 🌕 Yellow Palette (Gold tones)
 $yellow-50: #F7F5F0;
 $yellow-80: #F2F2F0;
@@ -16,13 +19,38 @@ $yellow-800: #625337;
 $yellow-900: #4B3F2A;
 
 // 🌿 Green Palette
-$green-50: #E8EAE8;
-$green-100: #626F65;
-$green-300: #2E653D;
-$green-400: #214129;
-$green-500: #142819;
-$green-900: #08110B;
-$green-hero: #11361A;
+$green-50: rgba(232, 234, 232, 1);
+$green-80: #F2F2F0;
+$green-100: rgba(98, 111, 101, 1);
+$green-200: #c3d1c8;
+$green-300: rgba(46, 101, 61, 1);
+$green-400: rgba(33, 65, 41, 1);
+$green-Hero-Text: rgba(17, 54, 26, 1);
+$green-500: rgba(20, 40, 25, 1); // base (your main green)
+$green-600: #39463b;
+$green-700: #2f3930;
+$green-800: #232c24;
+$green-850: #0d1d11;
+$green-900: #08110b;
+$green-hero: #08110b;
+
+// 🌟 Golden Palette
+$golden-50: #f7f5f0;
+$golden-80: #f2f2f0;
+$golden-90: #ede8df;
+$golden-500: #b29764;
+$golden-600: rgba(162, 137, 91, 1);
+$golden-700: rgba(126, 107, 71, 1);
+$golden-800: rgba(98, 83, 55, 1);
+$golden-900: rgba(75, 63, 42, 1);
+
+
+$neutral-gray-500: #e0e0e0;
+$neutral-gray-700: #9f9f9f;
+$neutral-gray-800: #7B7B7B;
+$neutral-gray-900: #5e5e5e;
+$neutral-gray-600: #B3B3B3;
+
 
 // 🐨 Natural Gray
 $white: #ffffff;

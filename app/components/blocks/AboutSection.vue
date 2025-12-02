@@ -36,10 +36,9 @@ onMounted(() => {
   const target = textRef.value;
   if (!target) return;
 
-  const split = new $SplitText(target, { type: "words, lines" });
+  const split = new $SplitText(target, { type: "words" });
 
   $gsap.set(split.words, { opacity: 0.2 });
-  $gsap.set(split.lines, { opacity: 0, y: "100px" });
 
   // 1️⃣ PIN THE SECTION UNTIL TEXT ANIMATION IS COMPLETE
   $ScrollTrigger.create({
@@ -87,14 +86,12 @@ onMounted(() => {
       "<"
     );
 
-  $gsap.to([containerRef.value, ...split.lines], {
+  $gsap.to(containerRef.value, {
     y: 0,
-    opacity: 1,
-    stagger: 0.1,
     scrollTrigger: {
       trigger: aboutRef.value,
       start: "-10% center",
-      toggleActions: "play none none reverse",
+      toggleActions: "play none none play",
     },
   });
 });

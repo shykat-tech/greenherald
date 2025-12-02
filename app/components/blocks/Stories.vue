@@ -88,30 +88,29 @@ const activeIndex = ref(0)
 const slides = [
   {
     id: 1,
-    insight: "Success begins with curiosity and asking the right questions to grow and inspire others.",
-    story: "After graduating from S.F.X Greenherald International School in 2008, Aarif Hasan turned his curiosity into a tech startup in Singapore. His early years were filled with science fairs, coding competitions, and debate clubs that built his problem-solving and leadership skills. His company now employs over 200 people, and he actively mentors young entrepreneurs, encouraging them to explore ideas and take bold steps.",
+    insight: "Success starts with curiosity and asking the right questions to grow and inspire others.",
+    story: "After graduating from S.F.X Greenherald International School in 2008, Aarif Hasan turned his curiosity into a tech startup in Singapore. He participated in science fairs, coding competitions, and debate clubs, building problem-solving and leadership skills. Today, his company employs over 200 people, and he mentors young entrepreneurs.",
     image: "/story/testimonial1.png"
   },
   {
     id: 2,
-    insight: "Giving back to the community is one of the most meaningful and rewarding forms of success.",
-    story: "Maria began her journey in school volunteer programs and debate clubs, developing leadership and communication skills. After graduation, she created youth empowerment programs focused on education and mentorship. Her initiatives now reach thousands internationally, providing guidance, learning opportunities, and essential skills to underprivileged students, helping them shape brighter futures through consistent community support.",
+    insight: "Giving back to the community is the most rewarding form of success one can achieve.",
+    story: "Maria began her journey with school volunteer programs and debate clubs, developing leadership and communication skills. After graduation, she created programs empowering underprivileged youth through education and mentorship. Her initiatives now reach thousands internationally, teaching young people to develop skills.",
     image: "/story/middle.jpg"
   },
   {
     id: 3,
-    insight: "Leadership grows through experience, challenges, and learning to guide others effectively.",
-    story: "John launched a small community coding project after school that eventually grew into an international program. He emphasized hands-on learning, mentoring students in real-world problem-solving, teamwork, and collaboration. Navigating challenges such as limited resources and diverse group needs helped him develop resilience, empathy, and strategic thinking, shaping him into a strong and thoughtful leader.",
+    insight: "True leadership is cultivated through experience, challenges, and guiding others effectively.",
+    story: "John started a small community coding project after school that grew into an international program. He focused on experiential learning, mentoring students to solve real-world problems and collaborate effectively. Through challenges, limited resources, and team management, John developed resilience, empathy, and strategic thinking.",
     image: "/story/right-1.jpg"
   },
   {
     id: 4,
-    insight: "Innovation flourishes when curiosity, creativity, and empathy work together to shape new solutions.",
-    story: "Sophie explored technology from a young age, building small apps and joining competitions that nurtured her coding interest. After school, she founded a global platform connecting students with mentors to improve access to education and skill-building. By listening to feedback, refining her ideas, and scaling internationally, Sophie shows that innovation thrives on curiosity, persistence, and a desire to help others.",
+    insight: "Innovation drives progress when curiosity, creativity, and empathy guide solutions.",
+    story: "Sophie explored technology and coding from a young age, building small apps and participating in competitions. After school, she founded a global platform connecting students with mentors to improve education and skills. By iterating on feedback and scaling her platform internationally, Sophie demonstrates that innovation requires curiosity, perseverance.",
     image: "/story/right-2.jpg"
   }
 ];
-
 
 
 
@@ -195,6 +194,7 @@ onMounted(() => {
           trigger: "#gallery",
           start: "40% top",
           toggleActions: "play none none reverse",
+          markers: true
         },
       });
 
@@ -260,7 +260,7 @@ onMounted(() => {
           flex-direction: column;
           justify-content: space-between;
 
-          @media screen and (max-width: 768px) {
+          @media screen and (max-width: 769px) {
             & {
               width: 100%;
 
@@ -298,21 +298,9 @@ onMounted(() => {
         position: relative;
         aspect-ratio: 8/9;
 
-        @media screen and (max-width: 420px) {
-          & {
-            aspect-ratio: 4/5;
-          }
-        }
-
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 769px) {
           & {
             width: 100%;
-          }
-        }
-
-        @media screen and (min-width: 769px) and (max-width: 1366px) {
-          & {
-            width: 45%;
           }
         }
 
@@ -381,7 +369,7 @@ onMounted(() => {
         }
       }
 
-      @media screen and (max-width: 1024px) {
+      @media screen and (max-width: 1366px) {
         position: relative;
         flex-direction: row;
         margin-top: 48px;

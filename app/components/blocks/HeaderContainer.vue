@@ -1,9 +1,19 @@
 <template>
   <div>
     <header id="header" ref="headerRef">
-      <img src="/assets/images/logo.svg" alt="greenherald-logo" class="logo hiddenLogo" ref="hiddenLogoRef" />
+      <img
+        src="/assets/images/logo.svg"
+        alt="greenherald-logo"
+        class="logo hiddenLogo"
+        ref="hiddenLogoRef"
+      />
 
-      <img src="/assets/images/logo.svg" alt="greenherald-logo" class="logo animLogo" ref="logoRef" />
+      <img
+        src="/assets/images/logo.svg"
+        alt="greenherald-logo"
+        class="logo animLogo"
+        ref="logoRef"
+      />
 
       <div class="header-content" ref="headerContentRef">
         <h1 class="heading font-heading">
@@ -21,7 +31,9 @@
         </div>
 
         <div class="btn-group">
-          <CommonPrimaryButton>Join Now</CommonPrimaryButton>
+          <CommonPrimaryButton @click="globalStore.openModal('membership')"
+            >Join Now</CommonPrimaryButton
+          >
           <CommonSecondaryButton>Explore Event</CommonSecondaryButton>
         </div>
       </div>
@@ -48,6 +60,8 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
+
+const globalStore = useGlobalStore();
 
 const { $gsap } = useNuxtApp();
 
@@ -173,8 +187,8 @@ onMounted(() => {
           "<"
         )
         // Parallax depth layers
-        .to([imgs[0], imgs[4]], { yPercent: -80 }, "<")
-        .to([imgs[1], imgs[3]], { yPercent: sm ? -30 : md ? -15 : -60 }, "<")
+        .to([imgs[0], imgs[4]], { yPercent: -60 }, "<")
+        .to([imgs[1], imgs[3]], { yPercent: sm ? -30 : md ? -15 : -40 }, "<")
         .to([imgs[2]], { yPercent: lg ? -30 : -10 }, "<");
     }
   );
@@ -183,7 +197,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 header {
-  height: 120vh;
+  height: 110vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -191,7 +205,6 @@ header {
   overflow: hidden;
   @include clamp-property("padding-top", 1.5, 6);
   background: $yellow-50;
-  // border-bottom: 1px solid red;
 
   @media screen and (max-width: 320px) {
     height: 110vh;
@@ -367,7 +380,6 @@ header {
     }
 
     @media screen and (max-width: 1024px) {
-
       img:nth-child(1),
       img:nth-child(5) {
         display: none;
