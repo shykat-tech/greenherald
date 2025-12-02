@@ -20,8 +20,8 @@
 .primary-btn {
   @include button-default;
   position: relative;
-  background: #7e6b47;
-  color: #ffffff;
+  background: $yellow-700;
+  color: $white;
   z-index: 2;
   border: none;
 
@@ -32,7 +32,7 @@
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 5rem;
-    background: #FCFCFC;
+    background: $gray-100;
     transition: all 0.3s;
     flex-shrink: 0;
 
@@ -50,18 +50,17 @@
     width: 2.25rem;
     height: 2.25rem;
     border-radius: 5rem;
-    background: #FCFCFC;
-    ;
+    background: $gray-100;
     z-index: -1;
     transition: all 0.3s;
   }
 
   &:hover {
-    color: #7e6b47;
+    color: $yellow-700;
 
     .btn-icon-container {
       svg path {
-        stroke: #7e6b47;
+        stroke: $yellow-700;
       }
     }
 

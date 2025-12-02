@@ -118,7 +118,7 @@
       </div>
 
       <div class="navigation">
-        <div class="count">
+        <div class="nav-count">
           <span ref="currentNumRef" class="current">0{{ activeSlide }}</span>
           <span>-</span>
           <span class="total">0{{ stepCards.length }}</span>
@@ -299,7 +299,7 @@ onMounted(() => {
       });
 
       tl.to(dupBenefitsRef.value, {
-        clipPath: "circle(12% at 75% 65%)",
+        clipPath: md ? "circle(12% at 60% 60%)" : lg ? "circle(12% at 80% 70%)" : "circle(12% at 75% 65%)",
       })
         .to(circleBlockRef.value, { opacity: 0 })
         .to(benefitsRef.value, { x: !sm && "-100%", y: sm && "-100%" }, "<")
@@ -319,41 +319,65 @@ onMounted(() => {
         .to(stepsRef.value, {
           x: md ? "-60%" : lg ? "-60%" : xl ? "-40%" : "-40%",
           duration: 3,
-          onUpdate() {
-            const tweenProgress = this.progress();
-
-            if (tweenProgress === 0) {
-              count.value = 0;
-            } else if (tweenProgress > 0.4 && tweenProgress < 0.5) {
-              count.value = 1;
-            } else if (tweenProgress === 1) {
-              count.value = 2;
-            }
-
-          }
         }, "-=0.1")
         .to(
           progressRef.value,
           {
             width: "100%",
             duration: 0.5,
-            // delay: 0.1,
+            delay: 0.3,
+            duration: 2,
             ease: "none",
             onUpdate() {
-              const length = counts.length;
+              const pg = Math.floor(this.progress() * 100);
+
               if (scrollDir.value === "down") {
-                $gsap.to(counts.slice(0, count.value + 1), {
-                  color: "#E7DFCF",
-                  background: "#7E6B47",
-                  duration: 0.2
-                });
-              } else {
-                $gsap.to([counts.slice(count.value - length)], {
-                  color: "#08110B",
-                  background: "#E7DFCF",
-                  duration: 0.2
-                });
+                if (pg === 0) {
+                  $gsap.to(counts[0], {
+                    color: "#E7DFCF",
+                    background: "#7E6B47",
+                    duration: 0.2
+                  });
+                }
+                else if (pg === 50) {
+                  $gsap.to(counts[1], {
+                    color: "#E7DFCF",
+                    background: "#7E6B47",
+                    duration: 0.2
+                  });
+                }
+                else if (pg === 100) {
+                  $gsap.to(counts[2], {
+                    color: "#E7DFCF",
+                    background: "#7E6B47",
+                    duration: 0.2
+                  });
+                }
               }
+              else {
+                if (pg === 0) {
+                  $gsap.to(counts[0], {
+                    color: "#08110B",
+                    background: "#E7DFCF",
+                    duration: 0.2
+                  });
+                }
+                else if (pg === 50) {
+                  $gsap.to(counts[1], {
+                    color: "#08110B",
+                    background: "#E7DFCF",
+                    duration: 0.2
+                  });
+                }
+                else if (pg !== 100) {
+                  $gsap.to(counts[2], {
+                    color: "#08110B",
+                    background: "#E7DFCF",
+                    duration: 0.2
+                  });
+                }
+              }
+
             }
           },
           "<"
@@ -368,7 +392,7 @@ onMounted(() => {
 #mainContainer {
   width: 100vw;
   height: auto;
-  background: #f7f5f0;
+  background: $yellow-50;
   position: relative;
   background: url("/assets/images/benefit_BG.png");
   background-repeat: no-repeat;
@@ -425,14 +449,14 @@ onMounted(() => {
             font-weight: 500;
             line-height: 120%;
             @include clamp-property("font-size", 1.5, 2.5);
-            color: #fcfcfc;
+            color: $gray-100;
             position: relative;
           }
 
           span {
             font-weight: 400;
             @include clamp-property("font-size", 0.875, 1);
-            color: #e0e0e0;
+            color: $gray-500;
             display: inline-block;
             position: relative;
           }
@@ -459,7 +483,7 @@ onMounted(() => {
     position: absolute;
     top: 0;
     left: 0;
-    background: #f7f5f0;
+    background: $yellow-50;
     clip-path: circle(0% at 80% 55%);
 
     @media screen and (max-width: 767px) {
@@ -467,15 +491,15 @@ onMounted(() => {
     }
 
     @media screen and (min-width: 768px) {
-      clip-path: circle(0% at 55% 60%);
-    }
-
-    @media screen and (min-width: 769px) and (max-width: 1024px) {
       clip-path: circle(0% at 55% 55%);
     }
 
-    @media screen and (min-width: 1024px) and (max-width: 1366px) {
-      clip-path: circle(0% at 80% 55%);
+    @media screen and (min-width: 769px) and (max-width: 1024px) {
+      clip-path: circle(0% at 55% 80%);
+    }
+
+    @media screen and (min-width: 1025px) and (max-width: 1366px) {
+      clip-path: circle(0% at 80% 75%);
     }
 
     @media screen and (min-width: 1367px) and (max-width: 1440px) {
@@ -515,17 +539,10 @@ onMounted(() => {
             line-height: 120%;
             text-wrap: nowrap;
             @include clamp-property("font-size", 1.5, 2.5);
+          }
 
-            // @media screen and (max-width: 768px) {
-            //   font-size: 2rem;
-            //   line-height: 2.4rem;
-            // }
-
-            // @media screen and (min-width: 769px) and (max-width: 1920px) {
-            //   font-size: 40px;
-            //   line-height: 120%;
-
-            // }
+          span {
+            opacity: 0;
           }
         }
       }
@@ -619,9 +636,9 @@ onMounted(() => {
                 justify-content: center;
                 align-items: center;
                 flex-shrink: 0;
-                background: #e7dfcf;
+                background: $yellow-100;
                 border-radius: 50%;
-                color: #08110B;
+                color: $green-900;
                 font-family: $font-gloock;
                 font-size: 1.375rem;
                 font-weight: 400;
@@ -633,7 +650,7 @@ onMounted(() => {
             .back-line {
               width: 100%;
               height: 0.125rem;
-              background: #E8EAE8;
+              background: $green-50;
               position: absolute;
               top: 50%;
               left: 0%;
@@ -641,7 +658,7 @@ onMounted(() => {
               .progress {
                 width: 0%;
                 height: 100%;
-                background: #7E6B47;
+                background: $yellow-700;
               }
             }
           }
@@ -652,11 +669,11 @@ onMounted(() => {
 
   #smallSteps {
     padding-top: 6.25rem;
-    background: #F7F5F0;
+    background: $yellow-50;
     overflow: hidden;
 
     h2 {
-      color: #08110B;
+      color: $green-900;
       font-size: 2rem;
       font-weight: 500;
       line-height: 120%;
@@ -684,7 +701,7 @@ onMounted(() => {
       padding-inline: 1.25rem;
 
 
-      .count {
+      .nav-count {
         font-family: $font-gloock;
         font-size: 1.5rem;
         font-weight: 400;
@@ -694,11 +711,11 @@ onMounted(() => {
         gap: 0.25rem;
 
         .current {
-          color: #08110B;
+          color: $green-900;
         }
 
         .total {
-          color: #E7DFCF;
+          color: $yellow-100;
         }
       }
 
@@ -715,12 +732,12 @@ onMounted(() => {
           gap: 0.625rem;
           border-radius: 50%;
           border: none;
-          background: #7E6B47;
+          background: $yellow-700;
           outline: none;
         }
 
         button:disabled {
-          background: #E7DFCF;
+          background: $yellow-100;
 
         }
       }

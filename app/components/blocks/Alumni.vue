@@ -96,7 +96,7 @@ onMounted(() => {
 
   .float-bg {
     position: absolute;
-    background: #214129;
+    background: $green-400;
     top: 0;
     left: 0;
     width: 100vw;
@@ -134,7 +134,7 @@ onMounted(() => {
           line-height: 110%;
           letter-spacing: 2px;
           font-family: $font-gloock;
-          color: #fcfcfc;
+          color: $gray-100;
           font-weight: 400;
         }
 
@@ -178,7 +178,7 @@ onMounted(() => {
             @include clamp-property("font-size", 1.25, 2.5);
             line-height: 120%;
             letter-spacing: -1%;
-            color: #fcfcfc;
+            color: $gray-100;
             margin-top: 16px;
             margin-bottom: 4px;
             font-weight: 500;
@@ -197,7 +197,7 @@ onMounted(() => {
 
     .call-to-action {
       width: 100%;
-      background: #142819;
+      background: $green-500;
       padding: 100px 0;
       border-radius: 28px;
       transform: translateY(50%);
@@ -210,7 +210,7 @@ onMounted(() => {
         font-weight: 400;
         text-align: center;
         margin-bottom: 16px;
-        color: #fcfcfc;
+        color: $gray-100;
       }
 
       span {

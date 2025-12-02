@@ -73,6 +73,7 @@ onMounted(() => {
 
   const images = $gsap.utils.toArray(imageContainerRef.value);
 
+
   const mm = $gsap.matchMedia();
 
   mm.add(
@@ -80,11 +81,12 @@ onMounted(() => {
       xs: "(max-width: 365px)",
       sm: "(min-width: 366px) and (max-width: 480px)",
       md: "(min-width: 481px) and (max-width: 1024px)",
-      lg: "(min-width: 1025px) and (max-width: 1920px)",
-      xl: "(min-width: 1921px)",
+      lg: "(min-width: 1025px) and (max-width: 1366px)",
+      xl: "(min-width: 1367px) and (max-width: 1920px)",
+      xxl: "(min-width: 1921px)",
     },
     (context) => {
-      const { xs, sm, md, lg } = context.conditions;
+      const { xs, sm, md, lg, xl, xxl } = context.conditions;
 
       const tl = $gsap.timeline({
         ease: "none",
@@ -99,68 +101,40 @@ onMounted(() => {
 
       tl
         .to([images[0]], {
-          top: xs ? "7%" : sm ? "8%" : md ? "10%" : lg ? "5%" : "5%",
+          top: xs ? "3%" : sm ? "-1%" : md ? "-18%" : lg ? "-40%" : "-27%"
         })
-        .to(
-          [images[1]],
-          {
-            top: xs ? "20%" : sm ? "20%" : md ? "25%" : lg ? "25%" : "20%",
-            left: xs ? "-12%" : sm ? "-12%" : md ? "8%" : lg ? "10%" : "15%",
-            scale: xs ? 0.9 : sm ? 0.9 : 1,
-          },
-          "<"
-        )
-        .to(
-          [images[2]],
-          {
-            top: xs ? "22%" : sm ? "22%" : md ? "25%" : lg ? "25%" : "20%",
-            right: xs ? "-10%" : sm ? "-10%" : md ? "5%" : lg ? "13%" : "10%",
-          },
-          "<"
-        ).to(
-          [images[3]],
-          {
-            top: xs ? "45%" : sm ? "45%" : md ? "48%" : lg ? "57%" : "48%",
-            left: xs ? "-50%" : sm ? "-50%" : md ? "-5%" : lg ? "2%" : "10%",
-            scale: lg ? 0.8 : 1
-          },
-          "<"
-        )
-        .to(
-          [images[4]],
-          {
-            top: xs ? "35%" : sm ? "40%" : md ? "50%" : lg ? "58%" : "55%",
-            right: xs ? "-22%" : sm ? "-25%" : md ? "-8%" : lg ? "5%" : "5%",
-            scale: lg ? 0.8 : 1
+        .to([images[1]], {
+          top: xs ? "-2%" : sm ? "2%" : md ? "5%" : "-12%",
+          left: xs ? "-15%" : sm ? "-18%" : md ? "2%" : lg ? "5%" : "15%"
+        }, "<")
+        .to([images[2]], {
+          top: xs ? "-3%" : sm ? "3%" : md ? "8%" : "-10%",
+        }, "<")
+        .to([images[4]], {
+          top: xs ? "23%" : sm ? "20%" : md ? "35%" : "35%",
+          right: xs ? "-23%" : sm ? "-25%" : "-2%"
+        }, "<")
+        .to([images[3]], {
+          top: xs ? "22%" : sm ? "27%" : md ? "35%" : "25%",
+          left: xs ? "-37%" : sm ? "-40%" : md ? "-20%" : lg ? "-15%" : "10%"
+        }, "<")
+        .to(images[0].querySelector(".img"), {
+          scale: 1.2,
+        })
+        .to([images[5]], {
+          top: xs ? "57%" : sm ? "60%" : md ? "75%" : lg ? "72%" : "70%",
+        }, "<")
+        .to([images[6]], {
+          top: xs ? "60%" : sm ? "50%" : md ? "70%" : lg ? "65%" : "70%",
+        }, "<")
 
-          },
-          "<"
-        )
-        .to(
-          [images[5]],
-          {
-            top: xs ? "75%" : sm ? "70%" : md ? "75%" : lg ? "85%" : "80%",
-            left: xs ? "-30%" : sm ? "-30%" : md ? "-15%" : lg ? "0%" : "5%",
-            scale: lg ? 0.6 : 1
-          },
-          "<"
-        )
-        .to(
-          [images[6]],
-          {
-            top: xs ? "60%" : sm ? "65%" : md ? "70%" : lg ? "85%" : "80%",
-            right: xs ? "-40%" : sm ? "-40%" : md ? "-20%" : lg ? "0%" : "0%",
-            scale: xs ? 1 : sm ? 1 : md ? 0.9 : lg ? 0.7 : 1,
-          },
-          "<"
-        );
 
       $gsap.to(connectRef.value, {
         y: "0%",
-        duration: 0.3,
+        duration: 0.5,
         scrollTrigger: {
           trigger: connectRef.value,
-          start: "top 70%",
+          start: "top bottom",
           toggleActions: "play none none reverse",
         },
       });
@@ -180,7 +154,11 @@ onMounted(() => {
         duration: 0.2,
       }).to(connectTitle.value, {
         color: "#000000"
+      }, "<").to(images, {
+        y: "-20%",
+        stagger: 0.01
       }, "<");
+
 
 
     })
@@ -206,15 +184,19 @@ onMounted(() => {
   .title-container {
     overflow: hidden;
     position: absolute;
-    top: 80%;
+    top: 79%;
     transform: translateY(-50%);
     z-index: 10;
 
-    @media screen and (max-width: 480px) {
-      top: 80%;
+    @media screen and (max-width: 365px) {
+      top: 78%;
     }
 
-    @media screen and (min-width: 481px) and (max-width: 768px) {
+    @media screen and (min-width: 366px) and (max-width: 480px) {
+      top: 75%;
+    }
+
+    @media screen and (min-width: 481px) and (max-width: 1024px) {
       top: 80%;
     }
 
@@ -240,7 +222,7 @@ onMounted(() => {
   .gallery-gradient-back {
     width: 100%;
     // height: 200vh; // -> handled by JS
-    background: linear-gradient(to top, #142819, #142819);
+    background: linear-gradient(to top, $green-500, $green-500);
     position: absolute;
     top: 0;
     z-index: -15;
@@ -262,76 +244,80 @@ onMounted(() => {
     }
 
     .images-container:nth-child(1) {
-      top: 5%;
+      top: 0%;
       left: 50%;
       transform: translateX(-50%);
-      width: 30%;
-      height: 60%;
+      aspect-ratio: 4/7;
+      @include clamp-property("width", 13.8, 34.31);
 
-      @media screen and (max-width: 365px) {
-        width: 12rem;
-        height: 20rem;
-      }
+      overflow: hidden;
 
-      @media screen and (min-width: 366px) and (max-width: 480px) {
-        width: 65%;
-        height: 57%;
-      }
 
-      @media screen and (min-width: 481px) and (max-width: 768px) {
-        width: 23rem;
-        height: 35rem;
-      }
+      // @media screen and (max-width: 365px) {
+      //   width: 12rem;
+      //   height: 20rem;
+      // }
 
-      @media screen and (min-width: 769px) and (max-width: 1366px) {
-        width: 30%;
-        height: 57%;
-      }
+      // @media screen and (min-width: 366px) and (max-width: 480px) {
+      //   width: 65%;
+      //   height: 57%;
+      // }
 
-      @media screen and (min-width: 1367px) and (max-width: 1920px) {
-        width: 30%;
-        height: 57%;
-      }
+      // @media screen and (min-width: 481px) and (max-width: 768px) {
+      //   width: 23rem;
+      //   height: 35rem;
+      // }
+
+      // @media screen and (min-width: 769px) and (max-width: 1366px) {
+      //   width: 30%;
+      //   height: 57%;
+      // }
+
+      // @media screen and (min-width: 1367px) and (max-width: 1920px) {
+      //   aspect-ratio: 4/7;
+      // }
     }
 
     .images-container:nth-child(2) {
-      left: 0%;
-      top: 15%;
+      left: -15%;
+      top: 20%;
       transform: translateY(-50%);
       @include clamp-property("width", 12, 28);
+      aspect-ratio: 46/25;
+
 
     }
 
     .images-container:nth-child(3) {
-      right: 0%;
-      top: 15%;
-      transform: translateY(-50%) scale(1);
+      right: 7%;
+      top: 25%;
+      transform: translateY(-50%);
       aspect-ratio: 1;
+      z-index: 2;
       @include clamp-property("width", 6, 20);
 
     }
 
     .images-container:nth-child(4) {
       left: -20%;
-      top: 45%;
+      top: 55%;
       transform: translateY(-50%);
+      aspect-ratio: 30/19;
       @include clamp-property("width", 18, 30);
 
     }
 
     .images-container:nth-child(5) {
-      right: -20%;
-      top: 45%;
+      top: 35%;
+      right: -30%;
       transform: translateY(-50%);
-      aspect-ratio: 1;
+      aspect-ratio: 13/14;
       @include clamp-property("width", 9.6, 30);
-
-
     }
 
     .images-container:nth-child(6) {
-      top: 75%;
-      left: -10%;
+      top: 100%;
+      left: 0%;
       transform: translateY(-50%);
       aspect-ratio: 1;
       @include clamp-property("width", 10, 28);
@@ -339,12 +325,90 @@ onMounted(() => {
     }
 
     .images-container:nth-child(7) {
-      top: 75%;
-      right: -10%;
+      top: 100%;
+      right: -5%;
       transform: translateY(-50%);
-      aspect-ratio: 4/5;
+      aspect-ratio: 22/27;
       @include clamp-property("width", 13, 26);
 
+    }
+
+    @media screen and (max-width: 480px) {
+      .images-container:nth-child(2) {
+        top: 10%;
+        left: -25%;
+      }
+
+      .images-container:nth-child(3) {
+        top: 15%;
+        right: -10%;
+      }
+
+      .images-container:nth-child(4) {
+        top: 35%;
+        left: -70%;
+      }
+
+      .images-container:nth-child(5) {
+        right: -35%;
+      }
+
+      .images-container:nth-child(6) {
+        top: 80%;
+        left: -27%;
+      }
+
+      .images-container:nth-child(7) {
+        top: 80%;
+        right: -40%;
+        z-index: 1;
+      }
+    }
+
+    @media screen and (min-width: 481px) and (max-width: 768px) {
+      .images-container:nth-child(2) {
+        top: 10%;
+        left: -25%;
+      }
+
+      .images-container:nth-child(3) {
+        top: 15%;
+        right: 0%;
+      }
+
+      .images-container:nth-child(4) {
+        top: 35%;
+        left: -70%;
+      }
+
+      .images-container:nth-child(5) {
+        right: -35%;
+      }
+
+      .images-container:nth-child(6) {
+        top: 80%;
+        left: -20%;
+      }
+
+      .images-container:nth-child(7) {
+        top: 80%;
+        right: -20%;
+        z-index: 1;
+      }
+    }
+
+    @media screen and (min-width: 1025px) and (max-width: 1366px) {
+
+
+      .images-container:nth-child(6) {
+        left: -20%;
+        z-index: 1;
+      }
+
+      .images-container:nth-child(7) {
+        right: -20%;
+        z-index: 1;
+      }
     }
   }
 }

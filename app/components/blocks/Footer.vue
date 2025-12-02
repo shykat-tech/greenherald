@@ -95,7 +95,7 @@ footer {
             flex-direction: row;
             gap: 8px;
             text-decoration: none;
-            color: #08110b;
+            color: $green-900;
         }
     }
 
@@ -105,11 +105,11 @@ footer {
         gap: 42px;
 
         span {
-            color: #5e5e5e;
+            color: $gray-900;
         }
 
         a {
-            color: #5e5e5e;
+            color: $gray-900;
             text-decoration: none;
             @include flex-center;
             gap: 2px;

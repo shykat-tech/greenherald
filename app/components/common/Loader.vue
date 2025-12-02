@@ -8,7 +8,7 @@
 #loader {
     width: 100%;
     height: 110vh;
-    background: #f7f5f0;
+    background: $yellow-50;
     animation: pulse 0.3s linear;
     position: fixed;
     top: 0;

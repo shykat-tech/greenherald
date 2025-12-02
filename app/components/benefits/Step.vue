@@ -95,7 +95,7 @@
         @include clamp-property("line-height", 1.4, 1.6);
         @include clamp-property("letter-spacing", -0.015, -0.01);
         font-weight: 400;
-        color: #5E5E5E;
+        color: $gray-900;
       }
     }
 

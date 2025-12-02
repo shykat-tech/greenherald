@@ -173,8 +173,8 @@ onMounted(() => {
           "<"
         )
         // Parallax depth layers
-        .to([imgs[0], imgs[4]], { yPercent: -60 }, "<")
-        .to([imgs[1], imgs[3]], { yPercent: sm ? -30 : md ? -15 : -40 }, "<")
+        .to([imgs[0], imgs[4]], { yPercent: -80 }, "<")
+        .to([imgs[1], imgs[3]], { yPercent: sm ? -30 : md ? -15 : -60 }, "<")
         .to([imgs[2]], { yPercent: lg ? -30 : -10 }, "<");
     }
   );
@@ -183,14 +183,15 @@ onMounted(() => {
 
 <style scoped lang="scss">
 header {
-  height: 110vh;
+  height: 120vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   overflow: hidden;
   @include clamp-property("padding-top", 1.5, 6);
-  background: #f7f5f0;
+  background: $yellow-50;
+  // border-bottom: 1px solid red;
 
   @media screen and (max-width: 320px) {
     height: 110vh;
@@ -257,7 +258,7 @@ header {
     text-align: center;
     line-height: 110%;
     letter-spacing: -2%;
-    color: #11361a;
+    color: $green-hero;
     text-wrap: wrap;
     @include clamp-property("font-size", 3, 5.5);
 

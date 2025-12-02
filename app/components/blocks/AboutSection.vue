@@ -36,9 +36,10 @@ onMounted(() => {
   const target = textRef.value;
   if (!target) return;
 
-  const split = new $SplitText(target, { type: "words" });
+  const split = new $SplitText(target, { type: "words, lines" });
 
   $gsap.set(split.words, { opacity: 0.2 });
+  $gsap.set(split.lines, { opacity: 0, y: "100px" });
 
   // 1️⃣ PIN THE SECTION UNTIL TEXT ANIMATION IS COMPLETE
   $ScrollTrigger.create({
@@ -86,12 +87,14 @@ onMounted(() => {
       "<"
     );
 
-  $gsap.to(containerRef.value, {
+  $gsap.to([containerRef.value, ...split.lines], {
     y: 0,
+    opacity: 1,
+    stagger: 0.1,
     scrollTrigger: {
       trigger: aboutRef.value,
       start: "-10% center",
-      toggleActions: "play none none play",
+      toggleActions: "play none none reverse",
     },
   });
 });
@@ -107,12 +110,12 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   position: relative;
-  background: #f7f5f0;
+  background: $yellow-50;
 
   .gradient-back {
     width: 100%;
     // height: 200vh; // -> handled by JS
-    background: linear-gradient(to top, #f7f5f0, #f7f5f0);
+    background: linear-gradient(to top, $yellow-50, $yellow-50);
     position: absolute;
     bottom: 0;
     z-index: -5;
