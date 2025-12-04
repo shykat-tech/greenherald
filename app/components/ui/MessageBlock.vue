@@ -1,5 +1,5 @@
 <template>
-  <div class="message-block-wrapper">
+  <div class="message-block-wrapper" :class="{ 'dark-bg': isDarkBg }">
     <div class="wrapper">
       <div v-if="isSuccess" class="icon success-icon">
         <svg
@@ -57,18 +57,10 @@
         </svg>
       </div>
 
-      <h3 v-if="isSuccess" class="message-title">Thank you for joining!</h3>
-      <h3 v-else class="message-title">Oops!</h3>
+      <h3 class="message-title">{{ title }}</h3>
 
-      <p v-if="isSuccess">
-        Your membership has been received and is now under review. You’ll get an
-        email once your alumni account is verified and active. We’re thrilled to
-        have you back in the family.
-      </p>
-
-      <p v-else>
-        Something went wrong. We couldn’t complete your request. Please try
-        again.
+      <p>
+        {{ message }}
       </p>
     </div>
   </div>
@@ -80,6 +72,21 @@ defineProps({
     type: Boolean,
     required: true,
   },
+  title: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  message: {
+    type: String,
+    required: false,
+    default: "",
+  },
+  isDarkBg: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 </script>
 
@@ -90,6 +97,25 @@ defineProps({
   align-items: center;
   height: 100%;
   padding-inline: 1.5rem;
+
+  .dark-bg {
+    .message-title {
+      color: $neutral-white;
+    }
+
+    p {
+      color: $neutral-gray-700;
+    }
+  }
+
+  :not(.dark-bg) {
+    .message-title {
+      color: $green-900;
+    }
+    p {
+      color: $neutral-gray-900;
+    }
+  }
 
   .wrapper {
     display: flex;
@@ -124,8 +150,6 @@ defineProps({
 
     .message-title {
       @include clamp-property("font-size", 2, 3);
-
-      color: $neutral-white;
       font-family: $font-gloock;
 
       text-align: center;
@@ -137,7 +161,7 @@ defineProps({
     p {
       @include clamp-property("margin-top", 0.75, 1.25);
       @include clamp-property("font-size", 0.875, 1);
-      color: $neutral-gray-700;
+
       text-align: center;
 
       /* Body */

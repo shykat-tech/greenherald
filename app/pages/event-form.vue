@@ -1,10 +1,19 @@
 <template>
   <div class="event-form-wrapper">
-    <!-- <div>
-      <MessageBlock v-if="true" :isSuccess="true" />
-    </div> -->
+    <div v-if="isFormSubmitted" class="message-block-container">
+      <MessageBlock
+        :isSuccess="!isError"
+        :title="isError ? 'Oops!' : 'Registration successful!'"
+        :message="
+          isError
+            ? 'Something went wrong. We couldn’t complete your request. Please try again.'
+            : 'Thank you for registering. A confirmation email has been sent to your email and save your payment receipt for reference.'
+        "
+        :isDarkBg="false"
+      />
+    </div>
 
-    <div class="event-form-container">
+    <div class="event-form-container" v-else>
       <h2 class="event-page-title">Global Alumni Reunion 2025</h2>
       <div class="event-form-banner">
         <img src="../assets/images/event-form-banner.png" alt="banner" />
@@ -142,14 +151,20 @@
 </template>
 
 <script setup>
+import { title } from "process";
+
 const globalStore = useGlobalStore();
 
 const foodPreferences = ref("");
 const tshirtSize = ref("");
 const errors = ref({});
 
+const isFormSubmitted = ref(false);
+const isError = ref(false);
+
 const handleFormSubmit = async () => {
   try {
+    isFormSubmitted.value = true;
     console.log("Form submitted with:", {
       foodPreferences: foodPreferences.value,
       tshirtSize: tshirtSize.value,
@@ -157,6 +172,7 @@ const handleFormSubmit = async () => {
     });
   } catch (error) {
     console.error("Form submission error:", error);
+    isError.value = true;
   }
 };
 </script>
@@ -169,6 +185,23 @@ const handleFormSubmit = async () => {
   padding-top: 10vh;
   background: $green-50;
   min-height: 100dvh;
+
+  .message-block-container {
+    @include clamp-property("padding", 1, 3);
+
+    display: flex;
+    min-width: 44.625rem;
+    max-width: 90svw;
+    flex-direction: column;
+    align-items: center;
+
+    border-radius: 1.75rem;
+    background: $neutral-white;
+    @include mediaSm {
+      min-width: unset;
+      padding-block: 2.125rem;
+    }
+  }
 
   .event-form-container {
     @include clamp-property("padding-inline", 1, 1.25);

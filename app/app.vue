@@ -6,6 +6,7 @@
   </Teleport>
 
   <NuxtLayout>
+    <div id="bg-overlay" />
     <NuxtPage />
     <div v-show="loading" class="loader-wrapper">
       <CommonLoader />
@@ -14,22 +15,31 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from "vue";
 import { useGlobalStore } from "./stores/global";
 
-const globalStore = useGlobalStore();
-import { ref } from "vue";
 
 const loading = ref(true);
 
-setTimeout(() => {
-  loading.value = false;
-}, 1000);
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000)
+})
+
+
+
+const globalStore = useGlobalStore();
+
+
+
 </script>
 
-<style>
+<style lang="scss">
 /* Modal transition styles */
 .modal-enter-active {
-  transition: none; /* Let CSS animations handle the entrance */
+  transition: none;
+  /* Let CSS animations handle the entrance */
 }
 
 .modal-leave-active {
@@ -39,5 +49,15 @@ setTimeout(() => {
 .modal-leave-to {
   opacity: 0;
   transform: scale(1);
+}
+
+#bg-overlay {
+  width: 100%;
+  height: 200vh;
+  background: linear-gradient(to bottom, $yellow-50, $yellow-50);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -10;
 }
 </style>

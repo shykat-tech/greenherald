@@ -1,32 +1,19 @@
 <template>
   <section id="membership" ref="membershipRef">
+    <h2 class="sectionTitle" ref="titleRef">Choose your membership</h2>
     <div class="container" ref="memContainerRef">
-      <h2 class="sectionTitle">Choose your membership</h2>
-
       <div class="plans">
         <div class="plan" v-for="plan in membershipPlans">
           <div class="plan--title">
             <h3>{{ plan.title }}</h3>
             <div class="plan--popular-badge" v-if="plan.isPopular">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M12 22C16.1421 22 19.5 18.6421 19.5 14.5C19.5 13.5 19.5 11.5 17.5 9C17.5 9 17.4004 11.8536 15.4262 11.4408C12.2331 10.7732 16.3551 4.50296 10.5 2C10.5 7 4.5 8.5 4.5 14.5C4.5 18.6421 7.85786 22 12 22Z"
-                  stroke="#DAAC5E"
-                  stroke-width="1.5"
-                  stroke-linejoin="round"
-                />
+                  stroke="#DAAC5E" stroke-width="1.5" stroke-linejoin="round" />
                 <path
                   d="M12 19.0011C13.933 19.0011 15.5 16.9864 15.5 14.5011C12.3 15.7011 11.1667 12.9379 11 11C9.55426 11.5532 8.5 13.8256 8.5 15C8.5 17.4853 10.067 19.0011 12 19.0011Z"
-                  stroke="#DAAC5E"
-                  stroke-width="1.5"
-                  stroke-linejoin="round"
-                />
+                  stroke="#DAAC5E" stroke-width="1.5" stroke-linejoin="round" />
               </svg>
               <span>Popular</span>
             </div>
@@ -53,9 +40,7 @@
           </div>
 
           <!-- Join Button -->
-          <CommonPrimaryButton
-            ><span>Join as {{ plan.title }} Member</span></CommonPrimaryButton
-          >
+          <CommonPrimaryButton><span>Join as {{ plan.title }} Member</span></CommonPrimaryButton>
         </div>
       </div>
     </div>
@@ -68,6 +53,8 @@ const { $gsap } = useNuxtApp();
 
 const membershipRef = ref(null);
 const memContainerRef = ref(null);
+const titleRef = ref(null);
+
 
 const membershipPlans = [
   {
@@ -121,37 +108,53 @@ const membershipPlans = [
 ];
 
 onMounted(() => {
-  $gsap.to(memContainerRef.value, {
-    y: 0,
+  const plans = $gsap.utils.toArray(".plan");
+
+  const tl = $gsap.timeline({
     scrollTrigger: {
       trigger: membershipRef.value,
       start: "top 80%",
-      toggleActions: "play none none reverse",
+      end: "top top",
+      scrub: 2,
+    }
+  })
+
+  tl.fromTo(titleRef.value,
+    { y: 500 },
+    {
+      y: 0,
+      ease: "power2.out",
+      duration: 2
     },
-  });
+    0
+  ).fromTo(plans,
+    { y: 500 },
+    {
+      y: 0,
+      ease: "power2.out",
+      duration: 2,
+      stagger: 0.3
+    }, 1
+  );
 });
 </script>
 
 <style scoped lang="scss">
 #membership {
   width: 100vw;
-  @include flex-center;
   @include clamp-property("padding-inline", 1.25, 17);
   @include clamp-property("padding-block", 6.25, 8.05);
-  background: $yellow-50;
+
+  .sectionTitle {
+    @include clamp-property("font-size", 2, 4);
+    @include clamp-property("margin-bottom", 2.5, 5);
+    font-weight: 500;
+    line-height: 110%;
+    text-align: center;
+  }
 
   .container {
     width: 100%;
-    transform: translateY(50%);
-
-    .sectionTitle {
-      @include clamp-property("font-size", 2, 4);
-      @include clamp-property("margin-bottom", 2.5, 5);
-      font-weight: 500;
-      line-height: 110%;
-      text-align: center;
-    }
-
     .plans {
       width: 100%;
       display: grid;
@@ -233,7 +236,7 @@ onMounted(() => {
             }
           }
 
-          .plan--key-points > * + * {
+          .plan--key-points>*+* {
             margin-top: 8px;
           }
 

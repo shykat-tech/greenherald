@@ -1,28 +1,18 @@
 <template>
   <div>
     <header id="header" ref="headerRef">
-      <img
-        src="/assets/images/logo.svg"
-        alt="greenherald-logo"
-        class="logo hiddenLogo"
-        ref="hiddenLogoRef"
-      />
+      <img src="/assets/images/logo.svg" alt="greenherald-logo" class="logo hiddenLogo" ref="hiddenLogoRef" />
 
-      <img
-        src="/assets/images/logo.svg"
-        alt="greenherald-logo"
-        class="logo animLogo"
-        ref="logoRef"
-      />
+      <img src="/assets/images/logo.svg" alt="greenherald-logo" class="logo animLogo" ref="logoRef" />
 
       <div class="header-content" ref="headerContentRef">
-        <h1 class="heading font-heading">
+        <h1 class="heading font-heading" ref="headingRef">
           Together, we carry the
           <br />
           legacy forward
         </h1>
 
-        <div class="subheading">
+        <div class="subheading" ref="subHeadingRef">
           <span>Reconnect</span>
           <span class="ellipse"></span>
           <span>Celebrate</span>
@@ -30,10 +20,8 @@
           <span>Grow Together</span>
         </div>
 
-        <div class="btn-group">
-          <CommonPrimaryButton @click="globalStore.openModal('membership')"
-            >Join Now</CommonPrimaryButton
-          >
+        <div class="btn-group" ref="btnGroupRef">
+          <CommonPrimaryButton @click="globalStore.openModal('membership')">Join Now</CommonPrimaryButton>
           <CommonSecondaryButton>Explore Event</CommonSecondaryButton>
         </div>
       </div>
@@ -61,14 +49,19 @@
 <script setup>
 import { onMounted, ref } from "vue";
 
+
+
 const globalStore = useGlobalStore();
 
-const { $gsap } = useNuxtApp();
+const { $gsap, $lenis } = useNuxtApp();
 
 // refs
 const logoRef = ref(null);
 const hiddenLogoRef = ref(null);
 const headerContentRef = ref(null);
+const headingRef = ref(null);
+const subHeadingRef = ref(null);
+const btnGroupRef = ref(null);
 const imagesRef = ref(null);
 const headerRef = ref(null);
 
@@ -79,7 +72,6 @@ onMounted(() => {
   const mm = $gsap.matchMedia();
 
   const imgs = imagesRef.value.querySelectorAll("img");
-
 
   mm.add(
     {
@@ -97,9 +89,8 @@ onMounted(() => {
 
       tl.to(logoRef.value, {
         scale: 1,
-        top: logoPos.height / 2 + logoPos.y
-      })
-        .to([headerContentRef.value, imagesRef.value], { opacity: 1 }, "<");
+        top: hiddenLogoRef.value.offsetTop + logoPos.height / 2,
+      }).to([headerContentRef.value, imagesRef.value], { opacity: 1 }, "<");
 
       tl.fromTo(headerContentRef.value, { y: viewportHeight }, { y: 0 }, "<");
 
@@ -117,7 +108,7 @@ onMounted(() => {
       // Images wide Transition
       tl.to(imgs[0], {
         x: `-${positions[0]}`,
-        y: "-17.6rem",
+        y: "-16.6rem",
         left: positions[0],
         rotate: 0,
       })
@@ -126,7 +117,7 @@ onMounted(() => {
           imgs[1],
           {
             x: `-${positions[1]}`,
-            y: "-6.25rem",
+            y: "-5.25rem",
             left: positions[1],
             rotate: 0,
           },
@@ -147,7 +138,7 @@ onMounted(() => {
           imgs[3],
           {
             x: `-${positions[3]}`,
-            y: "-6.25rem",
+            y: "-5.25rem",
             left: positions[3],
             rotate: 0,
           },
@@ -158,9 +149,12 @@ onMounted(() => {
           imgs[4],
           {
             x: `-${positions[4]}`,
-            y: "-17.6rem",
+            y: "-16.6rem",
             left: positions[4],
             rotate: 0,
+            onComplete: () => {
+              $lenis.start();
+            }
           },
           "<"
         );
@@ -171,25 +165,43 @@ onMounted(() => {
           trigger: headerRef.value,
           start: "top top",
           end: "center top",
-          scrub: true,
+          scrub: 2,
         },
       });
 
       tl2
-        .to(headerContentRef.value, {
-          yPercent: lg && -30,
+        .to(logoRef.value, {
+          y: -250,
         })
         .to(
-          logoRef.value,
+          headingRef.value,
           {
-            top: lg && "-100px",
+            y: lg && -220,
+          },
+          "<"
+        )
+        .to(
+          subHeadingRef.value,
+          {
+            y: lg && -200,
+          },
+          "<"
+        )
+        .to(
+          btnGroupRef.value,
+          {
+            y: lg && -200,
           },
           "<"
         )
         // Parallax depth layers
-        .to([imgs[0], imgs[4]], { yPercent: -60 }, "<")
-        .to([imgs[1], imgs[3]], { yPercent: sm ? -30 : md ? -15 : -40 }, "<")
-        .to([imgs[2]], { yPercent: lg ? -30 : -10 }, "<");
+        .to([imgs[0], imgs[4]], { yPercent: -80, duration: 1 }, "<")
+        .to(
+          [imgs[1], imgs[3]],
+          { yPercent: sm ? -30 : md ? -15 : -60, duration: 0.7 },
+          "<"
+        )
+        .to([imgs[2]], { yPercent: lg ? -60 : -10, duration: 1 }, "<");
     }
   );
 });
@@ -197,14 +209,14 @@ onMounted(() => {
 
 <style scoped lang="scss">
 header {
-  height: 110vh;
+  height: 120vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   overflow: hidden;
   @include clamp-property("padding-top", 1.5, 6);
-  background: $yellow-50;
+  background: linear-gradient(to bottom, $yellow-100, $yellow-50);
 
   @media screen and (max-width: 320px) {
     height: 110vh;
@@ -270,8 +282,8 @@ header {
     font-weight: 400;
     text-align: center;
     line-height: 110%;
-    letter-spacing: -2%;
-    color: $green-hero;
+    letter-spacing: -0.11rem;
+    color: $green-Hero-Text;
     text-wrap: wrap;
     @include clamp-property("font-size", 3, 5.5);
 
@@ -288,16 +300,16 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 24px;
-    @include clamp-property("margin-top", 1, 2.19);
-    @include clamp-property("margin-bottom", 2.5, 2.5);
+    gap: 1.5rem;
+    @include clamp-property("margin-top", 1, 2.5);
+    @include clamp-property("margin-bottom", 2.5, 3.5);
 
     flex-wrap: wrap;
 
     span {
       text-transform: uppercase;
       color: $green-900;
-      letter-spacing: 3.24px;
+      letter-spacing: 0.2025rem;
       @include clamp-property("font-size", 0.875, 1.125);
       display: inline-block;
       font-weight: 500;
@@ -332,15 +344,12 @@ header {
     width: 100%;
     @include flex-center;
     gap: 4px;
-    @include clamp-property("margin-bottom", 3.73, 9.19);
+    @include clamp-property("margin-bottom", 3.73, 7.85);
 
     @media screen and (max-width: 480px) {
-      gap: 8px;
+      gap: 0.5rem;
     }
 
-    button {
-      @include clamp-property("font-size", 1, 1.125);
-    }
   }
 
   .imagesContainer {
@@ -380,6 +389,7 @@ header {
     }
 
     @media screen and (max-width: 1024px) {
+
       img:nth-child(1),
       img:nth-child(5) {
         display: none;

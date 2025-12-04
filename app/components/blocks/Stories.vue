@@ -1,13 +1,14 @@
 <template>
   <section id="stories" ref="storiesRef">
+    <h2 class="s-title font-heading" ref="sectionTitleRef">
+      Stories that Inspire
+    </h2>
     <div class="container" ref="storiesContainerRef">
-      <h2 class="s-title font-heading" ref="sectionTitleRef">Stories that Inspire</h2>
-
       <div class="slider" ref="slider">
         <div class="slider-wrapper" ref="sliderWrapper">
           <div class="slide" :class="{ active: i + 1 === activeSlide }" v-for="(slide, i) in slides" :key="i">
             <!-- Left Content -->
-            <div class="content ">
+            <div class="content">
               <div>
                 <svg width="134" height="107" viewBox="0 0 134 107" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -34,10 +35,7 @@
               </Transition>
             </div>
           </div>
-
         </div>
-
-
 
         <!-- slider toggler -->
         <div class="slider-btn-group">
@@ -70,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted, ref } from "vue";
 
 const { $gsap, $SplitText } = useNuxtApp();
 
@@ -83,46 +81,51 @@ const sectionTitleRef = ref(null);
 let currentIndex = 0;
 let slideWidth = 0;
 let activeSlide = ref(1);
-const activeIndex = ref(0)
+const activeIndex = ref(0);
 
 const slides = [
   {
     id: 1,
-    insight: "Success starts with curiosity and asking the right questions to grow and inspire others.",
-    story: "After graduating from S.F.X Greenherald International School in 2008, Aarif Hasan turned his curiosity into a tech startup in Singapore. He participated in science fairs, coding competitions, and debate clubs, building problem-solving and leadership skills. Today, his company employs over 200 people, and he mentors young entrepreneurs.",
-    image: "/story/testimonial1.png"
+    insight:
+      "Success begins with curiosity and asking the right questions to grow and inspire others.",
+    story:
+      "After graduating from S.F.X Greenherald International School in 2008, Aarif Hasan turned his curiosity into a tech startup in Singapore. His early years were filled with science fairs, coding competitions, and debate clubs that built his problem-solving and leadership skills. His company now employs over 200 people, and he actively mentors young entrepreneurs, encouraging them to explore ideas and take bold steps.",
+    image: "/story/testimonial1.png",
   },
   {
     id: 2,
-    insight: "Giving back to the community is the most rewarding form of success one can achieve.",
-    story: "Maria began her journey with school volunteer programs and debate clubs, developing leadership and communication skills. After graduation, she created programs empowering underprivileged youth through education and mentorship. Her initiatives now reach thousands internationally, teaching young people to develop skills.",
-    image: "/story/middle.jpg"
+    insight:
+      "Giving back to the community is one of the most meaningful and rewarding forms of success.",
+    story:
+      "Maria began her journey in school volunteer programs and debate clubs, developing leadership and communication skills. After graduation, she created youth empowerment programs focused on education and mentorship. Her initiatives now reach thousands internationally, providing guidance, learning opportunities, and essential skills to underprivileged students, helping them shape brighter futures through consistent community support.",
+    image: "/story/middle.jpg",
   },
   {
     id: 3,
-    insight: "True leadership is cultivated through experience, challenges, and guiding others effectively.",
-    story: "John started a small community coding project after school that grew into an international program. He focused on experiential learning, mentoring students to solve real-world problems and collaborate effectively. Through challenges, limited resources, and team management, John developed resilience, empathy, and strategic thinking.",
-    image: "/story/right-1.jpg"
+    insight:
+      "Leadership grows through experience, challenges, and learning to guide others effectively.",
+    story:
+      "John launched a small community coding project after school that eventually grew into an international program. He emphasized hands-on learning, mentoring students in real-world problem-solving, teamwork, and collaboration. Navigating challenges such as limited resources and diverse group needs helped him develop resilience, empathy, and strategic thinking, shaping him into a strong and thoughtful leader.",
+    image: "/story/right-1.jpg",
   },
   {
     id: 4,
-    insight: "Innovation drives progress when curiosity, creativity, and empathy guide solutions.",
-    story: "Sophie explored technology and coding from a young age, building small apps and participating in competitions. After school, she founded a global platform connecting students with mentors to improve education and skills. By iterating on feedback and scaling her platform internationally, Sophie demonstrates that innovation requires curiosity, perseverance.",
-    image: "/story/right-2.jpg"
-  }
+    insight:
+      "Innovation flourishes when curiosity, creativity, and empathy work together to shape new solutions.",
+    story:
+      "Sophie explored technology from a young age, building small apps and joining competitions that nurtured her coding interest. After school, she founded a global platform connecting students with mentors to improve access to education and skill-building. By listening to feedback, refining her ideas, and scaling internationally, Sophie shows that innovation thrives on curiosity, persistence, and a desire to help others.",
+    image: "/story/right-2.jpg",
+  },
 ];
 
-
-
-const sliderLimit = 10
-
+const sliderLimit = 10;
 
 const updateSlideWidth = () => {
   slideWidth = sliderWrapper.value.querySelector(".slide").offsetWidth;
 };
 
 const goToSlide = (index) => {
-  activeIndex.value = index
+  activeIndex.value = index;
 
   const slides = sliderWrapper.value.querySelectorAll(".slide");
   const prevIndex = activeSlide.value - 1;
@@ -134,8 +137,16 @@ const goToSlide = (index) => {
   const insight = actSlide.querySelector(".slide-insight");
 
   // SplitText for story and insight
-  const splitStory = new $SplitText(story, { type: "lines, words", linesClass: "line", mask: "lines" });
-  const splitInsight = new $SplitText(insight, { type: "lines, words", linesClass: "line", mask: "lines" });
+  const splitStory = new $SplitText(story, {
+    type: "lines, words",
+    linesClass: "line",
+    mask: "lines",
+  });
+  const splitInsight = new $SplitText(insight, {
+    type: "lines, words",
+    linesClass: "line",
+    mask: "lines",
+  });
 
   // Set initial state for the new slide
   // $gsap.set(img, { x: "5%", y: "5%", scale: 1.1 });
@@ -146,23 +157,28 @@ const goToSlide = (index) => {
   const tl = $gsap.timeline();
 
   // Slide wrapper moves immediately
-  tl.to(sliderWrapper.value, { x: -slideWidth * index, duration: 0, ease: "none" });
-
+  tl.to(sliderWrapper.value, {
+    x: -slideWidth * index,
+    duration: 0,
+    ease: "none",
+  });
 
   // Enter new slide content overlapping with exit
-  tl.to([...splitStory.lines, ...splitInsight.lines], {
-    opacity: 1,
-    yPercent: 0,
-    stagger: 0.1,
-    duration: 0.7,
-    ease: "power3.out",
-  }, 0.1);
+  tl.to(
+    [...splitStory.lines, ...splitInsight.lines],
+    {
+      opacity: 1,
+      yPercent: 0,
+      stagger: 0.1,
+      duration: 0.7,
+      ease: "power3.out",
+    },
+    0.1
+  );
 
   // Update active slide
   activeSlide.value = index + 1;
 };
-
-
 
 const nextSlide = () => {
   if (currentIndex < Math.min(slides.length, sliderLimit) - 1) currentIndex++;
@@ -191,47 +207,90 @@ onMounted(() => {
     (context) => {
       const tl = $gsap.timeline({
         scrollTrigger: {
-          trigger: "#gallery",
-          start: "40% top",
-          toggleActions: "play none none reverse",
-          markers: true
+          trigger: storiesRef.value,
+          start: "top 80%",
+          end: "top top",
+          scrub: 2,
         },
       });
 
-      tl.to(sectionTitleRef.value, { y: 0, opacity: 1 }).to(slider.value, { y: 0 }, "-=0.5")
+      const tl2 = $gsap.timeline({
+        scrollTrigger: {
+          trigger: storiesRef.value,
+          start: "top center",
+          end: "top top",
+          toggleActions: "play none none reverse"
+        },
+      });
+
+      tl.fromTo(
+        sectionTitleRef.value,
+        { y: 500 },
+        {
+          y: 0,
+          ease: "power2.out",
+          duration: 2,
+        },
+        0
+      ).fromTo(
+        storiesContainerRef.value,
+        { y: 500 },
+        {
+          y: 0,
+          ease: "power2.out",
+          duration: 2,
+        },
+        1
+      )
+      // .fromTo(
+      //   "#gallery",
+      //   { y: 0 },
+      //   {
+      //     y: -500,
+      //     duration: 2,
+      //   }, 1
+      // );
+
+      tl2.to("#bg-overlay", {
+        background: "linear-gradient(to bottom, #f7f5f0 80%, #142819)",
+        duration: 0.6,
+      }).to(sectionTitleRef.value, {
+        color: "black",
+        duration: 0.6,
+      }, "<")
+        .to("#galleryCTATitle", {
+          color: "black",
+          duration: 0.6,
+        }, "<")
     }
   );
 });
-
 </script>
 
 <style scoped lang="scss">
 #stories {
   width: 100vw;
   @include clamp-property("padding-block", 6.25, 11.56);
-  @include flex-center;
+
+  .s-title {
+    text-align: center;
+    @include clamp-property("font-size", 2.125, 4.5);
+    @include clamp-property("margin-bottom", 1.5, 5);
+    line-height: 110%;
+    font-weight: 400;
+    color: white;
+  }
 
   .container {
     width: 100%;
     position: relative;
     height: 100%;
-
-    .s-title {
-      text-align: center;
-      @include clamp-property("font-size", 2.125, 4.5);
-      @include clamp-property("margin-bottom", 1.5, 5);
-      line-height: 110%;
-      opacity: 0;
-      transform: translateY(150%);
-    }
   }
 
   .slider {
     width: 100%;
     height: 100%;
     position: relative;
-          transform: translateY(50%);
-
 
     .slider-wrapper {
       display: flex;
@@ -244,7 +303,6 @@ onMounted(() => {
         align-items: stretch;
         flex-shrink: 0;
         @include clamp-property("padding-inline", 1.25, 8.12);
-
 
         @media screen and (max-width: 769px) {
           & {
@@ -260,7 +318,7 @@ onMounted(() => {
           flex-direction: column;
           justify-content: space-between;
 
-          @media screen and (max-width: 769px) {
+          @media screen and (max-width: 768px) {
             & {
               width: 100%;
 
@@ -274,7 +332,9 @@ onMounted(() => {
           p {
             @include clamp-property("font-size", 1.125, 1.5);
             @include clamp-property("margin-bottom", 1.5, 5.5);
+            font-weight: 400;
             line-height: 140%;
+            letter-spacing: -0.015rem;
             text-wrap: wrap;
           }
 
@@ -284,11 +344,7 @@ onMounted(() => {
             line-height: 140%;
             text-align: start;
           }
-
-
         }
-
-
       }
 
       .img-container {
@@ -298,9 +354,21 @@ onMounted(() => {
         position: relative;
         aspect-ratio: 8/9;
 
-        @media screen and (max-width: 769px) {
+        @media screen and (max-width: 420px) {
+          & {
+            aspect-ratio: 4/5;
+          }
+        }
+
+        @media screen and (max-width: 768px) {
           & {
             width: 100%;
+          }
+        }
+
+        @media screen and (min-width: 769px) and (max-width: 1366px) {
+          & {
+            width: 45%;
           }
         }
 
@@ -312,15 +380,12 @@ onMounted(() => {
           transform: scale(1.2);
           @include clamp-property("border-radius", 1.5, 2.5);
           transition: all 1s ease;
-
         }
 
         img:has(+ img.slide-img-enter-active) {
           transform: translate(-15%, -15%) scale(1.2);
           opacity: 0;
         }
-
-
       }
     }
 
@@ -339,7 +404,6 @@ onMounted(() => {
         @include flex-center;
         flex-direction: row;
         gap: 18px;
-
 
         .nav {
           width: 0.5rem;
@@ -369,7 +433,7 @@ onMounted(() => {
         }
       }
 
-      @media screen and (max-width: 1366px) {
+      @media screen and (max-width: 1440px) {
         position: relative;
         flex-direction: row;
         margin-top: 48px;
@@ -394,11 +458,8 @@ onMounted(() => {
         padding: 8px;
         outline: none;
       }
-
     }
   }
-
-
 }
 
 .slide-img-enter-active,
@@ -414,13 +475,11 @@ onMounted(() => {
 .slide-img-enter-to {
   opacity: 1;
   transform: translate(0, 0) scale(1.2) !important;
-
 }
 
 .slide-img-leave-from {
   opacity: 1;
   transform: translate(0%, 0%) scale(1.5);
-
 }
 
 .slide-img-leave-to {

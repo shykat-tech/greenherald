@@ -1,6 +1,6 @@
 <template>
   <section id="about" ref="aboutRef">
-    <div class="gradient-back" ref="gradientBack" />
+    <!-- <div class="gradient-back" ref="gradientBack" /> -->
     <div class="container" ref="containerRef">
       <h2 class="text" ref="textRef">
         Welcome to the SFX Greenherald International School Alumni Association.
@@ -21,24 +21,17 @@ const { $gsap, $SplitText, $ScrollTrigger } = useNuxtApp();
 const aboutRef = ref(null);
 const containerRef = ref(null);
 const textRef = ref(null);
-const gradientBack = ref(null);
+// const gradientBack = ref(null);
 
 
 onMounted(() => {
-  const upcomingHeight =
-    document.getElementById("upcoming-events")?.getBoundingClientRect().height || 0;
-
-  const totalHeight = window.innerHeight + upcomingHeight + 20;
-
-  gradientBack.value.style.height = `${totalHeight}px`;
-
-
   const target = textRef.value;
   if (!target) return;
 
   const split = new $SplitText(target, { type: "words" });
 
   $gsap.set(split.words, { opacity: 0.2 });
+  $gsap.set(split.lines, { opacity: 0, y: "100px" });
 
   // 1️⃣ PIN THE SECTION UNTIL TEXT ANIMATION IS COMPLETE
   $ScrollTrigger.create({
@@ -46,7 +39,7 @@ onMounted(() => {
     start: "top top",
     end: "+=100%",
     pin: true,
-    scrub: true,
+    scrub: 2,
     pinSpacing: true,
   });
 
@@ -59,7 +52,7 @@ onMounted(() => {
       trigger: aboutRef.value,
       start: "top top",
       end: "+=100%", // must match pin duration
-      scrub: true,
+      scrub: 2,
     },
   });
 
@@ -73,25 +66,28 @@ onMounted(() => {
     },
   });
 
-  tl.to(".gradient-back", {
-    background: "linear-gradient(to top, #142819 60%, #f7f5f0)",
-    duration: 0.2,
-  })
+  tl
+    .to("#bg-overlay", {
+      background: "linear-gradient(to bottom, #142819 80%, #f7f5f0)",
+      duration: 0.6,
+    })
     .to(
       textRef.value,
       {
         color: "#fcfcfc",
-        duration: 0.2,
+        duration: 0.6,
       },
       "<"
     );
 
   $gsap.to(containerRef.value, {
     y: 0,
+    opacity: 1,
+    stagger: 0.1,
     scrollTrigger: {
       trigger: aboutRef.value,
       start: "-10% center",
-      toggleActions: "play none none play",
+      toggleActions: "play none none reverse",
     },
   });
 });
@@ -102,21 +98,10 @@ onMounted(() => {
   width: 100vw;
   height: 100vh;
   @include clamp-property("padding-inline", 1.25, 17);
-  // @include clamp-property("padding-block", 6.25, 22.5);
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  background: $yellow-50;
-
-  .gradient-back {
-    width: 100%;
-    // height: 200vh; // -> handled by JS
-    background: linear-gradient(to top, $yellow-50, $yellow-50);
-    position: absolute;
-    bottom: 0;
-    z-index: -5;
-  }
 
   .container {
     transform: translateY(50%);

@@ -19,10 +19,22 @@
     </div> -->
 
     <!-- Error Message Display -->
-    <MessageBlock v-if="showError" :isSuccess="false" />
+    <MessageBlock
+      v-if="showError"
+      :isSuccess="false"
+      :title="'Oops!'"
+      :message="'Something went wrong. We couldn’t complete your request. Please try again.'"
+      :isDarkBg="true"
+    />
 
     <!-- Success Message Display -->
-    <MessageBlock v-else-if="showSuccess" :isSuccess="true" />
+    <MessageBlock
+      v-else-if="showSuccess"
+      :isSuccess="true"
+      :title="'Success!'"
+      :message="'Form submitted successfully!'"
+      :isDarkBg="false"
+    />
 
     <!-- Step 1: Initial Signup -->
     <div v-else-if="currentStep === 1" class="step-content">

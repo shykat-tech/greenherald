@@ -1,11 +1,11 @@
 <template>
-  <section id="alumni">
+  <section id="alumni" ref="alumniRef">
     <div class="float-bg">
       <img src="/assets/images/alumni_BG.png" alt="alumni-bg" />
     </div>
     <div class="container">
       <div class="content" ref="contentRef">
-        <div class="section-title">
+        <div class="section-title" ref="sectionTitleRef">
           <h2>Guiding the alumni community</h2>
           <CommonPrimaryButton>View All</CommonPrimaryButton>
         </div>
@@ -22,23 +22,28 @@
       </div>
 
       <div class="call-to-action" ref="CTARef">
-        <h2>
+        <h2 ref="CTATitleRef">
           Ready to reconnect with your <br />
           school family?
         </h2>
 
-        <CommonPrimaryButton>Join Now</CommonPrimaryButton>
+        <div ref="cta">
+          <CommonPrimaryButton>Join Now</CommonPrimaryButton>
+        </div>
       </div>
-
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted, ref } from "vue";
 
+const alumniRef = ref(null);
 const membersRef = ref(null);
+const sectionTitleRef = ref(null);
 const CTARef = ref(null);
+const CTATitleRef = ref(null);
+const cta = ref(null);
 const contentRef = ref(null);
 
 const members = [
@@ -61,28 +66,67 @@ const { $gsap } = useNuxtApp();
 onMounted(() => {
   const cards = $gsap.utils.toArray(".member", membersRef.value);
 
-  $gsap.from(cards, {
-    y: 200,
-    duration: 0.8,
-    stagger: 0.2,
-    ease: "power2.out",
+  const tl = $gsap.timeline({
     scrollTrigger: {
-      trigger: membersRef.value,
+      trigger: alumniRef.value,
       start: "top 80%",
-      toggleActions: "play none none reverse",
+      end: "top top",
+      scrub: 2,
     },
   });
 
-  $gsap.to(CTARef.value, {
-    y: 0,
-    duration: 0.5,
-    ease: "power2.out",
+  tl.fromTo(
+    sectionTitleRef.value,
+    { y: 500 },
+    {
+      y: 0,
+      ease: "power2.out",
+      duration: 2,
+    },
+    0
+  ).fromTo(
+    cards,
+    { y: 500 },
+    {
+      y: 0,
+      ease: "power2.out",
+      duration: 2,
+      stagger: 0.3,
+    },
+    1
+  );
+
+  const tl2 = $gsap.timeline({
     scrollTrigger: {
       trigger: contentRef.value,
-      start: "bottom bottom",
-      toggleActions: "play none none reverse",
+      start: "bottom 80%",
+      end: "5%",
+      toggleActions: "play none none reverse"
     },
   });
+
+  tl2
+    .fromTo(
+      CTARef.value,
+      { y: 200 },
+      {
+        y: 0,
+        ease: "power2.out",
+        duration: 1,
+      },
+      0
+    )
+    .fromTo(
+      [CTATitleRef.value, cta.value],
+      { y: 300 },
+      {
+        y: 0,
+        ease: "power2.out",
+        duration: 1,
+        stagger: 0.2,
+      },
+      0.5
+    );
 });
 </script>
 
@@ -121,13 +165,11 @@ onMounted(() => {
       width: 100%;
       @include clamp-property("margin-bottom", 5.02, 5.98);
 
-
       .section-title {
         display: flex;
         align-items: center;
         justify-content: space-between;
         @include clamp-property("margin-bottom", 2.5, 5);
-
 
         h2 {
           @include clamp-property("font-size", 2.125, 4.5);
@@ -200,7 +242,7 @@ onMounted(() => {
       background: $green-500;
       padding: 100px 0;
       border-radius: 28px;
-      transform: translateY(50%);
+      // transform: translateY(50%);
 
       h2 {
         font-family: $font-gloock;
@@ -211,6 +253,12 @@ onMounted(() => {
         text-align: center;
         margin-bottom: 16px;
         color: $gray-100;
+
+        @media screen and (max-width: 480px) {
+          br {
+            display: none;
+          }
+        }
       }
 
       span {
