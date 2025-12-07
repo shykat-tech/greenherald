@@ -83,7 +83,7 @@
         </div>
 
         <div class="nav-btn">
-          <button @click="prevSlide">
+          <button @click="prevSlide" :disabled="currentIndex === 0">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.80544 8H13.6055" stroke="white" stroke-width="1.2" stroke-linecap="round"
                 stroke-linejoin="round" />
@@ -92,7 +92,7 @@
                 stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
           </button>
-          <button @click="nextSlide">
+          <button @click="nextSlide" :disabled="currentIndex === stepCards.length - 1">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M13.1946 8H2.39453" stroke="white" stroke-width="1.2" stroke-linecap="round"
                 stroke-linejoin="round" />
@@ -231,13 +231,13 @@ const goToSlide = (index) => {
 
 const nextSlide = () => {
   if (currentIndex < stepCards.value.length - 1) currentIndex++;
-  else currentIndex = 0; // loop
+  //else currentIndex = 0; // loop
   goToSlide(currentIndex);
 };
 
 const prevSlide = () => {
   if (currentIndex > 0) currentIndex--;
-  else currentIndex = stepCards.value.length - 1; // loop
+  //else currentIndex = stepCards.value.length - 1; // loop
   goToSlide(currentIndex);
 };
 
@@ -317,14 +317,14 @@ onMounted(() => {
 
       tl.to(dupBenefitsRef.value, {
         clipPath: md
-          ? "circle(12% at 60% 55%)"
+          ? "circle(12% at 60% 70%)"
           : lg
-            ? "circle(12% at 80% 70%)"
+            ? "circle(12% at 77% 70%)"
             : xl
               ? "circle(12% at 80% 70%)"
               : "circle(12% at 80% 65%)",
       })
-        .to(circleBlockRef.value, { opacity: 0, x: 500 })
+        .to(circleBlockRef.value, { opacity: 0, x: 700 })
         .to(
           benefitsRef.value,
           {
@@ -437,7 +437,6 @@ onMounted(() => {
     width: 100%;
     height: 100vh;
     overflow: hidden;
-
     @include clamp-property("padding-inline", 1.25, 8.25);
     display: flex;
     align-items: center;
@@ -448,6 +447,7 @@ onMounted(() => {
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
+      padding-block: 6.25rem;
     }
 
     .container,
@@ -537,11 +537,11 @@ onMounted(() => {
     }
 
     @media screen and (min-width: 768px) {
-      clip-path: circle(0% at 60% 50%);
+      clip-path: circle(0% at 60% 70%);
     }
 
     @media screen and (min-width: 769px) and (max-width: 1024px) {
-      clip-path: circle(0% at 60% 50%);
+      clip-path: circle(0% at 60% 70%);
     }
 
     @media screen and (min-width: 1025px) and (max-width: 1366px) {
@@ -590,6 +590,7 @@ onMounted(() => {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+
       }
 
       .content {

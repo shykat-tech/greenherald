@@ -58,6 +58,10 @@ const props = defineProps({
     flex-direction: column;
     @include clamp-property("gap", 1, 2);
 
+    .icon {
+      margin-block-start: -12px;
+    }
+
     @media screen and (max-width: 480px) {
       width: 100%;
     }

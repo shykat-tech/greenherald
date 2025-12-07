@@ -40,14 +40,6 @@
         <img src="/assets/images/right-2.jpg" />
       </div>
     </header>
-    <UpcomingEvents />
-    <AboutSection />
-    <Gallery />
-    <Stories />
-    <Benefits />
-    <Membership />
-    <Alumni />
-    <Footer />
   </div>
 </template>
 
@@ -69,8 +61,6 @@ const subHeadingRef = ref(null);
 const btnGroupRef = ref(null);
 const imagesRef = ref(null);
 const headerRef = ref(null);
-const hiddenNavBtn = ref(null);
-const joinBtnRef = ref(null);
 
 onMounted(() => {
   const viewportHeight = window.innerHeight;

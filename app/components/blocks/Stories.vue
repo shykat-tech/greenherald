@@ -39,7 +39,7 @@
 
         <!-- slider toggler -->
         <div class="slider-btn-group">
-          <button @click="prevSlide" class="slider-button-prev">
+          <button @click="prevSlide" class="slider-button-prev" :disabled="currentIndex === 0">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M5.49216 12L18.9922 12" stroke="#FCFCFC" stroke-width="1.5" stroke-linecap="round"
                 stroke-linejoin="round" />
@@ -53,7 +53,7 @@
               :class="{ active: i + 1 === activeSlide }" @click="goToSlide(i)" />
           </div>
 
-          <button @click="nextSlide" class="slider-button-next">
+          <button @click="nextSlide" class="slider-button-next" :disabled="currentIndex === slides.length - 1">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M18.5078 12L5.00781 12" stroke="#FCFCFC" stroke-width="1.5" stroke-linecap="round"
                 stroke-linejoin="round" />
@@ -74,11 +74,12 @@ const { $gsap, $SplitText } = useNuxtApp();
 
 const storiesRef = ref(null);
 const storiesContainerRef = ref(null);
-const slider = ref(null);
 const sliderWrapper = ref(null);
 const sectionTitleRef = ref(null);
 
 let currentIndex = 0;
+console.log(currentIndex);
+
 let slideWidth = 0;
 let activeSlide = ref(1);
 const activeIndex = ref(0);
@@ -129,7 +130,6 @@ const goToSlide = (index) => {
 
   const slides = sliderWrapper.value.querySelectorAll(".slide");
   const prevIndex = activeSlide.value - 1;
-  const prevSlide = slides[prevIndex];
   const actSlide = slides[index];
 
   // const img = actSlide.querySelector(".slide-img");
@@ -182,13 +182,13 @@ const goToSlide = (index) => {
 
 const nextSlide = () => {
   if (currentIndex < Math.min(slides.length, sliderLimit) - 1) currentIndex++;
-  else currentIndex = 0; // loop
+  //else currentIndex = 0; // loop
   goToSlide(currentIndex);
 };
 
 const prevSlide = () => {
   if (currentIndex > 0) currentIndex--;
-  else currentIndex = Math.min(slides.length, sliderLimit) - 1; // loop
+  //else currentIndex = Math.min(slides.length, sliderLimit) - 1; // loop
   goToSlide(currentIndex);
 };
 
@@ -447,8 +447,8 @@ onMounted(() => {
       .slider-button-prev,
       .slider-button-next {
         position: relative !important;
-        width: 52px;
-        height: 52px;
+        @include clamp-property("width", 2.75, 3.25);
+        @include clamp-property("height", 2.75, 3.25);
         @include flex-center;
         border: none;
         border-radius: 50%;
@@ -457,6 +457,10 @@ onMounted(() => {
         color: transparent !important;
         padding: 8px;
         outline: none;
+
+        &:disabled {
+          background: $yellow-100;
+        }
       }
     }
   }

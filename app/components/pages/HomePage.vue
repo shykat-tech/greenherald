@@ -1,63 +1,63 @@
 <template>
   <div :key="pageData.id + pageData.meta.slug" v-if="pageData">
-    <NuxtLazyHydrate
-      when-idle
-      v-for="(block, idx) in pageData.body"
-      :key="'comp-' + block.id"
-    >
-      <component
-        :id="'comp-' + block.id"
-        :is="resolveComponent('Lazy' + componentLookup[block.type])"
-        :compData="block.value"
-        :compId="block.id"
-        :componentIndex="idx"
-        :blockType="block.type"
-      />
-    </NuxtLazyHydrate>
+    <div v-for="(block, idx) in pageData.body" :key="block.id">
+      <NuxtLazyHydrate when-idle>
+        <component :is="resolveComponent('Lazy' + componentLookup[block.type])" :compData="block.value"
+          :compId="block.id" :componentIndex="idx" :blockType="block.type" />
+      </NuxtLazyHydrate>
+    </div>
   </div>
 </template>
 
 <script setup>
-/**Right now we will be working with mock data */
-// const { pageData, body } = defineProps("pageData", "body");
-
 const pageData = {
-  id: "1",
+  id: "101",
   title: "Homepage",
   body: [
+    { id: "101", type: "header", value: { text: "This is a header section" } },
     {
-      id: "101",
-      type: "header",
-      value: {
-        text: "This is a header section",
-      },
+      id: "102", type: "upcoming_events", value: { text: "This is a events section" }
     },
     {
-      id: "102",
-      type: "upcoming_events",
-      value: {
-        text: "This is a events section",
-      },
+      id: "103", type: "about",
+      value: { text: "This is a about section" }
     },
     {
-      id: "103",
-      type: "about",
-      value: {
-        text: "This is a about section",
-      },
+      id: "104", type: "gallery",
+      value: { text: "This is a gallery section" }
+    },
+    {
+      id: "105", type: "story",
+      value: { text: "This is a story section" }
+    },
+    {
+      id: "106", type: "benefits",
+      value: { text: "This is a benefits section" }
+    },
+    {
+      id: "107", type: "membership",
+      value: { text: "This is a membership section" }
+    },
+    {
+      id: "108", type: "alumni",
+      value: { text: "This is a alumni section" }
+    },
+    {
+      id: "109", type: "footer",
+      value: { text: "This is a footer section" }
     },
   ],
-  meta: {
-    slug: "homepage",
-  },
+  meta: { slug: "homepage" },
 };
 
-//** Based on component names we will make sure to load the correct components, be aware of the casing!!! */
 const componentLookup = {
   header: "HeaderContainer",
-  // upcoming_events: "UpcomingEvents",
-  // about: "AboutSection",
-};
-</script>
-
-<style lang="scss" scoped></style>
+  upcoming_events: "UpcomingEvents",
+  about: "AboutSection",
+  gallery: "Gallery",
+  story: "Stories",
+  benefits: "Benefits",
+  membership: "Membership",
+  alumni: "Alumni",
+  footer: 'Footer'
+}; </script>

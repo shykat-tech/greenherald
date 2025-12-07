@@ -199,7 +199,7 @@ onMounted(() => {
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 #upcoming-events {
   width: 100%;
   @include clamp-property("padding-top", 6.25, 8.875);

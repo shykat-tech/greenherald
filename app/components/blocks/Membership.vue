@@ -51,8 +51,6 @@
 import { onMounted, ref } from "vue";
 const { $gsap } = useNuxtApp();
 
-const membershipRef = ref(null);
-const memContainerRef = ref(null);
 const titleRef = ref(null);
 
 
@@ -112,7 +110,7 @@ onMounted(() => {
 
   const tl = $gsap.timeline({
     scrollTrigger: {
-      trigger: membershipRef.value,
+      trigger: "#membership",
       start: "top 80%",
       end: "top top",
       scrub: 1.5,
