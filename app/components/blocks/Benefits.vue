@@ -274,7 +274,7 @@ onMounted(() => {
           trigger: mainContainerRef.value,
           start: "top 80%",
           end: "top top",
-          scrub: 2,
+          scrub: 1.5,
         },
       });
 
@@ -305,7 +305,7 @@ onMounted(() => {
           trigger: mainContainerRef.value,
           start: "top top",
           end: "+=350%",
-          scrub: 2,
+          scrub: 1.5,
           pin: true,
           toggleActions: "play none none reverse",
           onUpdate: (self) => {
@@ -352,7 +352,7 @@ onMounted(() => {
         .to(
           stepsRef.value,
           {
-            x: md ? "-70%" : lg ? "-60%" : xl ? "-45%" : "-40%",
+            x: md ? "-65%" : lg ? "-55%" : xl ? "-45%" : "-38%",
             duration: 2.7,
           },
           "-=0.5"
@@ -439,7 +439,8 @@ onMounted(() => {
     overflow: hidden;
 
     @include clamp-property("padding-inline", 1.25, 8.25);
-    @include clamp-property("padding-block", 6.25, 15.62);
+    display: flex;
+    align-items: center;
 
     @media screen and (max-width: 767px) {
       height: auto;
@@ -490,7 +491,7 @@ onMounted(() => {
             display: inline-block;
             position: relative;
 
-            @media screen and (max-width: 1366px) {
+            @media screen and (max-width: 1440px) {
               br {
                 display: none;
               }
@@ -656,8 +657,16 @@ onMounted(() => {
               width: 70%;
             }
 
-            @media screen and (min-width: 769px) {
+            @media screen and (min-width: 769px) and (max-width: 1024px) {
               width: 73%;
+            }
+
+            @media screen and (min-width: 1025px) and (max-width: 1440px) {
+              width: 71%;
+            }
+
+            @media screen and (min-width: 1441px) {
+              width: 72%;
             }
 
             .counts {

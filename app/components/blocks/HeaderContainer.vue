@@ -1,5 +1,9 @@
 <template>
   <div>
+    <!-- <nav>
+      <CommonPrimaryButton ref="hiddenNavBtn" @click="globalStore.openModal('membership')">Join Now
+      </CommonPrimaryButton>
+    </nav> -->
     <header id="header" ref="headerRef">
       <img src="/assets/images/logo.svg" alt="greenherald-logo" class="logo hiddenLogo" ref="hiddenLogoRef" />
 
@@ -21,7 +25,8 @@
         </div>
 
         <div class="btn-group" ref="btnGroupRef">
-          <CommonPrimaryButton @click="globalStore.openModal('membership')">Join Now</CommonPrimaryButton>
+          <CommonPrimaryButton ref="joinBtnRef" @click="globalStore.openModal('membership')">Join Now
+          </CommonPrimaryButton>
           <CommonSecondaryButton>Explore Event</CommonSecondaryButton>
         </div>
       </div>
@@ -64,6 +69,8 @@ const subHeadingRef = ref(null);
 const btnGroupRef = ref(null);
 const imagesRef = ref(null);
 const headerRef = ref(null);
+const hiddenNavBtn = ref(null);
+const joinBtnRef = ref(null);
 
 onMounted(() => {
   const viewportHeight = window.innerHeight;
@@ -102,7 +109,12 @@ onMounted(() => {
       tl.fromTo(
         imgs,
         { y: "120%" },
-        { y: "0%", stagger: 0.2, ease: "power2.out" }
+        {
+          y: "0%", stagger: 0.2, ease: "power2.out",
+          onComplete: () => {
+            $lenis.start();
+          }
+        }
       );
 
       // Images wide Transition
@@ -152,9 +164,6 @@ onMounted(() => {
             y: "-16.6rem",
             left: positions[4],
             rotate: 0,
-            onComplete: () => {
-              $lenis.start();
-            }
           },
           "<"
         );
@@ -165,7 +174,7 @@ onMounted(() => {
           trigger: headerRef.value,
           start: "top top",
           end: "center top",
-          scrub: 2,
+          scrub: 1.5,
         },
       });
 
@@ -208,6 +217,23 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+nav {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  @include clamp-property("padding-inline", 1.25, 8.73);
+  padding-block: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  backdrop-filter: blur(10px);
+
+  button {
+    opacity: 0;
+  }
+}
+
 header {
   height: 120vh;
   display: flex;
@@ -244,10 +270,12 @@ header {
     opacity: 0;
   }
 
+
+
   .logo {
     @include clamp-property("width", 7, 11.25);
     @include clamp-property("height", 7, 11.25);
-    @include clamp-property("margin-bottom", 1.5, 1.06);
+    @include clamp-property("margin-bottom", 1.5, 3);
   }
 
   .logo.hiddenLogo {
@@ -348,6 +376,10 @@ header {
 
     @media screen and (max-width: 480px) {
       gap: 0.5rem;
+    }
+
+    button {
+      transition: all 0.3s;
     }
 
   }

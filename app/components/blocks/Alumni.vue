@@ -71,7 +71,7 @@ onMounted(() => {
       trigger: alumniRef.value,
       start: "top 80%",
       end: "top top",
-      scrub: 2,
+      scrub: 1.5,
     },
   });
 

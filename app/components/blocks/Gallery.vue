@@ -65,7 +65,7 @@ onMounted(() => {
   //   start: "top top",
   //   end: "center center",
   //   pin: true,
-  //   scrub: 2,
+  //   scrub: 1.5,
   //   pinSpacing: true,
   // });
 
@@ -93,7 +93,7 @@ onMounted(() => {
           start: "top center",
           end: "center center",
           toggleActions: "play none none reverse",
-          scrub: 2,
+          scrub: 1.5,
         },
       });
 

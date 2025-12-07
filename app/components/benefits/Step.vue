@@ -3,7 +3,7 @@
     <img :src="props.step?.image" :alt="props.step?.title" id="stepImg" />
 
     <div class="step-desc" id="stepDesc">
-      <div v-html="props.step?.icon"></div>
+      <div class="icon" v-html="props.step?.icon"></div>
 
       <div class="desc">
         <h3>{{ props.step?.title }}</h3>
@@ -40,26 +40,43 @@ const props = defineProps({
 
   img {
     @include clamp-property("border-radius", 1.5, 2);
-    @include clamp-property("height", 24, 32);
-    @include clamp-property("width", 21, 29);
+    @include clamp-property("width", 12, 29);
+    @include clamp-property("height", 14, 32);
     aspect-ratio: 4/5;
     object-fit: cover;
 
     @media screen and (max-width: 767px) {
       width: 100%;
+      height: 100%;
     }
   }
 
   .step-desc {
-    max-width: 24rem;
+    width: 24rem;
     display: flex;
+    align-items: flex-start;
     flex-direction: column;
     @include clamp-property("gap", 1, 2);
 
-    svg {
-      @include clamp-property("width", 3, 4);
-      @include clamp-property("height", 3, 4);
-      flex-shrink: 0;
+    @media screen and (max-width: 480px) {
+      width: 100%;
+    }
+
+    @media screen and (min-width: 481px) and (max-width: 1024px) {
+      width: 14rem;
+    }
+
+    @media screen and (min-width: 1025px) and (max-width: 1440px) {
+      width: 18rem;
+    }
+
+    @media screen and (min-width: 1441px) and (max-width: 1920px) {
+      width: 21rem;
+    }
+
+
+    :deep(svg) {
+      @include clamp-property("width", 2.5, 4);
     }
 
     .desc {

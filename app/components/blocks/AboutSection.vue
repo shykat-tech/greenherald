@@ -39,7 +39,7 @@ onMounted(() => {
     start: "top top",
     end: "+=100%",
     pin: true,
-    scrub: 2,
+    scrub: 1.5,
     pinSpacing: true,
   });
 
@@ -52,7 +52,7 @@ onMounted(() => {
       trigger: aboutRef.value,
       start: "top top",
       end: "+=100%", // must match pin duration
-      scrub: 2,
+      scrub: 1.5,
     },
   });
 

@@ -1,16 +1,8 @@
 <template>
-  <button class="primary-btn">
+  <button class="primary-btn" ref="buttonEl">
     <span>
       <slot />
     </span>
-    <!-- <div class="btn-icon-container">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15.4102 10H4.16016" stroke="#142819" stroke-width="1.5" stroke-linecap="round"
-          stroke-linejoin="round" />
-        <path d="M10.8398 5C10.8398 5 15.8398 8.68242 15.8398 10C15.8398 11.3177 10.8398 15 10.8398 15" stroke="#142819"
-          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-    </div> -->
 
     <div class="btn-icon-container">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -28,6 +20,17 @@
     </div>
   </button>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+
+const buttonEl = ref(null)
+
+// expose element
+defineExpose({
+  buttonEl
+})
+</script>
 
 <style scoped lang="scss">
 .primary-btn {

@@ -115,7 +115,7 @@ onMounted(() => {
       trigger: membershipRef.value,
       start: "top 80%",
       end: "top top",
-      scrub: 2,
+      scrub: 1.5,
     }
   })
 
@@ -155,6 +155,7 @@ onMounted(() => {
 
   .container {
     width: 100%;
+
     .plans {
       width: 100%;
       display: grid;

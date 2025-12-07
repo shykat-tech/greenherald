@@ -172,7 +172,7 @@ onMounted(() => {
           trigger: upcomingEventsRef.value,
           start: "top 80%",
           end: "top top",
-          scrub: 2,
+          scrub: 1.5,
         }
       })
 
@@ -247,8 +247,7 @@ onMounted(() => {
       width: 52%;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      @include clamp-property("gap", 2, 7.875);
+      justify-content: center;
       @include clamp-property("padding-block", 0, 1.5);
 
       @media screen and (max-width: 1024px) {
@@ -294,6 +293,8 @@ onMounted(() => {
       }
 
       .event-details {
+        margin-top: 1.75rem;
+
         .title {
           margin-bottom: 1.75rem;
 
@@ -306,6 +307,7 @@ onMounted(() => {
 
             strong {
               font-weight: 550;
+              width: 100%;
             }
           }
 
@@ -324,7 +326,8 @@ onMounted(() => {
         .date-venue {
           display: flex;
           align-items: center;
-          @include clamp-property("gap", 1, 5);
+          @include clamp-property("column-gap", 1, 5);
+          @include clamp-property("row-gap", 1, 1);
 
           flex-wrap: wrap;
 
