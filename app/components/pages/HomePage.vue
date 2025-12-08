@@ -1,17 +1,17 @@
 <template>
   <div :key="pageData.id + pageData.meta.slug" v-if="pageData">
     <div v-for="(block, idx) in pageData.body" :key="block.id">
-      <NuxtLazyHydrate when-idle>
-        <component :is="resolveComponent('Lazy' + componentLookup[block.type])" :compData="block.value"
-          :compId="block.id" :componentIndex="idx" :blockType="block.type" />
-      </NuxtLazyHydrate>
+
+      <component :is="resolveComponent(componentLookup[block.type])" :compData="block.value" :compId="block.id"
+        :componentIndex="idx" :blockType="block.type" />
+
     </div>
   </div>
 </template>
 
 <script setup>
 const pageData = {
-  id: "101",
+  id: "1",
   title: "Homepage",
   body: [
     { id: "101", type: "header", value: { text: "This is a header section" } },

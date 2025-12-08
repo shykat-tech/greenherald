@@ -21,6 +21,8 @@
 .theme-card-wrapper {
   @include clamp-property("padding-block", 2, 3.25);
 
+  border: 2px solid red;
+
   position: relative;
 
   display: flex;
@@ -85,7 +87,7 @@
       gap: 0.5rem;
 
       @include mediaMd {
-        display: none;
+        // display: none;
       }
 
       h2 {

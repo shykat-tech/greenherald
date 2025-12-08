@@ -66,67 +66,71 @@ const { $gsap } = useNuxtApp();
 onMounted(() => {
   const cards = $gsap.utils.toArray(".member", membersRef.value);
 
-  const tl = $gsap.timeline({
-    scrollTrigger: {
-      trigger: alumniRef.value,
-      start: "top 80%",
-      end: "top top",
-      scrub: 1.5,
-    },
-  });
+  setTimeout(() => {
+    const tl = $gsap.timeline({
+      scrollTrigger: {
+        trigger: alumniRef.value,
+        start: "top 80%",
+        end: "top top",
+        scrub: 1.5,
+      },
+    });
 
-  tl.fromTo(
-    sectionTitleRef.value,
-    { y: 500 },
-    {
-      y: 0,
-      ease: "power2.out",
-      duration: 2,
-    },
-    0
-  ).fromTo(
-    cards,
-    { y: 500 },
-    {
-      y: 0,
-      ease: "power2.out",
-      duration: 2,
-      stagger: 0.3,
-    },
-    1
-  );
-
-  const tl2 = $gsap.timeline({
-    scrollTrigger: {
-      trigger: contentRef.value,
-      start: "bottom 80%",
-      end: "5%",
-      toggleActions: "play none none reverse"
-    },
-  });
-
-  tl2
-    .fromTo(
-      CTARef.value,
-      { y: 200 },
+    tl.fromTo(
+      sectionTitleRef.value,
+      { y: 500 },
       {
         y: 0,
         ease: "power2.out",
-        duration: 1,
+        duration: 2,
       },
       0
-    )
-    .fromTo(
-      [CTATitleRef.value, cta.value],
-      { y: 300 },
+    ).fromTo(
+      cards,
+      { y: 500 },
       {
         y: 0,
         ease: "power2.out",
-        duration: 1,
-        stagger: 0.2,
+        duration: 2,
+        stagger: 0.3,
       },
-      0.5
+      1
     );
+
+    const tl2 = $gsap.timeline({
+      scrollTrigger: {
+        trigger: contentRef.value,
+        start: "bottom 80%",
+        end: "5%",
+        toggleActions: "play none none reverse"
+      },
+    });
+
+    tl2
+      .fromTo(
+        CTARef.value,
+        { y: 200 },
+        {
+          y: 0,
+          ease: "power2.out",
+          duration: 1,
+        },
+        0
+      )
+      .fromTo(
+        [CTATitleRef.value, cta.value],
+        { y: 300 },
+        {
+          y: 0,
+          ease: "power2.out",
+          duration: 1,
+          stagger: 0.2,
+        },
+        0.5
+      );
+  }, 0)
+
+
 });
 </script>
 

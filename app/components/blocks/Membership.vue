@@ -1,6 +1,6 @@
 <template>
   <section id="membership" ref="membershipRef">
-    <h2 class="sectionTitle" ref="titleRef">Choose your membership</h2>
+    <h2 class="sectionTitle" id="membershipTitle" ref="titleRef">Choose your membership</h2>
     <div class="container" ref="memContainerRef">
       <div class="plans">
         <div class="plan" v-for="plan in membershipPlans">
@@ -105,35 +105,42 @@ const membershipPlans = [
   },
 ];
 
+const membershipRef = ref(null)
+
 onMounted(() => {
   const plans = $gsap.utils.toArray(".plan");
 
-  const tl = $gsap.timeline({
-    scrollTrigger: {
-      trigger: "#membership",
-      start: "top 80%",
-      end: "top top",
-      scrub: 1.5,
-    }
-  })
+  setTimeout(() => {
+    const tl = $gsap.timeline({
+      scrollTrigger: {
+        trigger: membershipRef.value,
+        start: "top 80%",
+        end: "top top",
+        scrub: 1.5,
+      }
+    })
 
-  tl.fromTo(titleRef.value,
-    { y: 500 },
-    {
-      y: 0,
-      ease: "power2.out",
-      duration: 2
-    },
-    0
-  ).fromTo(plans,
-    { y: 500 },
-    {
-      y: 0,
-      ease: "power2.out",
-      duration: 2,
-      stagger: 0.3
-    }, 1
-  );
+    tl.fromTo(titleRef.value,
+      { y: 500 },
+      {
+        y: 0,
+        ease: "power2.out",
+        duration: 2,
+      },
+
+      0
+    ).fromTo(plans,
+      { y: 500 },
+      {
+        y: 0,
+        ease: "power2.out",
+        duration: 2,
+        stagger: 0.3
+      }, 1
+    );
+  }, 0)
+
+
 });
 </script>
 
@@ -171,6 +178,9 @@ onMounted(() => {
         @include clamp-property("border-radius", 1.25, 2);
         @include clamp-property("padding-inline", 2, 4);
         @include clamp-property("padding-block ", 2, 3.12);
+        display: flex;
+        flex-direction: column;
+        align-items: start;
 
         .plan--title {
           display: flex;
@@ -217,6 +227,8 @@ onMounted(() => {
         }
 
         .plan--package {
+          margin-bottom: auto;
+
           .plan--price {
             font-family: $font-gloock;
             @include clamp-property("font-size", 2, 3);

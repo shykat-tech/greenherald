@@ -1,5 +1,6 @@
 @use "sass:math";
 
+
 @mixin flex-center {
   display: flex;
   justify-content: center;
@@ -119,5 +120,94 @@
 @mixin mediaLg {
   @media screen and (max-width: 1440px) {
     @content;
+  }
+}
+
+
+
+@mixin richtext($base: 16px) {
+  font-size: $base;
+  line-height: 150%;
+
+  h1,
+  ::deep(h1) {
+    font-size: 2.5em; /* relative to $base */
+    margin: 1.6em 0 0.8em;
+    padding: 0;
+  }
+
+  h2,
+  :deep(h2) {
+    font-size: 2em;
+    margin: 1.4em 0 0.7em;
+    padding: 0;
+  }
+
+  h3,
+  :deep(h3) {
+    font-size: 1.5em;
+    margin: 1.2em 0 0.6em;
+    padding: 0;
+  }
+
+  h4,
+  :deep(h4) {
+    font-size: 1.25em;
+    margin: 1em 0 0.5em;
+    padding: 0;
+  }
+
+  p,
+  :deep(p) {
+    font-size: 1em;
+    margin: 0 0 1em;
+    padding: 0;
+  }
+
+  ul,
+  ol,
+  :deep(ul),
+  :deep(ol) {
+    margin: 0 0 1em 1.5em;
+    padding: 0;
+    ol {
+      list-style-type: lower-roman;
+      ol {
+        list-style-type: lower-alpha;
+      }
+    }
+  }
+
+  li,
+  :deep(li) {
+    margin-bottom: 0.5em;
+  }
+
+  a,
+  :deep(a) {
+    text-decoration: underline;
+
+    &:hover {
+      // color: $golden-400;
+    }
+  }
+
+  blockquote,
+  :deep(blockquote) {
+    font-size: 1em;
+    margin: 1.5em 0;
+    padding-left: 1em;
+  }
+
+  table,
+  :deep(table) {
+    margin: 1.5em 0;
+    padding: 0;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.5em 1em;
+    }
   }
 }

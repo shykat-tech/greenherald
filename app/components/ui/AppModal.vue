@@ -96,13 +96,14 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 1000;
   animation: fadeIn 0.3s ease-out;
   overflow: hidden; // Prevent any background scrolling
 
   .modal-content {
     @include clamp-property("padding", 2, 3);
-    border-radius: 2.5rem;
+    @include clamp-property("border-radius", 1.5, 2.5);
+
     background: #f7f5f0;
     max-height: 90vh;
     max-width: 90vw;

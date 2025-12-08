@@ -2,7 +2,16 @@
   <div class="profile-banner-wrapper">
     <div class="profile-bottom-layer">
       <div class="profile-cover-bg">
-        <img src="../../assets/images/profile_banner_plh.png" alt="" />
+        <img
+          src="../../assets/images/dashboard/profile_banner_annual.png"
+          alt=""
+          v-if="globalStore.getSiteTheme === 'annual'"
+        />
+        <img
+          src="../../assets/images/dashboard/profile_banner_lifetime.png"
+          alt=""
+          v-else
+        />
 
         <div class="profile-avatar">
           <img src="../../assets/images/profile_avatar.jpg" alt="" />
@@ -15,7 +24,7 @@
           <p class="profile-class">Class of 2012</p>
         </div>
 
-        <button class="edit-profile-btn">
+        <button class="edit-profile-btn" @click="handleEditProfile">
           <img src="../../assets/icons/pencil-edit.svg" alt="" />
           <span> Edit Profile </span>
         </button>
@@ -26,6 +35,11 @@
 
 <script setup>
 const coverHeight = ref(null);
+const globalStore = useGlobalStore();
+
+const handleEditProfile = () => {
+  globalStore.openModal("personalDetail");
+};
 </script>
 
 <style lang="scss" scoped>
@@ -61,6 +75,8 @@ const coverHeight = ref(null);
         @include mediaSm {
           border-bottom-left-radius: 0;
           border-bottom-right-radius: 0;
+
+          border: 0;
         }
       }
 
@@ -100,7 +116,7 @@ const coverHeight = ref(null);
     }
 
     .profile-name {
-      @include clamp-property("margin-top", 4.75, 8.25);
+      @include clamp-property("margin-top", 4.75, 5.25);
       @include clamp-property("font-size", 1.5, 2.375);
 
       color: $green-900;
@@ -124,7 +140,7 @@ const coverHeight = ref(null);
     }
 
     button {
-      @include clamp-property("margin-top", 4.75, 8.25);
+      @include clamp-property("margin-top", 4.75, -3.5);
       @include clamp-property("padding-inline", 1.125, 2);
       @include clamp-property("padding-block", 0.5, 0.75);
       @include clamp-property("font-size", 0.75, 1);

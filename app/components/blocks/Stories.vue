@@ -78,7 +78,6 @@ const sliderWrapper = ref(null);
 const sectionTitleRef = ref(null);
 
 let currentIndex = 0;
-console.log(currentIndex);
 
 let slideWidth = 0;
 let activeSlide = ref(1);

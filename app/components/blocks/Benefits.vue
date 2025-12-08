@@ -109,7 +109,7 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-const { $gsap } = useNuxtApp();
+const { $gsap, $ScrollTrigger } = useNuxtApp();
 
 // Refs
 const mainContainerRef = ref(null);
@@ -312,6 +312,7 @@ onMounted(() => {
             if (self.direction === 1) scrollDir.value = "down";
             else scrollDir.value = "up";
           },
+
         },
       });
 
@@ -420,7 +421,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 #mainContainer {
-  height: auto;
+  height: 100vh;
   position: relative;
   background: url("/assets/images/benefit_BG.png");
   background-repeat: no-repeat;

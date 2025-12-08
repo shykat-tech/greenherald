@@ -696,6 +696,8 @@ watch(currentStep, () => {
   display: flex;
   flex-direction: column;
 
+  border: 2px solid red;
+
   .logo {
     display: block;
     margin: 0 auto;

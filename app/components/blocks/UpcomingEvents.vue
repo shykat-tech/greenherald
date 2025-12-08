@@ -181,7 +181,7 @@ onMounted(() => {
         {
           y: 0,
           ease: "power2.out",
-          duration: 2
+          duration: 2,
         },
         0
       ).fromTo(containerRef.value,

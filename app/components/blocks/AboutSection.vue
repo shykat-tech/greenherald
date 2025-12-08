@@ -35,7 +35,7 @@ onMounted(() => {
 
   // 1️⃣ PIN THE SECTION UNTIL TEXT ANIMATION IS COMPLETE
   $ScrollTrigger.create({
-    trigger: "#about",
+    trigger: aboutRef.value,
     start: "top top",
     end: "+=100%",
     pin: true,

@@ -212,6 +212,8 @@ const onSubmit = handleSubmit(async (values) => {
   display: flex;
   flex-direction: column;
 
+  border: 2px solid red;
+
   .logo {
     display: block;
     margin: 0 auto;

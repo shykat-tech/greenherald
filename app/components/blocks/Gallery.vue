@@ -59,7 +59,6 @@ onMounted(() => {
 });
 
 onMounted(() => {
-
   // $ScrollTrigger.create({
   //   trigger: galleryRef.value,
   //   start: "top top",
@@ -99,7 +98,7 @@ onMounted(() => {
 
       tl
         .to([images[0]], {
-          y: 0
+          y: 0,
         })
         .to([images[1]], {
           top: xs ? "10%" : sm ? "10%" : md ? "-40%" : "-20%",

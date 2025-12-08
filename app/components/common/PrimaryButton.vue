@@ -40,6 +40,7 @@ defineExpose({
   color: $white;
   z-index: 2;
   border: none;
+  justify-content: space-between;
   transition: all 0.4s;
 
   .btn-icon-container {
@@ -102,7 +103,7 @@ defineExpose({
 
   &:hover::after {
     width: calc(100% - 4px);
-    height: calc(100% - 3px);
+    height: calc(100% - 4px);
     right: 2px;
   }
 

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useGlobalStore = defineStore('global', {
     state: () => ({
+        siteTheme: 'annual', // 'annual' or 'lifetime'
         isModalOpen: false,
         openModalType: '', //to handle multiple modal types- alumni-confirmation-modal
         alumniStatus: null, // true for alumni, false for non-alumni, null for not set
@@ -39,6 +40,7 @@ export const useGlobalStore = defineStore('global', {
     }),
 
     getters: {
+        getSiteTheme: (state) => state.siteTheme,
         getIsModalOpen: (state) => state.isModalOpen,
         getOpenModalType: (state) => state.openModalType,
         getAlumniStatus: (state) => state.alumniStatus,
