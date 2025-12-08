@@ -1,11 +1,11 @@
 <template>
   <div class="theme-card-wrapper">
     <div class="card-bg">
-      <img src="../../assets/images/diamond-bg.jpg" alt="" />
+      <!-- <img src="../../assets/images/diamond-bg.jpg" alt="" /> -->
     </div>
 
     <div class="card-top-wrapper">
-      <img src="../../assets/images/diamond_theme.png" alt="" />
+      <!-- <img src="../../assets/images/diamond_theme.png" alt="" /> -->
 
       <div class="theme-info-wrapper">
         <h2>Annual user</h2>
