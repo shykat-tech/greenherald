@@ -421,7 +421,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 #mainContainer {
-  height: 100vh;
+  height: auto;
   position: relative;
   background: url("/assets/images/benefit_BG.png");
   background-repeat: no-repeat;
@@ -716,6 +716,8 @@ onMounted(() => {
   }
 
   #smallSteps {
+    width: 100%;
+    height: 100vh;
     padding-top: 6.25rem;
     background: $yellow-50;
     overflow: hidden;

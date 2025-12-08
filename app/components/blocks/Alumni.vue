@@ -123,7 +123,7 @@ onMounted(() => {
         {
           y: 0,
           ease: "power2.out",
-          duration: 1,
+          duration: 0.7,
           stagger: 0.2,
         },
         0.5
