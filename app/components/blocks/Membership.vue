@@ -221,6 +221,7 @@ onMounted(() => {
         }
 
         .dashed-border {
+          width: 100%;
           @include clamp-property("margin-top", 1.91, 3);
           @include clamp-property("margin-bottom", 2.54, 4);
           border: 1px dashed $green-100;
