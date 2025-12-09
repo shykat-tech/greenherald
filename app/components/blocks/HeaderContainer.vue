@@ -1,9 +1,6 @@
 <template>
   <div>
-    <!-- <nav>
-      <CommonPrimaryButton ref="hiddenNavBtn" @click="globalStore.openModal('membership')">Join Now
-      </CommonPrimaryButton>
-    </nav> -->
+    <CommonNavbar />
     <header id="header" ref="headerRef">
       <img src="/assets/images/logo.svg" alt="greenherald-logo" class="logo hiddenLogo" ref="hiddenLogoRef" />
 
@@ -27,7 +24,7 @@
         <div class="btn-group" ref="btnGroupRef">
           <CommonPrimaryButton ref="joinBtnRef" @click="globalStore.openModal('membership')">Join Now
           </CommonPrimaryButton>
-          <CommonSecondaryButton>Explore Event</CommonSecondaryButton>
+          <!-- <CommonSecondaryButton>Explore Event</CommonSecondaryButton> -->
         </div>
       </div>
 
@@ -45,8 +42,6 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-
-
 
 const globalStore = useGlobalStore();
 
@@ -70,6 +65,7 @@ onMounted(() => {
 
   const imgs = imagesRef.value.querySelectorAll("img");
 
+
   mm.add(
     {
       sm: "(max-width: 480px)",
@@ -87,7 +83,14 @@ onMounted(() => {
       tl.to(logoRef.value, {
         scale: 1,
         top: hiddenLogoRef.value.offsetTop + logoPos.height / 2,
-      }).to([headerContentRef.value, imagesRef.value], { opacity: 1 }, "<");
+        onComplete: () => {
+          $lenis.start();
+        }
+      }).to([headerContentRef.value, imagesRef.value], { opacity: 1 }, "<")
+        .to("#baseNav", {
+          y: 0,
+          duration: 1
+        })
 
       tl.fromTo(headerContentRef.value, { y: viewportHeight }, { y: 0 }, "<");
 
@@ -101,9 +104,6 @@ onMounted(() => {
         { y: "120%" },
         {
           y: "0%", stagger: 0.2, ease: "power2.out",
-          onComplete: () => {
-            $lenis.start();
-          }
         }
       );
 
@@ -175,21 +175,21 @@ onMounted(() => {
         .to(
           headingRef.value,
           {
-            y: lg && -220,
+            y: lg ? -220 : -160,
           },
           "<"
         )
         .to(
           subHeadingRef.value,
           {
-            y: lg && -200,
+            y: lg ? -220 : -140,
           },
           "<"
         )
         .to(
           btnGroupRef.value,
           {
-            y: lg && -200,
+            y: lg ? -220 : -120,
           },
           "<"
         )
@@ -197,33 +197,16 @@ onMounted(() => {
         .to([imgs[0], imgs[4]], { yPercent: -80, duration: 1 }, "<")
         .to(
           [imgs[1], imgs[3]],
-          { yPercent: sm ? -30 : md ? -15 : -60, duration: 0.7 },
+          { yPercent: sm ? -60 : md ? -60 : -60, duration: 0.7 },
           "<"
         )
-        .to([imgs[2]], { yPercent: lg ? -60 : -10, duration: 1 }, "<");
+        .to([imgs[2]], { yPercent: -50, duration: 1 }, "<");
     }
   );
 });
 </script>
 
 <style scoped lang="scss">
-nav {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  @include clamp-property("padding-inline", 1.25, 8.73);
-  padding-block: 1rem;
-  display: flex;
-  justify-content: flex-end;
-  backdrop-filter: blur(10px);
-
-  button {
-    opacity: 0;
-  }
-}
-
 header {
   height: 120vh;
   display: flex;
@@ -231,8 +214,9 @@ header {
   align-items: center;
   position: relative;
   overflow: hidden;
-  @include clamp-property("padding-top", 1.5, 6);
-  background: linear-gradient(to bottom, $yellow-100, $yellow-50);
+  @include clamp-property("padding-top", 4.5, 6);
+  background: $yellow-50;
+  transition: all 0.5s ease-in-out;
 
   @media screen and (max-width: 320px) {
     height: 110vh;

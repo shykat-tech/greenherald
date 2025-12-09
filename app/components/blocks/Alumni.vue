@@ -244,9 +244,8 @@ onMounted(() => {
     .call-to-action {
       width: 100%;
       background: $green-500;
-      padding: 100px 0;
+      @include clamp-property("padding-block ", 1.5, 6.25);
       border-radius: 28px;
-      // transform: translateY(50%);
 
       h2 {
         font-family: $font-gloock;
@@ -275,11 +274,11 @@ onMounted(() => {
 
       button {
         margin: auto;
-        margin-top: 32px;
+        @include clamp-property("margin-top", 1, 2.06);
       }
 
       @media screen and (max-width: 768px) {
-        padding: 24px;
+        padding: 1.5rem;
       }
     }
   }

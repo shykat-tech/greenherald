@@ -148,7 +148,6 @@ const goToSlide = (index) => {
   });
 
   // Set initial state for the new slide
-  // $gsap.set(img, { x: "5%", y: "5%", scale: 1.1 });
   $gsap.set(splitStory.lines, { opacity: 0, yPercent: 100 });
   $gsap.set(splitInsight.lines, { opacity: 0, yPercent: 100 });
 
@@ -330,11 +329,12 @@ onMounted(() => {
 
           p {
             @include clamp-property("font-size", 1.125, 1.5);
-            @include clamp-property("margin-bottom", 1.5, 5.5);
+            @include clamp-property("margin-bottom", 1.5, 4.5);
+            color: $green-800;
+            font-style: normal;
             font-weight: 400;
             line-height: 140%;
             letter-spacing: -0.015rem;
-            text-wrap: wrap;
           }
 
           strong {
@@ -342,6 +342,7 @@ onMounted(() => {
             font-weight: 450;
             line-height: 140%;
             text-align: start;
+            letter-spacing: -0.0175rem;
           }
         }
       }

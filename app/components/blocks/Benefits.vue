@@ -254,11 +254,12 @@ onMounted(() => {
       sm: "(max-width: 480px)",
       md: "(min-width: 481px) and (max-width: 768px)",
       lg: "(min-width: 769px) and (max-width: 1366px)",
-      xl: "(min-width: 1367px) and (max-width: 1920px)",
+      xlg: "(min-width: 1367px) and (max-width: 1440px)",
+      xl: "(min-width: 1441px) and (max-width: 1920px)",
       xxl: "(min-width: 1921px)",
     },
     (context) => {
-      const { sm, md, lg, xl } = context.conditions;
+      const { sm, md, lg, xlg, xl } = context.conditions;
 
       if (sm) return;
       nextTitleRef.value.style.transform = `translate(${initTitleRef.value.offsetLeft}px, ${initTitleRef.value.offsetTop}px)`;
@@ -304,7 +305,7 @@ onMounted(() => {
         scrollTrigger: {
           trigger: mainContainerRef.value,
           start: "top top",
-          end: "+=350%",
+          end: "+=320%",
           scrub: 1.5,
           pin: true,
           toggleActions: "play none none reverse",
@@ -353,7 +354,7 @@ onMounted(() => {
         .to(
           stepsRef.value,
           {
-            x: md ? "-65%" : lg ? "-55%" : xl ? "-45%" : "-38%",
+            x: md ? "-65%" : lg ? "-48%" : xlg ? "-43%" : xl ? "-40%" : "-35%",
             duration: 2.7,
           },
           "-=0.5"
@@ -717,7 +718,7 @@ onMounted(() => {
 
   #smallSteps {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     padding-top: 6.25rem;
     background: $yellow-50;
     overflow: hidden;

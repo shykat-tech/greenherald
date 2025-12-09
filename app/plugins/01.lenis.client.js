@@ -2,25 +2,35 @@ import { defineNuxtPlugin } from "#app";
 import Lenis from "lenis";
 
 export default defineNuxtPlugin((nuxtApp) => {
-  // 🔒 Prevent user scrolling before Lenis is ready
-  if (process.client) {
+  const route = useRoute();
+
+  const isHome = route.path === "/";   // ✅ Check homepage
+
+  // 🔒 Lock scrolling before Lenis is ready — but ONLY for homepage
+  if (import.meta.client && isHome) {
     document.documentElement.style.overflow = "hidden";
   }
 
   const lenis = new Lenis();
-
-  lenis.stop()
   nuxtApp.provide("lenis", lenis);
+
+  // ⛔ Stop lenis only for homepage (to wait for GSAP animation)
+  if (isHome) {
+    lenis.stop();
+  }
 
   let ready = false;
 
   function raf(time) {
     lenis.raf(time);
 
-    // 🔓 Unlock scroll once Lenis has completed its first tick
     if (!ready) {
       ready = true;
-      document.documentElement.style.overflow = "";
+
+      // 🔓 Unlock scroll, but only if we locked it
+      if (isHome) {
+        document.documentElement.style.overflow = "";
+      }
     }
 
     requestAnimationFrame(raf);
@@ -28,8 +38,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   requestAnimationFrame(raf);
 
-  // 🚀 GO TO TOP ON PAGE RELOAD
-  if (process.client) {
+  // 🚀 GO TO TOP ON PAGE RELOAD (safe for all pages)
+  if (import.meta.client) {
     window.onbeforeunload = () => {
       window.scrollTo(0, 0);
     };

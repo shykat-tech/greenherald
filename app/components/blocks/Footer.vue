@@ -90,7 +90,7 @@ footer {
 
         }
 
-        li a{
+        li a {
             @include flex-center;
             flex-direction: row;
             gap: 8px;
@@ -116,7 +116,7 @@ footer {
         }
     }
 
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1024px) {
         flex-direction: column;
         gap: 1.5rem;
 
@@ -128,7 +128,7 @@ footer {
             li a {
                 flex-direction: row;
                 text-wrap: nowrap;
-                
+
                 svg {
                     width: 16px;
                 }

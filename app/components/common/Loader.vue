@@ -19,7 +19,8 @@ const props = defineProps();
   top: 0;
   left: 0;
   z-index: 9999;
-  background: linear-gradient(to bottom, $yellow-100, $yellow-50);
+  background: $yellow-50;
+
   @include clamp-property("padding-top", 1.5, 6);
 
   @media screen and (max-width: 320px) {

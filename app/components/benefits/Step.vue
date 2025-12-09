@@ -36,12 +36,13 @@ const props = defineProps({
 
   @media screen and (max-width: 767px) {
     flex-direction: column;
+    overflow: auto;
   }
 
   img {
     @include clamp-property("border-radius", 1.5, 2);
-    @include clamp-property("width", 12, 29);
-    @include clamp-property("height", 14, 32);
+    @include clamp-property("width", 12, 26);
+    @include clamp-property("height", 14, 30);
     aspect-ratio: 4/5;
     object-fit: cover;
 
