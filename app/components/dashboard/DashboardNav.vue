@@ -94,10 +94,73 @@
         </div>
 
         <div class="profile-dropdown-panel">
+          <div class="profile-info">
+            <div class="avatar">
+              <img
+                class="profile-picture"
+                src="../../assets/images/profile_avatar.jpg"
+                alt=""
+              />
+            </div>
+
+            <div class="infos">
+              <div class="profile-name">John Doe</div>
+              <div class="profile-email">john.doe@example.com</div>
+            </div>
+          </div>
           <ul>
-            <li>Profile</li>
-            <li>Settings</li>
-            <li>Logout</li>
+            <li>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M15.5 14.5C18.8137 14.5 21.5 11.8137 21.5 8.5C21.5 5.18629 18.8137 2.5 15.5 2.5C12.1863 2.5 9.5 5.18629 9.5 8.5C9.5 9.38041 9.68962 10.2165 10.0303 10.9697L2.5 18.5V21.5H5.5V19.5H7.5V17.5H9.5L13.0303 13.9697C13.7835 14.3104 14.6196 14.5 15.5 14.5Z"
+                  stroke="#08110B"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M17.5 6.5L16.5 7.5"
+                  stroke="#08110B"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span>Change Password</span>
+            </li>
+
+            <li @click="handleLogout">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M7.86907 4C4.97674 5.49689 3 8.51664 3 11.9981C3 16.9686 7.02944 20.9981 12 20.9981C16.9706 20.9981 21 16.9686 21 11.9981C21 8.51664 19.0233 5.49689 16.1309 4"
+                  stroke="#08110B"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12 3V10"
+                  stroke="#08110B"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+
+              <span> Logout </span>
+            </li>
           </ul>
         </div>
       </div>
@@ -107,6 +170,36 @@
 
 <script setup>
 const router = useRouter();
+
+const authStore = useAuthStore();
+
+const handleLogout = () => {
+  console.log("Logout: Before logout - Auth state:", {
+    isAuthenticated: authStore.isAuthenticated,
+    hasToken: !!authStore.token,
+    user: authStore.user,
+  });
+
+  // Clear any authentication tokens or user data here
+  // For example, if using localStorage:
+  authStore.logout();
+
+  console.log("Logout: After logout - Auth state:", {
+    isAuthenticated: authStore.isAuthenticated,
+    hasToken: !!authStore.token,
+    user: authStore.user,
+  });
+
+  console.log("Logout: localStorage check:", {
+    localStorage:
+      typeof window !== "undefined" ? localStorage.getItem("auth") : "SSR",
+  });
+
+  // Use full page redirect to avoid layout switching issues
+  if (typeof window !== "undefined") {
+    window.location.href = "/auth/signin";
+  }
+};
 
 const goToHome = () => {
   router.push("/");
@@ -210,10 +303,11 @@ nav {
   }
 
   .right {
+    @include clamp-property("gap", 0.5, 1);
+
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
 
     .mbl-search-icon {
       cursor: pointer;
@@ -296,16 +390,86 @@ nav {
         border-radius: 0.5rem;
         overflow: hidden;
         transition: all 0.3s ease;
+
         display: none;
         z-index: 10;
+
+        .profile-info {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1rem 1.5rem;
+
+          .avatar {
+            width: 3.375rem;
+            height: 3.375rem;
+            aspect-ratio: 1/1;
+            background-color: #d9d9d9;
+            border-radius: 50%;
+            overflow: hidden;
+
+            img {
+              height: 100%;
+              width: 100%;
+              object-fit: cover;
+            }
+          }
+
+          .infos {
+            .profile-name {
+              color: $gray-900;
+              font-family: $font-manrope;
+              font-size: 1.125rem;
+              font-style: normal;
+              font-weight: 550;
+              line-height: 110%; /* 1.2375rem */
+            }
+
+            .profile-email {
+              color: $gray-900;
+              font-family: $font-manrope;
+              font-size: 0.875rem;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 110%; /* 0.9625rem */
+            }
+          }
+        }
         ul {
+          @include clamp-property("padding-block", 0.75, 1);
           list-style: none;
           margin: 0;
           padding: 0;
+          min-width: min(24.4375rem, 90svw);
 
           li {
-            padding: 0.75rem 1.5rem;
+            @include clamp-property("font-size", 1, 1.125);
+            @include clamp-property("padding-block", 0.5, 0.75);
+            @include clamp-property("padding-inline", 1, 1.25);
+
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.5rem;
+            transition: background-color 0.2s ease-in-out;
+
+            svg {
+              width: 1.5rem;
+              height: 1.5rem;
+              aspect-ratio: 1/1;
+            }
+
+            span {
+              color: $green-900;
+
+              /* Btn 16 */
+              font-family: $font-manrope;
+              font-size: 1rem;
+              font-style: normal;
+              font-weight: 550;
+              line-height: 110%; /* 1.1rem */
+            }
 
             &:hover {
               background-color: $gray-100;

@@ -76,6 +76,11 @@ const route = useRoute();
     align-items: center;
     gap: 0.5rem;
 
+    @include mediaSm {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
     p {
       display: flex;
       align-items: center;

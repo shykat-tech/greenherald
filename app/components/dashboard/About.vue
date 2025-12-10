@@ -12,17 +12,21 @@
 </template>
 
 <script setup>
+const globalStore = useGlobalStore();
+
 const handleEditClick = () => {
   // Logic to handle edit click can be added here
+  globalStore.openModal("editAboutMe");
 };
 </script>
 
 <style lang="scss" scoped>
 .about-section {
   p {
+    @include clamp-property("font-size", 0.9375, 1);
+
     color: $green-900;
     font-family: $font-manrope;
-    font-size: 1rem;
     font-style: normal;
     font-weight: 400;
     line-height: 150%;

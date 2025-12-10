@@ -54,6 +54,7 @@
 <script setup>
 definePageMeta({
   layout: "dashboard",
+  middleware: ["auth"],
 });
 
 const globalStore = useGlobalStore();
@@ -95,14 +96,12 @@ const globalStore = useGlobalStore();
   }
 
   .dashboard-comp-wrapper {
+    @include clamp-property("padding", 1.25, 2);
+    @include clamp-property("border-radius", 1, 1.125);
+
     width: 100%;
     background-color: $neutral-white;
     border-radius: 1.125rem;
-    padding: 2rem;
-
-    @include mediaSm {
-      border-radius: 0;
-    }
   }
 
   .left-section {

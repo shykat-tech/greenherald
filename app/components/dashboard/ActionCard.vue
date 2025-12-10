@@ -252,6 +252,7 @@ const handleEditClick = () => {
 .action-card {
   @include clamp-property("padding", 0.75, 1);
   @include clamp-property("gap", 0.62, 1);
+  @include clamp-property("border-radius", 0.5, 1.125);
 
   display: flex;
   flex-direction: row; // Row layout for larger screens
@@ -259,7 +260,6 @@ const handleEditClick = () => {
   justify-content: space-between;
 
   background: #f6f6f6;
-  border-radius: 1.125rem;
 
   height: 100% !important;
   width: 100% !important;

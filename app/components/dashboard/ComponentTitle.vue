@@ -32,9 +32,10 @@ const handleEditClick = () => {
   margin-bottom: 1.5rem;
 
   h2 {
+    @include clamp-property("font-size", 1.25, 1.5);
+
     font-family: $font-manrope;
     color: $green-900;
-    font-size: 1.5rem;
     font-style: normal;
     font-weight: 600;
     line-height: 110%; /* 1.65rem */
@@ -44,6 +45,12 @@ const handleEditClick = () => {
     background: none;
     border: none;
     cursor: pointer;
+
+    img {
+      width: 1rem;
+      height: 1rem;
+      object-fit: contain;
+    }
   }
 }
 </style>

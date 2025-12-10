@@ -449,7 +449,10 @@ const handleEditClick = () => {
   }
 
   .tab-content-panel {
-    padding: 20px;
+    // padding: 20px;
+    @include clamp-property("padding-inline", 0, 1.5);
+    @include clamp-property("padding-block", 0.5, 2.5);
+
     width: 100%;
     overflow-x: auto;
 
@@ -471,7 +474,7 @@ const handleEditClick = () => {
 
       .info-card {
         @include clamp-property("padding", 0.5, 1);
-        @include clamp-property("gap", 0.5, 1);
+        @include clamp-property("gap", 1, 1);
 
         display: flex;
         align-items: center;

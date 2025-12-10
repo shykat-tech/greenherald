@@ -1,7 +1,7 @@
 <template>
   <div class="message-block-wrapper" :class="{ 'dark-bg': isDarkBg }">
     <div class="wrapper">
-      <div v-if="isSuccess" class="icon success-icon">
+      <div v-if="loadingStatus === 'success'" class="icon success-icon">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="64"
@@ -25,7 +25,29 @@
           </defs>
         </svg>
       </div>
-      <div v-else class="icon error-icon">
+      <div v-if="loadingStatus === 'pending'" class="icon success-icon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="64"
+          height="64"
+          viewBox="0 0 64 64"
+          fill="none"
+        >
+          <path
+            d="M45.8699 5.3335H18.1295C14.2422 5.3335 10.8316 7.95936 10.6758 11.743C10.4798 16.5036 13.8279 19.6647 17.3444 22.6324C22.2091 26.7378 24.6415 28.7906 24.8966 31.389C24.9365 31.7956 24.9365 32.2047 24.8966 32.6114C24.6415 35.2098 22.2092 37.2626 17.3444 41.3679C13.731 44.4172 10.4696 47.2522 10.6758 52.2572C10.8316 56.041 14.2422 58.6668 18.1295 58.6668H45.8699C49.7571 58.6668 53.1678 56.041 53.3235 52.2572C53.4475 49.245 52.3312 46.2455 49.96 44.1602C48.879 43.2092 47.7566 42.2975 46.655 41.3679C41.7902 37.2626 39.3579 35.2098 39.1027 32.6114C39.0627 32.2047 39.0627 31.7956 39.1027 31.389C39.3579 28.7906 41.7902 26.7378 46.655 22.6324C50.2304 19.615 53.5272 16.6884 53.3235 11.743C53.1678 7.95936 49.7571 5.3335 45.8699 5.3335Z"
+            stroke="white"
+            stroke-width="4"
+          />
+          <path
+            d="M24 57.7014C24 56.523 24 55.9337 24.2336 55.4188C24.2707 55.3369 24.312 55.2569 24.3573 55.1793C24.6427 54.6905 25.1256 54.3454 26.0915 53.6553C28.7747 51.7388 30.116 50.7804 31.6405 50.6785C31.88 50.6625 32.12 50.6625 32.3595 50.6785C33.884 50.7804 35.2253 51.7388 37.9085 53.6553C38.8744 54.3454 39.3573 54.6905 39.6427 55.1793C39.688 55.2569 39.7293 55.3369 39.7664 55.4188C40 55.9337 40 56.523 40 57.7014V58.6665H24V57.7014Z"
+            stroke="white"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+        </svg>
+      </div>
+
+      <div v-else-if="loadingStatus === 'error'" class="icon error-icon">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="64"
@@ -62,13 +84,17 @@
       <p>
         {{ message }}
       </p>
+
+      <div class="message-actions" v-if="showButton">
+        <button @click="backToHome" class="btn-reset">Back to home</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 defineProps({
-  isSuccess: {
+  loadingStatus: {
     type: Boolean,
     required: true,
   },
@@ -87,7 +113,16 @@ defineProps({
     required: false,
     default: false,
   },
+  showButton: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
 });
+
+const backToHome = () => {
+  window.location.href = "/";
+};
 </script>
 
 <style lang="scss" scoped>
@@ -97,25 +132,6 @@ defineProps({
   align-items: center;
   height: 100%;
   padding-inline: 1.5rem;
-
-  .dark-bg {
-    .message-title {
-      color: $neutral-white;
-    }
-
-    p {
-      color: $neutral-gray-700;
-    }
-  }
-
-  :not(.dark-bg) {
-    .message-title {
-      color: $green-900;
-    }
-    p {
-      color: $neutral-gray-900;
-    }
-  }
 
   .wrapper {
     display: flex;
@@ -169,6 +185,89 @@ defineProps({
       font-style: normal;
       font-weight: 400;
       line-height: 150%; /* 1.5rem */
+    }
+
+    .message-actions {
+      @include clamp-property("gap", 1, 1.5);
+      @include clamp-property("margin-top", 2, 4.5);
+
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+
+      @include mediaSm {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .btn-reset {
+        @include clamp-property("padding-inline", 1.5, 2.5);
+        @include clamp-property("padding-block", 1.25, 1.5);
+        @include clamp-property("font-size", 1, 1.125);
+        @include clamp-property("height", 3.5, 4.5);
+
+        color: $white;
+        font-family: $font-manrope;
+        border-radius: 5rem;
+        cursor: pointer;
+        border: none;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        font-style: normal;
+
+        transition: all 0.2s ease-in-out;
+
+        display: flex;
+        min-width: min(19.0625rem, 90svw);
+
+        justify-content: center;
+        align-items: center;
+        gap: 0.625rem;
+
+        background-color: transparent;
+
+        border-radius: 5rem;
+        border: 1px solid $golden-700;
+
+        color: $golden-700;
+        font-family: $font-manrope;
+
+        font-size: 1.125rem;
+        font-style: normal;
+        font-weight: 550;
+        line-height: 110%;
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  // Default styles (non-dark background)
+  .message-title {
+    color: $green-900;
+  }
+
+  p {
+    color: $neutral-gray-900;
+  }
+
+  // Dark background styles with higher specificity
+  &.dark-bg {
+    .message-title {
+      color: $neutral-white !important;
+    }
+
+    p {
+      color: $neutral-gray-700 !important;
     }
   }
 }

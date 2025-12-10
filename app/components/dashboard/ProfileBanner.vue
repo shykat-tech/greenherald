@@ -62,6 +62,8 @@ const handleEditProfile = () => {
       aspect-ratio: 68.3125 / 18.931;
       position: relative;
 
+      height: 100%;
+
       img {
         @include clamp-property("border-bottom-left-radius", 0, 1.75);
         @include clamp-property("border-bottom-right-radius", 0, 1.75);
@@ -75,6 +77,9 @@ const handleEditProfile = () => {
         @include mediaSm {
           border-bottom-left-radius: 0;
           border-bottom-right-radius: 0;
+
+          border-radius: 0;
+          width: 105%; //it should be 100 just do not have the right image yet
 
           border: 0;
         }
@@ -116,7 +121,7 @@ const handleEditProfile = () => {
     }
 
     .profile-name {
-      @include clamp-property("margin-top", 4.75, 5.25);
+      @include clamp-property("margin-top", 5.85, 5.25);
       @include clamp-property("font-size", 1.5, 2.375);
 
       color: $green-900;

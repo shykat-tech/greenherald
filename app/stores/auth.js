@@ -9,10 +9,6 @@ export const useAuthStore = defineStore('auth', {
     // Signup flow state
     signupFlow: {
       currentStep: 1,
-      signupData: {
-        email: '',
-        password: '',
-      },
       accountData: {
         firstName: '',
         lastName: '',
@@ -44,19 +40,35 @@ export const useAuthStore = defineStore('auth', {
     async login(credentials) {
       this.loading = true
       try {
-        const config = useRuntimeConfig()
-        const { data, error } = await useFetch(`${config.public.apiBase}/auth/login`, {
-          method: 'POST',
-          body: credentials,
-        })
-        
-        if (error.value) {
-          throw new Error(error.value.message || 'Login failed')
+        // Manual authentication for development (no API calls)
+        // Simple validation - check if email and password are provided
+        if (!credentials.email || !credentials.password) {
+          throw new Error('Email and password are required')
         }
         
-        // Store auth data
-        this.token = data.value.token
-        this.user = data.value.user
+        // Basic email format validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(credentials.email)) {
+          throw new Error('Please enter a valid email address')
+        }
+        
+        // Password validation (at least 6 characters)
+        if (credentials.password.length < 6) {
+          throw new Error('Password must be at least 6 characters long')
+        }
+        
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        // Set authenticated state with mock user data
+        this.token = `mock-jwt-token-${Date.now()}`
+        this.user = {
+          id: 1,
+          email: credentials.email,
+          firstName: 'John',
+          lastName: 'Doe',
+          name: 'John Doe'
+        }
         this.isAuthenticated = true
         
         return { success: true }
@@ -72,20 +84,36 @@ export const useAuthStore = defineStore('auth', {
     async register(userData) {
       this.loading = true
       try {
-        const config = useRuntimeConfig()
-        // const { data, error } = await useFetch(`${config.public.apiBase}/auth/register`, {
-        //   method: 'POST',
-        //   body: userData,
-        // }) 
+        // Manual authentication for development (no API calls)
+        // Simple validation - check if required fields are provided
+        if (!userData.email || !userData.password) {
+          throw new Error('Email and password are required')
+        }
         
-        // if (error.value) {
-        //   throw new Error(error.value.message ||  'Registration failed')
-        // }
+        // Basic email format validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(userData.email)) {
+          throw new Error('Please enter a valid email address')
+        }
         
-        // Auto login after registration
-        // this.token = data.value.token
-        // this.user = data.value.user
-        this.isAuthenticated = true
+        // Password validation (at least 6 characters)
+        if (userData.password.length < 6) {
+          throw new Error('Password must be at least 6 characters long')
+        }
+        
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        // Auto login after registration with mock data
+        this.token = `mock-jwt-token-${Date.now()}`
+        this.user = {
+          id: 1,
+          email: userData.email,
+          firstName: userData.firstName || 'New',
+          lastName: userData.lastName || 'User',
+          name: `${userData.firstName || 'New'} ${userData.lastName || 'User'}`
+        }
+        // this.isAuthenticated = true
         
         return { success: true }
       } catch (error) {
@@ -130,8 +158,13 @@ export const useAuthStore = defineStore('auth', {
       this.token = null
       this.isAuthenticated = false
       
-      // Navigate to login page
-      navigateTo('/login')
+      // Explicitly clear persisted state from localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('auth')
+      }
+      
+      // Don't navigate here - let the calling component handle navigation
+      // navigateTo('/auth/signin')
     },
     
     // Check if token is valid
@@ -150,11 +183,6 @@ export const useAuthStore = defineStore('auth', {
     setSignupStep(step) {
       if (!this.signupFlow) this.initializeSignupFlow();
       this.signupFlow.currentStep = step;
-    },
-    
-    updateSignupData(data) {
-      if (!this.signupFlow) this.initializeSignupFlow();
-      Object.assign(this.signupFlow.signupData, data);
     },
     
     updateAccountData(data) {
@@ -180,7 +208,6 @@ export const useAuthStore = defineStore('auth', {
     initializeSignupFlow() {
       this.signupFlow = {
         currentStep: 1,
-        signupData: { email: '', password: '' },
         accountData: { firstName: '', lastName: '', phone: '', graduationYear: '', major: '' },
         paymentData: { paymentMethodType: '', cardMethod: '', mfsMethod: '', amount: 5000000, currency: 'BDT' },
         showError: false,
@@ -191,7 +218,6 @@ export const useAuthStore = defineStore('auth', {
     resetSignupFlow() {
       this.signupFlow = {
         currentStep: 1,
-        signupData: { email: '', password: '' },
         accountData: { firstName: '', lastName: '', phone: '', graduationYear: '', major: '' },
         paymentData: { paymentMethodType: '', cardMethod: '', mfsMethod: '', amount: 5000000, currency: 'BDT' },
         showError: false,

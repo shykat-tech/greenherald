@@ -5,6 +5,23 @@
     @wheel.prevent
   >
     <div class="modal-content" ref="modalContent" @wheel.stop>
+      <button class="close-icon-wrapper" @click="globalStore.closeModal">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M18 6L6.00081 17.9992M17.9992 18L6 6.00085"
+            stroke="#4B3F2A"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
       <component :is="compLookup[globalStore.openModalType]" />
     </div>
   </div>
@@ -25,6 +42,8 @@ const compLookup = {
   documents: "EditProfileModal",
   likesContributions: "EditProfileModal",
   profilePhoto: "ProfilePhotoModal",
+  editAboutMe: "EditAboutMeModal",
+  contactForm: "ContactFormModal",
 };
 
 // Handle body scroll lock and wheel events
@@ -96,13 +115,14 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 10000;
   animation: fadeIn 0.3s ease-out;
   overflow: hidden; // Prevent any background scrolling
 
   .modal-content {
-    @include clamp-property("padding", 2, 3);
-    @include clamp-property("border-radius", 1.5, 2.5);
+    @include clamp-property("padding-inline", 1.25, 2.5);
+    @include clamp-property("padding-block", 1.5, 2.5);
+    @include clamp-property("border-radius", 0.75, 2.5);
 
     background: #f7f5f0;
     max-height: 90vh;
@@ -137,7 +157,54 @@ onUnmounted(() => {
     }
 
     @include mediaSm {
-      // max-width: 97dvw;
+      max-width: 90dvw;
+    }
+
+    position: relative;
+
+    .close-icon-wrapper {
+      @include clamp-property("padding", 0.75, 1);
+
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      // background: transparent;
+      // border: none;
+      // cursor: pointer;
+      // padding: 0.5rem;
+      // display: flex;
+      // align-items: center;
+      // justify-content: center;
+
+      // width: 1.5rem;
+      // height: 1.5rem;
+      // aspect-ratio: 1/1;
+
+      display: flex;
+
+      align-items: center;
+      gap: 0.625rem;
+
+      border-radius: 5rem;
+      border: 1px solid var(--Golden-Golden-300, #cbb997);
+      background: #fcfcfc;
+      transition: all 0.3s ease-in-out;
+
+      svg {
+        @include clamp-property("width", 1.25, 1.5);
+        @include clamp-property("height", 1.25, 1.5);
+        aspect-ratio: 1/1;
+
+        transition: transform 0.3s ease-in-out;
+      }
+
+      &:hover {
+        background: $golden-90;
+
+        svg {
+          transform: rotate(90deg);
+        }
+      }
     }
   }
 }

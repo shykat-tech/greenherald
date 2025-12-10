@@ -2,7 +2,7 @@
   <div class="event-form-wrapper">
     <div v-if="isFormSubmitted" class="message-block-container">
       <MessageBlock
-        :isSuccess="!isError"
+        :loadingStatus="isError ? 'error' : 'success'"
         :title="isError ? 'Oops!' : 'Registration successful!'"
         :message="
           isError
@@ -53,119 +53,65 @@
           <p class="info-detail">Paid</p>
         </div>
       </div>
-
-      <div class="form-container-wrapper">
-        <h3 class="event-form-title">
-          To secure your spot at this exclusive alumni event, fill in your
-          details below.
-        </h3>
-
-        <form @submit.prevent="handleFormSubmit">
-          <div class="form-group" v-if="!globalStore.alumniStatus">
-            <label for="batch" required>Batch</label>
-            <select name="batch" id="batch" required>
-              <option value="" disabled selected>Select Your Batch</option>
-              <option value="2000-2005">2000-2005</option>
-              <option value="2006-2010">2006-2010</option>
-              <option value="2011-2015">2011-2015</option>
-              <option value="2016-2020">2016-2020</option>
-              <option value="2021-2025">2021-2025</option>
-            </select>
-          </div>
-
-          <div class="form-group" v-if="!globalStore.alumniStatus">
-            <label for="fullName">Full Name</label>
-            <input type="text" id="fullName" name="fullName" required />
-          </div>
-
-          <div class="form-group" v-if="!globalStore.alumniStatus">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required />
-          </div>
-
-          <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" required />
-          </div>
-
-          <div class="form-group">
-            <label>Food Preferences</label>
-            <div class="radio-group">
-              <label>
-                <input
-                  v-model="foodPreferences"
-                  type="radio"
-                  value="vegetarian"
-                />
-                Vegetarian
-              </label>
-              <label>
-                <input v-model="foodPreferences" type="radio" value="vegan" />
-                Vegan
-              </label>
-              <label>
-                <input
-                  v-model="foodPreferences"
-                  type="radio"
-                  value="non-vegetarian"
-                />
-                Non-Vegetarian
-              </label>
-            </div>
-            <p v-if="errors.foodPreferences" class="error-text">
-              {{ errors.foodPreferences }}
-            </p>
-          </div>
-
-          <!-- radio button for t shirt -->
-          <div class="form-group">
-            <label>T-Shirt Size</label>
-            <div class="radio-group">
-              <label>
-                <input v-model="tshirtSize" type="radio" value="S" />
-                Small
-              </label>
-              <label>
-                <input v-model="tshirtSize" type="radio" value="M" />
-                Medium
-              </label>
-              <label>
-                <input v-model="tshirtSize" type="radio" value="L" />
-                Large
-              </label>
-              <label>
-                <input v-model="tshirtSize" type="radio" value="XL" />
-                Extra Large
-              </label>
-            </div>
-            <p v-if="errors.tshirtSize" class="error-text">
-              {{ errors.tshirtSize }}
-            </p>
-          </div>
-
-          <button type="submit" class="btn-submit">Proceed to Payment</button>
-        </form>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { title } from "process";
+import { VueTelInput } from "vue-tel-input";
 
 const globalStore = useGlobalStore();
 
+const phone = ref("");
+const paymentMethod = ref("");
 const foodPreferences = ref("");
 const tshirtSize = ref("");
 const errors = ref({});
+const hasAttemptedSubmit = ref(false);
 
 const isFormSubmitted = ref(false);
 const isError = ref(false);
 
 const handleFormSubmit = async () => {
   try {
+    hasAttemptedSubmit.value = true;
+
+    // Simple phone validation
+    if (!phone.value || phone.value.length < 7) {
+      errors.value.phone = "Please enter a valid phone number";
+      return;
+    } else {
+      errors.value.phone = "";
+    }
+
+    // Payment method validation
+    if (!paymentMethod.value) {
+      errors.value.paymentMethod = "Please select a payment method";
+      return;
+    } else {
+      errors.value.paymentMethod = "";
+    }
+
+    // Food preferences validation
+    if (!foodPreferences.value) {
+      errors.value.foodPreferences = "Please select your food preference";
+      return;
+    } else {
+      errors.value.foodPreferences = "";
+    }
+
+    // T-shirt size validation
+    if (!tshirtSize.value) {
+      errors.value.tshirtSize = "Please select your t-shirt size";
+      return;
+    } else {
+      errors.value.tshirtSize = "";
+    }
+
     isFormSubmitted.value = true;
     console.log("Form submitted with:", {
+      phone: phone.value,
+      paymentMethod: paymentMethod.value,
       foodPreferences: foodPreferences.value,
       tshirtSize: tshirtSize.value,
       alumniStatus: globalStore.alumniStatus,
@@ -303,7 +249,7 @@ const handleFormSubmit = async () => {
       align-self: stretch;
       margin-top: 1.5rem;
       margin-bottom: 2rem;
-      border: 1px solid $golden-700;
+      border: 1px solid $gray-600;
       border-radius: 0.75rem;
 
       .info-item {
@@ -367,19 +313,142 @@ const handleFormSubmit = async () => {
             font-style: normal;
             font-weight: 500;
             line-height: normal;
+
+            opacity: 0.9;
           }
           input,
           select {
-            @include clamp-property("padding", 0.75, 1);
+            @include clamp-property("padding", 1, 1.25);
             @include clamp-property("font-size", 1, 1.125);
-            border: 1px solid $golden-700;
-            border-radius: 0.5rem;
+            // @include clamp-property("height", 3.5, 4);
+            @include clamp-property("border-radius", 0.5, 0.75);
+
+            border: 1px solid $gray-600;
             font-family: $font-manrope;
+            border-radius: 0.75rem;
             color: $green-900;
+
+            display: flex;
+
+            align-items: center;
+            gap: 0.5rem;
+            align-self: stretch;
+
             &:focus {
               outline: none;
               border-color: $golden-700;
               box-shadow: 0 0 0 2px rgba(126, 107, 71, 0.3);
+            }
+          }
+
+          // .input {
+          //   @include clamp-property("font-size", 0.935, 1);
+          //   @include clamp-property("padding", 1, 1.25);
+          //   @include clamp-property("height", 3.5, 4);
+          //   @include clamp-property("border-radius", 0.6, 0.75);
+
+          //   outline: none;
+
+          //   background: rgba(255, 255, 255, 0.06);
+          //   display: flex;
+
+          //   align-items: center;
+          //   gap: 0.5rem;
+          //   align-self: stretch;
+          //   border: 2px solid transparent;
+          //   transition: all 0.2s ease-in-out;
+          //   color: #fff;
+
+          //   width: 100%;
+
+          //   &::placeholder {
+          //     @include clamp-property("font-size", 0.935, 1);
+          //     color: rgba(255, 255, 255, 0.6);
+          //     font-family: $font-manrope;
+          //     font-weight: 400;
+          //     font-style: normal;
+          //     line-height: normal;
+          //     opacity: 1;
+          //   }
+
+          //   &:focus {
+          //     @include clamp-property("border-radius", 0.6, 0.75);
+          //     border-color: $yellow-600;
+          //   }
+          // }
+
+          // Vue Tel Input specific styling
+          :deep(.vue-tel-input) {
+            border-radius: 0.75rem;
+            border: 1px solid $gray-600;
+            background: transparent;
+            transition: all 0.2s ease-in-out;
+
+            &:focus-within {
+              border-color: $golden-700;
+              box-shadow: 0 0 0 2px rgba(126, 107, 71, 0.3);
+            }
+
+            .vti__dropdown {
+              background: $neutral-white;
+              border: 1px solid $gray-600;
+              border-radius: 0.75rem;
+
+              .vti__selection {
+                @include clamp-property("font-size", 0.935, 1);
+                color: $green-900;
+                padding: 0 0.5rem;
+              }
+
+              .vti__dropdown-arrow {
+                color: $green-900;
+              }
+            }
+
+            .vti__input {
+              @include clamp-property("font-size", 1, 1.125);
+              @include clamp-property("padding", 1, 1.25);
+              @include clamp-property("border-radius", 0.5, 0.75);
+
+              background: transparent;
+              border: none;
+              color: $green-900;
+              outline: none;
+              font-family: $font-manrope;
+
+              &::placeholder {
+                color: rgba($green-900, 0.6);
+                font-family: $font-manrope;
+                font-weight: 400;
+                opacity: 1;
+              }
+            }
+          }
+
+          // Vue Tel Input dropdown styling
+          :deep(.vti__dropdown-list) {
+            @include clamp-property("border-radius", 0.6, 0.75);
+
+            background: $neutral-white;
+            border: 1px solid $gray-600;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+            max-height: 200px;
+            overflow-y: auto;
+
+            .vti__dropdown-item {
+              color: $green-900;
+              padding: 0.5rem 1rem;
+              border-bottom: 1px solid rgba($gray-600, 0.2);
+
+              &:hover,
+              &.highlighted {
+                background: $golden-50;
+              }
+
+              .vti__flag {
+                margin-right: 0.5rem;
+              }
             }
           }
         }
@@ -468,23 +537,75 @@ const handleFormSubmit = async () => {
             border-radius: 0.75rem;
             border: 1px solid $green-50;
 
+            @include clamp-property("font-size", 0.875, 1);
+
+            color: $green-900;
+            font-family: $font-manrope;
+
+            text-align: center;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 150%; /* 1.5rem */
+
+            transition: all 0.2s ease-in-out;
+
             input[type="radio"] {
+              outline: none;
               margin: 0;
               width: 16px;
               height: 16px;
               accent-color: $golden-700;
+              margin-top: 0.25rem;
             }
 
-            input[type="radio"]:checked + & {
-              background-color: $green-800;
+            &:has(input[type="radio"]:checked) {
               border-color: $golden-700;
+              background-color: $golden-50;
+            }
+          }
+
+          .payment-option {
+            display: flex;
+
+            .options {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              gap: 0.5rem;
+
+              width: 100%;
+
+              p {
+                margin: 0;
+              }
+
+              div {
+                display: flex;
+                gap: 0.5rem;
+                align-items: center;
+
+                img {
+                  height: 1.25rem;
+                  width: auto;
+                  object-fit: cover;
+                }
+              }
             }
           }
         }
+
+        .error-text {
+          @include clamp-property("font-size", 0.875, 1);
+          color: #dc2626;
+          font-family: $font-manrope;
+          font-weight: 500;
+          margin-top: 0.25rem;
+        }
+
         textarea {
           @include clamp-property("padding", 0.75, 1);
           @include clamp-property("font-size", 1, 1.125);
-          border: 1px solid $golden-700;
+          border: 1px solid $gray-600;
           border-radius: 0.5rem;
           font-family: $font-manrope;
           color: $green-900;

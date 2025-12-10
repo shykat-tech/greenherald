@@ -5,7 +5,10 @@ export const useAuth = () => {
   const login = async (credentials) => {
     const result = await authStore.login(credentials)
     if (result.success) {
-      router.push('/dashboard')
+      // Use window.location to avoid layout switching issues
+      if (typeof window !== 'undefined') {
+        window.location.href = '/dashboard'
+      }
     }
     return result
   }
@@ -13,7 +16,10 @@ export const useAuth = () => {
   const register = async (userData) => {
     const result = await authStore.register(userData)
     if (result.success) {
-      router.push('/dashboard')
+      // Use window.location to avoid layout switching issues
+      if (typeof window !== 'undefined') {
+        window.location.href = '/dashboard'
+      }
     }
     return result
   }

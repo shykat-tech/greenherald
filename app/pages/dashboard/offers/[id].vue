@@ -132,7 +132,7 @@
           you a unique opportunity to immerse yourself in stunning Himalayan
           landscapes, ancient monasteries, and a vibrant, untouched culture.
           Take advantage of this special offer, exclusively for our City Bank
-          AMEX cardholders, to save on your dream holiday package.  What's in it
+          AMEX cardholders, to save on your dream holiday package.What's in it
           for you: 15% Savings: Enjoy a significant discount on all-inclusive
           holiday packages. All-Inclusive Packages: Your trip includes flights,
           comfortable accommodation, guided tours, and local transportation.
@@ -140,7 +140,7 @@
           friendly guides. Flexible Itineraries: Choose from a variety of
           curated packages or customize your own adventure. Hassle-Free Booking:
           Our dedicated team is here to ensure a smooth and easy booking process
-          from start to finish.  Featured packages Discover our most popular
+          from start to finish. Featured packages Discover our most popular
           itineraries and find the perfect journey for you. Cultural & Spiritual
           Journey: Explore iconic monasteries and fortresses. Adventure &
           Trekking: Hike through pristine mountain trails and breathtaking
@@ -157,14 +157,15 @@
 </template>
 
 <script setup>
+definePageMeta({
+  layout: "dashboard",
+  middleware: ["auth"],
+});
+
 const router = useRouter();
 const route = useRoute();
 
 const offerId = router.currentRoute.value.params.id;
-
-definePageMeta({
-  layout: "dashboard",
-});
 </script>
 
 <style lang="scss" scoped>

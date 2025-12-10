@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 export const useDashboardStore = defineStore('dashboard', {
     state: () => ({
         actionProgress: 60.0,
+        isActionsVisible: false,
         
         // Profile form state
         profileForm: {
@@ -55,6 +56,7 @@ export const useDashboardStore = defineStore('dashboard', {
     }),
 
     getters: {
+        getIsActionsVisible: (state) => state.isActionsVisible,
         getActionProgress: (state) => state.actionProgress,
         getProfileForm: (state) => state.profileForm,
         getIsLoading: (state) => state.isLoading,
@@ -64,6 +66,9 @@ export const useDashboardStore = defineStore('dashboard', {
     },
 
     actions: {
+        setIsActionsVisible(value) {
+            this.isActionsVisible = value
+        },
         setActionProgress(progress) {
             this.actionProgress = progress
         },

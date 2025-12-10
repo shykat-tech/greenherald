@@ -115,6 +115,8 @@ const gotToOfferDetails = (id) => {
       @include clamp-property("margin-top", 0.62, 1);
 
       button {
+        @include clamp-property("font-size", 0.9375, 1);
+
         display: flex;
         align-items: center;
         justify-content: center;
@@ -127,7 +129,6 @@ const gotToOfferDetails = (id) => {
         font-family: $font-manrope;
         cursor: pointer;
         color: $golden-700;
-        font-size: 1rem;
         font-style: normal;
         font-weight: 550;
         line-height: 110%; /* 1.1rem */

@@ -1,25 +1,31 @@
 <template>
   <div
     class="gap-between-sections dashboard-comp-wrapper quick-actions-wrapper"
+    v-show="dashboardStore.getIsActionsVisible"
   >
     <div class="top-bar-quick-actions">
       <h2>Finish your profile</h2>
 
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="14"
-        height="14"
-        viewBox="0 0 14 14"
-        fill="none"
+      <button
+        class="section-close-btn"
+        @click="dashboardStore.setIsActionsVisible(false)"
       >
-        <path
-          d="M12.75 0.75L0.75081 12.7492M12.7492 12.75L0.75 0.75085"
-          stroke="#141B34"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+        >
+          <path
+            d="M12.75 0.75L0.75081 12.7492M12.7492 12.75L0.75 0.75085"
+            stroke="#141B34"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
     </div>
 
     <div class="progress-bar-wrapper">
@@ -148,7 +154,7 @@ onUnmounted(() => {
 
   @include mediaMd {
     padding: 0;
-    min-height: 450px;
+    // min-height: 450px;
   }
   .top-bar-quick-actions {
     @include clamp-property("margin-bottom", 1, 1.5);
@@ -156,6 +162,28 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    h2 {
+      @include clamp-property("font-size", 1.25, 1.5);
+
+      color: $green-900;
+      font-family: $font-manrope;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 110%;
+    }
+
+    button {
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+
+      svg {
+        @include clamp-property("width", 0.875, 1);
+        @include clamp-property("height", 0.875, 1);
+      }
+    }
   }
 
   .progress-bar-wrapper {
@@ -181,6 +209,17 @@ onUnmounted(() => {
         transition: width 0.3s ease-in-out;
       }
     }
+
+    .counter {
+      @include clamp-property("font-size", 0.8125, 1);
+
+      color: $gray-800;
+      font-family: $font-manrope;
+
+      font-style: normal;
+      font-weight: 550;
+      line-height: 110%; /* 0.89375rem */
+    }
   }
 
   .actions-container {
@@ -196,10 +235,14 @@ onUnmounted(() => {
     @include mediaSm {
       max-width: 100%;
       width: 100%;
+      align-items: flex-start;
+      justify-content: flex-start;
+      height: fit-content;
     }
 
     @include mediaMd {
       max-width: 82dvw;
+      flex: 1;
     }
 
     .swiper {

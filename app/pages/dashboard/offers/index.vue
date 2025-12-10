@@ -82,6 +82,7 @@
 <script setup>
 definePageMeta({
   layout: "dashboard",
+  middleware: ["auth"],
 });
 
 const router = useRouter();
