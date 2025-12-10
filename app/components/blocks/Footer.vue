@@ -5,7 +5,7 @@
                 <NuxtLink to="/">Upcoming Event</NuxtLink>
             </li> -->
       <li>
-        <NuxtLink to="/">Contact</NuxtLink>
+        <NuxtLink to="/" @click="openContactModal">Contact</NuxtLink>
       </li>
       <li>
         <span>Follow us</span>
@@ -43,11 +43,6 @@
             </defs>
           </svg>
         </NuxtLink>
-
-
-
-
-
       </li>
     </ul>
     <div class="right-section">
