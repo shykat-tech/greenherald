@@ -22,6 +22,7 @@ button {
   font-family: $font-manrope;
   font-weight: 500;
   position: relative;
+  user-select: none;
 }
 
 .line {

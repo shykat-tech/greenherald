@@ -21,7 +21,7 @@
                 </button>
             </div>
             <div class="btn-group" :class="{ open: isMenuOpen }">
-                <button class="signin-btn" @click="goToSignup">Sign in</button>
+                <button class="signin-btn" @click="goToSignin">Sign in</button>
             </div>
         </nav>
 
@@ -53,7 +53,7 @@
                 </NuxtLink>
 
                 <div class="btn-group" :class="{ open: isMenuOpen }">
-                    <button class="signin-btn" @click="goToSignup">Sign in</button>
+                    <button class="signin-btn" @click="goToSignin">Sign in</button>
                     <button class="join-btn" @click="goToSignup">Join now</button>
                 </div>
             </nav>
@@ -87,7 +87,7 @@
 
 
                     <div class="btn-group" :class="{ open: isMenuOpen }">
-                        <button class="signin-btn" @click="goToSignup">Sign in</button>
+                        <button class="signin-btn" @click="goToSignin">Sign in</button>
                         <button class="join-btn" @click="goToSignup">Join now</button>
                     </div>
                 </div>
@@ -131,6 +131,10 @@ const router = useRouter();
 
 const goToSignup = () => {
     router.push({ path: "/auth/signup" });
+};
+
+const goToSignin = () => {
+    router.push({ path: "/auth/signin" });
 };
 
 const scrollDir = ref('down');
@@ -306,14 +310,14 @@ nav,
         }
 
         .join-btn {
-            border-color: $yellow-900;
-            background: $yellow-900;
-            color: $yellow-50;
+            border-color: $yellow-50;
+            background: $yellow-50;
+            color: $yellow-900;
 
             &:hover {
-                background: $yellow-200;
-                color: $yellow-900;
-                border-color: $yellow-200;
+                background: $yellow-900;
+                color: $yellow-50;
+                border-color: $yellow-900;
             }
         }
     }
@@ -349,8 +353,8 @@ nav,
 }
 
 .open-menu {
-    height: 100dvh;
-    width: 100vw;
+    height: 100vh;
+    width: 100%;
     position: fixed;
     top: 0;
     left: 0;
@@ -384,14 +388,14 @@ nav,
     .content {
         width: 100%;
         @include clamp-property("padding-inline", 1.25, 36.38);
-        @include clamp-property("padding-block", 5, 6.72);
+        @include clamp-property("padding-block", 2.5, 6.72);
         background: $yellow-700;
 
         list-style: none;
         display: grid;
         grid-template-columns: repeat(2, auto);
         grid-template-rows: repeat(4, auto);
-        @include clamp-property("row-gap", 1.25, 2.5);
+        @include clamp-property("row-gap", 1.5, 2.5);
         column-gap: 6.25rem;
 
         .btn-group {
@@ -402,10 +406,10 @@ nav,
             a {
                 color: white;
                 text-decoration: none;
-                @include clamp-property("font-size", 1.5, 2);
                 font-style: normal;
+                @include clamp-property("font-size", 1.5, 2);
                 font-weight: 400;
-                line-height: 125%;
+                line-height: normal;
                 transition: all 0.5s;
 
                 &:hover {
@@ -415,18 +419,19 @@ nav,
         }
 
         @media screen and (max-width:1024px) {
-            height: 100svh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: start;
-
+            align-items: center;
 
             .btn-group {
-                padding-top: 2.5rem;
-                border-top: 1px solid $yellow-50;
+                width: 100%;
+                padding-top: 4.75rem;
                 display: flex;
+                flex-direction: column;
                 justify-content: start;
-                gap: 0.5rem;
+                gap: 0.6rem;
 
                 @media screen and (max-width:360px) {
                     padding-top: 1.25rem;
@@ -434,31 +439,26 @@ nav,
 
                 .signin-btn,
                 .join-btn {
-                    font-size: 1rem;
+                    width: 100%;
+                    font-size: 1.125rem;
                     font-style: normal;
                     font-weight: 500;
-                    line-height: 110%;
-                    padding-inline: 1rem;
-                    padding-block: 0.62rem;
+                    line-height: 130%;
+                    padding-inline: 1.5rem;
+                    padding-block: 1rem;
                     border-radius: 2rem;
                     border: 1px solid $yellow-700;
                     transition: all 0.5s;
-                    text-transform: capitalize;
                 }
 
                 .signin-btn {
-                    background: transparent;
-                    color: $yellow-700;
-
-                    &:hover {
-                        background: $yellow-90;
-                        color: $yellow-900;
-                        border-color: $yellow-900;
-                    }
+                    background: none;
+                    // color: $yellow-700;
+                    color: red;
                 }
 
                 .join-btn {
-                    background: $yellow-700;
+                    background: $yellow-50;
                     color: $yellow-50;
 
                     &:hover {
@@ -471,7 +471,7 @@ nav,
             .btn-group.open {
                 .signin-btn {
                     border-color: $yellow-100;
-                    color: $yellow-100;
+                    color: $yellow-50;
 
                     &:hover {
                         background: $yellow-200;
@@ -481,13 +481,13 @@ nav,
                 }
 
                 .join-btn {
-                    border-color: $yellow-900;
-                    background: $yellow-900;
-                    color: $yellow-50;
+                    border-color: $yellow-50;
+                    background: $yellow-50;
+                    color: $yellow-900;
 
                     &:hover {
-                        background: $yellow-200;
-                        color: $yellow-900;
+                        background: $yellow-900;
+                        color: $yellow-50;
                         border-color: $yellow-200;
                     }
                 }
