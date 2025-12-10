@@ -53,7 +53,7 @@ const clickHandler = () => {
 
 <style lang="scss" scoped>
 button {
-  @include clamp-property("--height", 2.5, 3.2, 320, 1920);
+  @include clamp-property("--height", 2, 3.2, 320, 1920);
   @include clamp-property("font-size", 1, 1.125);
   @include clamp-property("padding-block", 0.38, 0.5);
   @include clamp-property("padding-right", 0.38, 0.5);
@@ -165,8 +165,8 @@ button {
   }
 
   @include mediaLg {
-    @include clamp-property("font-size", 1.2, 2.6, 1920, 5120);
-    @include clamp-property("--height", 3.5, 8, 1920, 5120);
+    @include clamp-property("font-size", 1, 2.6, 1920, 5120);
+    @include clamp-property("--height", 3, 7, 1920, 5120);
   }
 }
 </style>

@@ -384,8 +384,7 @@ nav,
     .content {
         width: 100%;
         @include clamp-property("padding-inline", 1.25, 36.38);
-        @include clamp-property("padding-block-start", 0, 2.47);
-        @include clamp-property("padding-block-end", 2, 6.72);
+        @include clamp-property("padding-block", 5, 6.72);
         background: $yellow-700;
 
         list-style: none;
@@ -398,7 +397,6 @@ nav,
         .btn-group {
             display: none;
         }
-
 
         li {
             a {
@@ -420,7 +418,7 @@ nav,
             height: 100svh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: start;
 
 
             .btn-group {

@@ -142,19 +142,30 @@ const activeSlide = ref(1);
 // --------------------
 const stepCards = ref([
   {
-    icon: "...",
+    icon: `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M40 24C40 19.5817 36.4184 16 32 16C27.5816 16 24 19.5817 24 24C24 28.4184 27.5816 32 32 32C36.4184 32 40 28.4184 40 24Z" stroke="#7E6B47" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M58.6654 32.0003C58.6654 17.2727 46.7262 5.33362 31.9987 5.33362C17.2711 5.33362 5.33203 17.2727 5.33203 32.0003C5.33203 46.7277 17.2711 58.6669 31.9987 58.6669C46.7262 58.6669 58.6654 46.7277 58.6654 32.0003Z" stroke="#7E6B47" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M45.3346 45.3333C45.3346 37.9696 39.365 32 32.0013 32C24.6375 32 18.668 37.9696 18.668 45.3333" stroke="#7E6B47" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`,
     image: "/steps/step1.png",
     title: "Sign Up Online",
     content: "Fill out your alumni details and choose a membership package (Yearly or Lifetime).",
   },
   {
-    icon: "...",
+    icon: `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M50.64 50.6668H50.6654M50.64 50.6668C48.9795 52.3135 45.9702 51.9034 43.8598 51.9034C41.2694 51.9034 40.0219 52.41 38.1731 54.2588C36.599 55.8332 34.4886 58.6668 31.9987 58.6668C29.5088 58.6668 27.3984 55.8332 25.8242 54.2588C23.9754 52.41 22.728 51.9034 20.1375 51.9034C18.0272 51.9034 15.0178 52.3135 13.3573 50.6668C11.6835 49.0071 12.0954 45.9852 12.0954 43.8612C12.0954 41.1772 11.5085 39.9431 9.59704 38.0316C6.75374 35.1884 5.33208 33.7666 5.33203 32.0002C5.33206 30.2335 6.75368 28.8119 9.59696 25.9686C11.3032 24.2623 12.0954 22.5716 12.0954 20.139C12.0954 18.0286 11.6853 15.0192 13.332 13.3587C14.9918 11.6849 18.0136 12.0969 20.1376 12.0969C22.5701 12.0969 24.2609 11.3047 25.9671 9.59848C28.8104 6.75515 30.232 5.3335 31.9987 5.3335C33.7654 5.3335 35.187 6.75515 38.0302 9.59848C39.736 11.3043 41.4267 12.0969 43.8598 12.0969C45.9702 12.0969 48.9798 11.6867 50.6403 13.3335C52.3139 14.9933 51.9019 18.0151 51.9019 20.139C51.9019 22.823 52.4891 24.0571 54.4003 25.9686C57.2438 28.8119 58.6654 30.2335 58.6654 32.0002C58.6654 33.7666 57.2438 35.1884 54.4003 38.0316C52.4888 39.9431 51.9019 41.1772 51.9019 43.8612C51.9019 45.9852 52.3139 49.0071 50.64 50.6668Z" stroke="#7E6B47" stroke-width="4"/>
+<path d="M24 34.381C24 34.381 27.2 36.1192 28.8 38.6666C28.8 38.6666 33.6 28.6666 40 25.3333" stroke="#7E6B47" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`,
     image: "/steps/step2.png",
     title: "Verify Your Information",
     content: "We’ll confirm your graduation details for secure access.",
   },
   {
-    icon: "...",
+    icon: `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M37.3346 22.6668C37.3346 15.303 31.365 9.3335 24.0013 9.3335C16.6375 9.3335 10.668 15.303 10.668 22.6668C10.668 30.0306 16.6375 36.0002 24.0013 36.0002C31.365 36.0002 37.3346 30.0306 37.3346 22.6668Z" stroke="#7E6B47" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M42.6654 54.6667C42.6654 44.3573 34.308 36 23.9987 36C13.6894 36 5.33203 44.3573 5.33203 54.6667" stroke="#7E6B47" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M42.668 33.0477C42.668 33.0477 45.868 34.7859 47.468 37.3333C47.468 37.3333 52.268 27.3333 58.668 24" stroke="#7E6B47" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`,
     image: "/steps/step3.png",
     title: "Become a Member",
     content: "Start enjoying all the benefits: events, connections, and community updates.",

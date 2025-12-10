@@ -16,6 +16,10 @@ import Membership from '~/components/blocks/Membership.vue'
     padding-block: 0;
     @include clamp-property("padding-inline", 1.25, 2.5);
 
+    @media screen and (max-width: 480px) {
+      padding: 0;
+    }
+
     :deep(.container) {
       width: 100%;
 

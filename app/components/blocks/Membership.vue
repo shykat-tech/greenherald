@@ -52,7 +52,6 @@
 import { onMounted, onBeforeUnmount, ref } from "vue";
 const { $gsap } = useNuxtApp();
 const { add, cleanup } = useGsapCleanup();
-const globalStore = useGlobalStore();
 const router = useRouter();
 
 const joinMembership = () => {

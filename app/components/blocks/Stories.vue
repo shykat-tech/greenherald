@@ -249,11 +249,11 @@ onBeforeUnmount(() => {
   width: 100vw;
   height: auto;
   @include flex-center;
-  padding-bottom: 3rem;
+  padding-block: 3rem;
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 1024px) {
     height: 100vh;
-    padding-bottom: 0rem;
+    padding-block: 0rem;
   }
 
   #stories {
@@ -356,6 +356,7 @@ onBeforeUnmount(() => {
           @media screen and (max-width: 768px) {
             & {
               width: 100%;
+
             }
           }
 
