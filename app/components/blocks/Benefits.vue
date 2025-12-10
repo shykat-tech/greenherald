@@ -108,10 +108,13 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
 const { $gsap, $ScrollTrigger } = useNuxtApp();
+const { add, cleanup } = useGsapCleanup();
 
+// --------------------
 // Refs
+// --------------------
 const mainContainerRef = ref(null);
 const benefitsRef = ref(null);
 const circleBlockRef = ref(null);
@@ -126,49 +129,43 @@ const blocksRef = ref(null);
 const titleRef = ref(null);
 const initTitleRef = ref(null);
 
-// states
+// --------------------
+// State
+// --------------------
 const scrollDir = ref("down");
+const currentIndex = ref(0);
+let slideWidth = 0;
+const activeSlide = ref(1);
 
+// --------------------
+// Step Cards
+// --------------------
 const stepCards = ref([
   {
-    icon: `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M40 24C40 19.5817 36.4184 16 32 16C27.5816 16 24 19.5817 24 24C24 28.4184 27.5816 32 32 32C36.4184 32 40 28.4184 40 24Z" stroke="#7E6B47" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M58.6654 32.0003C58.6654 17.2727 46.7262 5.33362 31.9987 5.33362C17.2711 5.33362 5.33203 17.2727 5.33203 32.0003C5.33203 46.7277 17.2711 58.6669 31.9987 58.6669C46.7262 58.6669 58.6654 46.7277 58.6654 32.0003Z" stroke="#7E6B47" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M45.3346 45.3333C45.3346 37.9696 39.365 32 32.0013 32C24.6375 32 18.668 37.9696 18.668 45.3333" stroke="#7E6B47" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`,
+    icon: "...",
     image: "/steps/step1.png",
     title: "Sign Up Online",
-    content:
-      "Fill out your alumni details and choose a membership package (Yearly or Lifetime).",
+    content: "Fill out your alumni details and choose a membership package (Yearly or Lifetime).",
   },
   {
-    icon: `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M50.64 50.6668H50.6654M50.64 50.6668C48.9795 52.3135 45.9702 51.9034 43.8598 51.9034C41.2694 51.9034 40.0219 52.41 38.1731 54.2588C36.599 55.8332 34.4886 58.6668 31.9987 58.6668C29.5088 58.6668 27.3984 55.8332 25.8242 54.2588C23.9754 52.41 22.728 51.9034 20.1375 51.9034C18.0272 51.9034 15.0178 52.3135 13.3573 50.6668C11.6835 49.0071 12.0954 45.9852 12.0954 43.8612C12.0954 41.1772 11.5085 39.9431 9.59704 38.0316C6.75374 35.1884 5.33208 33.7666 5.33203 32.0002C5.33206 30.2335 6.75368 28.8119 9.59696 25.9686C11.3032 24.2623 12.0954 22.5716 12.0954 20.139C12.0954 18.0286 11.6853 15.0192 13.332 13.3587C14.9918 11.6849 18.0136 12.0969 20.1376 12.0969C22.5701 12.0969 24.2609 11.3047 25.9671 9.59848C28.8104 6.75515 30.232 5.3335 31.9987 5.3335C33.7654 5.3335 35.187 6.75515 38.0302 9.59848C39.736 11.3043 41.4267 12.0969 43.8598 12.0969C45.9702 12.0969 48.9798 11.6867 50.6403 13.3335C52.3139 14.9933 51.9019 18.0151 51.9019 20.139C51.9019 22.823 52.4891 24.0571 54.4003 25.9686C57.2438 28.8119 58.6654 30.2335 58.6654 32.0002C58.6654 33.7666 57.2438 35.1884 54.4003 38.0316C52.4888 39.9431 51.9019 41.1772 51.9019 43.8612C51.9019 45.9852 52.3139 49.0071 50.64 50.6668Z" stroke="#7E6B47" stroke-width="4"/>
-<path d="M24 34.381C24 34.381 27.2 36.1192 28.8 38.6666C28.8 38.6666 33.6 28.6666 40 25.3333" stroke="#7E6B47" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`,
+    icon: "...",
     image: "/steps/step2.png",
     title: "Verify Your Information",
     content: "We’ll confirm your graduation details for secure access.",
   },
   {
-    icon: `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M37.3346 22.6668C37.3346 15.303 31.365 9.3335 24.0013 9.3335C16.6375 9.3335 10.668 15.303 10.668 22.6668C10.668 30.0306 16.6375 36.0002 24.0013 36.0002C31.365 36.0002 37.3346 30.0306 37.3346 22.6668Z" stroke="#7E6B47" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M42.6654 54.6667C42.6654 44.3573 34.308 36 23.9987 36C13.6894 36 5.33203 44.3573 5.33203 54.6667" stroke="#7E6B47" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M42.668 33.0477C42.668 33.0477 45.868 34.7859 47.468 37.3333C47.468 37.3333 52.268 27.3333 58.668 24" stroke="#7E6B47" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`,
+    icon: "...",
     image: "/steps/step3.png",
     title: "Become a Member",
-    content:
-      "Start enjoying all the benefits: events, connections, and community updates.",
+    content: "Start enjoying all the benefits: events, connections, and community updates.",
   },
 ]);
 
-let currentIndex = 0;
-let slideWidth = 0;
-let activeSlide = ref(1);
-
+// --------------------
+// Helpers
+// --------------------
 const updateSlideWidth = () => {
-  slideWidth = sliderWrapper.value.querySelector(".slide").offsetWidth;
+  slideWidth = sliderWrapper.value.querySelector(".slide")?.offsetWidth || 0;
 };
 
 const goToSlide = (index) => {
@@ -177,22 +174,17 @@ const goToSlide = (index) => {
   const slides = sliderWrapper.value.querySelectorAll(".slide");
   const actSlide = slides[index];
 
+  // Animate current number
   $gsap.to(currentNumRef.value, {
     y: -20,
     opacity: 0,
     duration: 0.25,
     ease: "power2.in",
     onComplete() {
-      // Animate number in
       $gsap.fromTo(
         currentNumRef.value,
         { y: 20, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.25,
-          ease: "power2.out",
-        }
+        { y: 0, opacity: 1, duration: 0.25, ease: "power2.out" }
       );
     },
   });
@@ -201,45 +193,27 @@ const goToSlide = (index) => {
   const desc = actSlide.querySelector("#stepDesc");
 
   const tl = $gsap.timeline();
+  add(tl);
 
-  tl.to(sliderWrapper.value, {
-    x: -slideWidth * index,
-    duration: 0.3,
-    ease: "power2.out",
-  });
-
-  tl.fromTo(
-    img,
-    { xPercent: 50, opacity: 0 },
-    { xPercent: 0, opacity: 1, duration: 0.3, ease: "power2.out" },
-    "<0.1"
-  ).fromTo(
-    desc,
-    {
-      xPercent: 50,
-      opacity: 0,
-    },
-    {
-      xPercent: 0,
-      opacity: 1,
-      duration: 0.3,
-      ease: "power2.out",
-    },
-    "-=0.1"
-  );
+  tl.to(sliderWrapper.value, { x: -slideWidth * index, duration: 0.3, ease: "power2.out" })
+    .fromTo(img, { xPercent: 50, opacity: 0 }, { xPercent: 0, opacity: 1, duration: 0.3, ease: "power2.out" }, "<0.1")
+    .fromTo(desc, { xPercent: 50, opacity: 0 }, { xPercent: 0, opacity: 1, duration: 0.3, ease: "power2.out" }, "-=0.1");
 };
 
 const nextSlide = () => {
-  if (currentIndex < stepCards.value.length - 1) currentIndex++;
-  //else currentIndex = 0; // loop
-  goToSlide(currentIndex);
+  if (currentIndex.value < stepCards.value.length - 1) currentIndex.value++;
+  goToSlide(currentIndex.value);
 };
 
 const prevSlide = () => {
-  if (currentIndex > 0) currentIndex--;
-  //else currentIndex = stepCards.value.length - 1; // loop
-  goToSlide(currentIndex);
+  if (currentIndex.value > 0) currentIndex.value--;
+  goToSlide(currentIndex.value);
 };
+
+// --------------------
+// Mounted Animations
+// --------------------
+let mm;
 
 onMounted(() => {
   updateSlideWidth();
@@ -247,14 +221,14 @@ onMounted(() => {
 
   const counts = $gsap.utils.toArray(".count");
 
-  const mm = $gsap.matchMedia();
+  mm = $gsap.matchMedia();
 
   mm.add(
     {
       sm: "(max-width: 480px)",
       md: "(min-width: 481px) and (max-width: 768px)",
-      lg: "(min-width: 769px) and (max-width: 1366px)",
-      xlg: "(min-width: 1367px) and (max-width: 1440px)",
+      lg: "(min-width: 769px) and (max-width: 1024px)",
+      xlg: "(min-width: 1025px) and (max-width: 1440px)",
       xl: "(min-width: 1441px) and (max-width: 1920px)",
       xxl: "(min-width: 1921px)",
     },
@@ -262,6 +236,7 @@ onMounted(() => {
       const { sm, md, lg, xlg, xl } = context.conditions;
 
       if (sm) return;
+
       nextTitleRef.value.style.transform = `translate(${initTitleRef.value.offsetLeft}px, ${initTitleRef.value.offsetTop}px)`;
 
       const hiddenTitlePosition = hiddenTitleRef.value.getBoundingClientRect();
@@ -270,6 +245,7 @@ onMounted(() => {
       const exactXposition = hiddenTitlePosition.x;
       const exactYposition = hiddenTitleRef.value.offsetTop;
 
+      // Timeline 1: Title & Blocks
       const tl2 = $gsap.timeline({
         scrollTrigger: {
           trigger: mainContainerRef.value,
@@ -278,147 +254,74 @@ onMounted(() => {
           scrub: 1.5,
         },
       });
+      add(tl2);
 
-      tl2
-        .fromTo(
-          titleRef.value,
-          { y: 500 },
-          {
-            y: 0,
-            ease: "power2.out",
-            duration: 2,
-          },
-          0
-        )
-        .fromTo(
-          blocksRef.value,
-          { y: 300 },
-          {
-            y: 0,
-            ease: "power2.out",
-            duration: 2,
-          },
-          1
-        );
+      tl2.fromTo(titleRef.value, { y: 500 }, { y: 0, ease: "power2.out", duration: 2 }, 0)
+        .fromTo(blocksRef.value, { y: 300 }, { y: 0, ease: "power2.out", duration: 2 }, 1);
 
+      // Timeline 2: Main Benefits Scroll
       const tl = $gsap.timeline({
         scrollTrigger: {
           trigger: mainContainerRef.value,
           start: "top top",
-          end: "+=320%",
+          end: "+=400%",
           scrub: 1.5,
           pin: true,
           toggleActions: "play none none reverse",
           onUpdate: (self) => {
-            if (self.direction === 1) scrollDir.value = "down";
-            else scrollDir.value = "up";
+            scrollDir.value = self.direction === 1 ? "down" : "up";
           },
-
         },
       });
+      add(tl);
 
       tl.to(dupBenefitsRef.value, {
-        clipPath: md
-          ? "circle(12% at 60% 70%)"
-          : lg
-            ? "circle(12% at 77% 70%)"
-            : xl
-              ? "circle(12% at 80% 70%)"
-              : "circle(12% at 80% 65%)",
+        clipPath: md ? "circle(15% at 65% 70%)" : lg ? "circle(15% at 62% 74%)" : xl ? "circle(15% at 82% 70%)" : "circle(15% at 82% 65%)",
       })
         .to(circleBlockRef.value, { opacity: 0, x: 700 })
-        .to(
-          benefitsRef.value,
-          {
-            x: !sm && "-100%",
-            y: sm && "-100%",
-          },
-          "<"
-        )
-        .to(
-          dupBenefitsRef.value,
-          {
-            clipPath: "circle(75% at 50% 50%)",
-          },
-          "<"
-        )
-        .to(
-          nextTitleRef.value,
-          {
-            x: `${exactXposition}px`,
-            y: `${exactYposition}px`,
-            fontSize: sm ? 32 : md ? 32 : lg ? 48 : xl ? 56 : 64,
-          },
-          "<"
-        )
-        .to(
-          stepsRef.value,
-          {
-            x: md ? "-65%" : lg ? "-48%" : xlg ? "-43%" : xl ? "-40%" : "-35%",
-            duration: 2.7,
-          },
-          "-=0.5"
-        )
-        .to(
-          progressRef.value,
-          {
-            width: "100%",
-            duration: 0.5,
-            delay: 0.3,
-            duration: 2,
-            ease: "none",
-            onUpdate() {
-              const pg = Math.floor(this.progress() * 100);
+        .to(benefitsRef.value, { x: !sm && "-100%", y: sm && "-100%" }, "<")
+        .to(dupBenefitsRef.value, { clipPath: "circle(75% at 50% 50%)" }, "<")
+        .to(nextTitleRef.value, {
+          x: `${exactXposition}px`,
+          y: `${exactYposition}px`,
+          fontSize: sm ? 32 : md ? 32 : lg ? 48 : xl ? 56 : 64,
+        }, "<")
+        .to(stepsRef.value, {
+          x: md ? "-65%" : lg ? "-48%" : xlg ? "-43%" : xl ? "-40%" : "-35%",
+          duration: 2.7,
+        }, "-=0.5")
+        .to(progressRef.value, {
+          width: "100%",
+          duration: 2,
+          ease: "none",
+          onUpdate() {
+            const pg = Math.floor(this.progress() * 100);
 
-              if (scrollDir.value === "down") {
-                if (pg === 0) {
-                  $gsap.to(counts[0], {
-                    color: "#E7DFCF",
-                    background: "#7E6B47",
-                    duration: 0.2,
-                  });
-                } else if (pg === 50) {
-                  $gsap.to(counts[1], {
-                    color: "#E7DFCF",
-                    background: "#7E6B47",
-                    duration: 0.2,
-                  });
-                } else if (pg === 100) {
-                  $gsap.to(counts[2], {
-                    color: "#E7DFCF",
-                    background: "#7E6B47",
-                    duration: 0.2,
-                  });
-                }
-              } else {
-                if (pg === 0) {
-                  $gsap.to(counts[0], {
-                    color: "#08110B",
-                    background: "#E7DFCF",
-                    duration: 0.2,
-                  });
-                } else if (pg === 50) {
-                  $gsap.to(counts[1], {
-                    color: "#08110B",
-                    background: "#E7DFCF",
-                    duration: 0.2,
-                  });
-                } else if (pg !== 100) {
-                  $gsap.to(counts[2], {
-                    color: "#08110B",
-                    background: "#E7DFCF",
-                    duration: 0.2,
-                  });
-                }
-              }
-            },
+            if (scrollDir.value === "down") {
+              if (pg === 0) $gsap.to(counts[0], { color: "#E7DFCF", background: "#7E6B47", duration: 0.2 });
+              else if (pg === 50) $gsap.to(counts[1], { color: "#E7DFCF", background: "#7E6B47", duration: 0.2 });
+              else if (pg === 100) $gsap.to(counts[2], { color: "#E7DFCF", background: "#7E6B47", duration: 0.2 });
+            } else {
+              if (pg === 0) $gsap.to(counts[0], { color: "#08110B", background: "#E7DFCF", duration: 0.2 });
+              else if (pg === 50) $gsap.to(counts[1], { color: "#08110B", background: "#E7DFCF", duration: 0.2 });
+              else if (pg !== 100) $gsap.to(counts[2], { color: "#08110B", background: "#E7DFCF", duration: 0.2 });
+            }
           },
-          "<"
-        );
+        }, "<");
     }
   );
 });
+
+// --------------------
+// Cleanup
+// --------------------
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateSlideWidth);
+  cleanup(); // kills all timelines, ScrollTriggers, tweens
+  mm?.kill(); // kills matchMedia
+});
 </script>
+
 
 <style scoped lang="scss">
 #mainContainer {
@@ -529,41 +432,28 @@ onMounted(() => {
     top: 0;
     left: 0;
     background: $yellow-50;
-    clip-path: circle(0% at 80% 60%);
+    clip-path: circle(0% at 82% 62%);
     overflow: hidden;
     will-change: clip-path, transform;
     padding-inline: 0;
-
-    @media screen and (max-width: 767px) {
-      display: none;
-    }
+    display: none;
 
     @media screen and (min-width: 768px) {
-      clip-path: circle(0% at 60% 70%);
+      display: block;
+      clip-path: circle(0% at 70% 67%);
     }
 
-    @media screen and (min-width: 769px) and (max-width: 1024px) {
-      clip-path: circle(0% at 60% 70%);
+    @media screen and (min-width: 918px) {
+      clip-path: circle(0% at 65% 74%);
     }
 
-    @media screen and (min-width: 1025px) and (max-width: 1366px) {
-      clip-path: circle(0% at 80% 70%);
+    @media screen and (min-width: 1024px) {
+      clip-path: circle(0% at 60% 73%);
     }
 
-    @media screen and (min-width: 1367px) and (max-width: 1440px) {
-      clip-path: circle(0% at 80% 65%);
-    }
+    @media screen and (min-width: 1366px) {
+      clip-path: circle(0% at 83% 62%);
 
-    @media screen and (min-width: 1441px) and (max-width: 1920px) {
-      clip-path: circle(0% at 80% 65%);
-    }
-
-    @media screen and (min-width: 1921px) and (max-width: 2560px) {
-      clip-path: circle(0% at 80% 60%);
-    }
-
-    @media screen and (min-width: 2561px) {
-      clip-path: circle(0% at 80% 45%);
     }
 
     .dup-container {

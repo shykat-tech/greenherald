@@ -1,5 +1,6 @@
 <template>
   <div>
+    <CommonNavbar />
     <slot />
   </div>
 </template>

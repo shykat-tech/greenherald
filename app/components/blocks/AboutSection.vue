@@ -14,15 +14,15 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
 const { $gsap, $SplitText, $ScrollTrigger } = useNuxtApp();
+const { add, cleanup } = useGsapCleanup();
 
 // Refs
 const aboutRef = ref(null);
 const containerRef = ref(null);
 const textRef = ref(null);
-// const gradientBack = ref(null);
-
+// const gradientBack = ref(null)
 
 onMounted(() => {
   const target = textRef.value;
@@ -30,11 +30,15 @@ onMounted(() => {
 
   const split = new $SplitText(target, { type: "words" });
 
-  $gsap.set(split.words, { opacity: 0.2 });
-  $gsap.set(split.lines, { opacity: 0, y: "100px" });
+  // Standalone tweens for initial setup
+  const setWords = $gsap.set(split.words, { opacity: 0.2 });
+  const setLines = $gsap.set(split.lines, { opacity: 0, y: "100px" });
+
+  add(setWords);
+  add(setLines);
 
   // 1️⃣ PIN THE SECTION UNTIL TEXT ANIMATION IS COMPLETE
-  $ScrollTrigger.create({
+  const pinTrigger = $ScrollTrigger.create({
     trigger: aboutRef.value,
     start: "top top",
     end: "+=100%",
@@ -42,22 +46,24 @@ onMounted(() => {
     scrub: 1.5,
     pinSpacing: true,
   });
+  add(pinTrigger);
 
   // 2️⃣ FADE-IN WORDS DURING PINNED SCROLL
-  $gsap.to(split.words, {
+  const fadeWords = $gsap.to(split.words, {
     opacity: 1,
     stagger: 0.1,
     ease: "none",
     scrollTrigger: {
       trigger: aboutRef.value,
       start: "top top",
-      end: "+=100%", // must match pin duration
+      end: "+=100%",
       scrub: 1.5,
     },
   });
+  add(fadeWords);
 
   // 3️⃣ BACKGROUND + TEXTURE TRANSITION
-  const tl = $gsap.timeline({
+  const bgTimeline = $gsap.timeline({
     scrollTrigger: {
       trigger: aboutRef.value,
       start: "top top",
@@ -66,21 +72,14 @@ onMounted(() => {
     },
   });
 
-  tl
-    .to("#bg-overlay", {
-      background: "linear-gradient(to bottom, #142819 80%, #f7f5f0)",
-      duration: 0.6,
-    })
-    .to(
-      textRef.value,
-      {
-        color: "#fcfcfc",
-        duration: 0.6,
-      },
-      "<"
-    );
+  bgTimeline
+    .to("#bg-overlay", { background: "linear-gradient(to bottom, #142819 80%, #f7f5f0)", duration: 0.6 })
+    .to(textRef.value, { color: "#fcfcfc", duration: 0.6 }, "<");
 
-  $gsap.to(containerRef.value, {
+  add(bgTimeline);
+
+  // Container fade-in
+  const containerTween = $gsap.to(containerRef.value, {
     y: 0,
     opacity: 1,
     stagger: 0.1,
@@ -90,8 +89,15 @@ onMounted(() => {
       toggleActions: "play none none reverse",
     },
   });
+  add(containerTween);
+});
+
+// CLEANUP ON UNMOUNT
+onBeforeUnmount(() => {
+  cleanup(); // kills all tweens, timelines, and ScrollTriggers tracked via add()
 });
 </script>
+
 
 <style scoped lang="scss">
 #about {

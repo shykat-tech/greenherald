@@ -21,12 +21,12 @@
                 </button>
             </div>
             <div class="btn-group" :class="{ open: isMenuOpen }">
-                <button class="signin-btn">Sign in</button>
+                <button class="signin-btn" @click="goToSignup">Sign in</button>
             </div>
         </nav>
 
         <Transition name="fixedNav">
-            <nav v-if="(scrollDir === 'up' && scrollY >= 250) || isMenuOpen" id="fixedNav" :class="{ open: isMenuOpen }"
+            <nav v-if="(scrollDir === 'up' && scrollY >= 250)" id="fixedNav" :class="{ open: isMenuOpen }"
                 ref="fixedNavRef">
                 <div class="menu">
                     <button class="menu-btn" @click="isMenuOpen = !isMenuOpen">
@@ -53,39 +53,71 @@
                 </NuxtLink>
 
                 <div class="btn-group" :class="{ open: isMenuOpen }">
-                    <button class="signin-btn">Sign in</button>
-                    <button class="join-btn">Join now</button>
+                    <button class="signin-btn" @click="goToSignup">Sign in</button>
+                    <button class="join-btn" @click="goToSignup">Join now</button>
                 </div>
             </nav>
         </Transition>
 
         <Transition name="navMenu">
-            <ul class="open-menu" ref="openMenuRef" v-if="isMenuOpen">
-                <li class="link">
-                    <NuxtLink to="#">Events</NuxtLink>
-                </li>
-                <li class="link">
-                    <NuxtLink to="#">Stories</NuxtLink>
-                </li>
-                <li class="link">
-                    <NuxtLink to="#">How to Join</NuxtLink>
-                </li>
-                <li class="link">
-                    <NuxtLink to="#">The Board</NuxtLink>
-                </li>
-                <li class="link">
-                    <NuxtLink to="#">About Us</NuxtLink>
-                </li>
-                <li class="link">
-                    <NuxtLink to="#">Benefits</NuxtLink>
-                </li>
-                <li class="link">
-                    <NuxtLink to="#">Membership</NuxtLink>
-                </li>
+            <ul class="open-menu" v-if="isMenuOpen" :class="{ open: isMenuOpen }">
+                <div class="bar">
+                    <NuxtLink to="/">
+                        <img src="/assets/images/logo.svg" class="nav-logo" :class="{ open: isMenuOpen }"
+                            alt="greenherald-logo" ref="navLogoRef" />
+                    </NuxtLink>
+                    <div class="menu">
+                        <button class="menu-btn" @click="isMenuOpen = !isMenuOpen">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" class="menu-icon" :class="{ open: isMenuOpen }">
+                                <path d="M4 5H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M4 12H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M4 19H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            <Transition>
+                                <span :key="isMenuOpen" class="menu-btn-text" :style="{ color: isMenuOpen && 'white' }">
+                                    {{ isMenuOpen ? "Close" : "Menu" }}
+                                </span>
+                            </Transition>
+                        </button>
+                    </div>
 
-                <div class="btn-group link" :class="{ open: isMenuOpen }">
-                    <button class="signin-btn">Sign in</button>
-                    <button class="join-btn">Join now</button>
+
+                    <div class="btn-group" :class="{ open: isMenuOpen }">
+                        <button class="signin-btn" @click="goToSignup">Sign in</button>
+                        <button class="join-btn" @click="goToSignup">Join now</button>
+                    </div>
+                </div>
+                <div class="content">
+                    <li class="link">
+                        <NuxtLink to="#">Events</NuxtLink>
+                    </li>
+                    <li class="link">
+                        <NuxtLink to="#">Stories</NuxtLink>
+                    </li>
+                    <li class="link">
+                        <NuxtLink to="#">How to Join</NuxtLink>
+                    </li>
+                    <li class="link">
+                        <NuxtLink to="#">The Board</NuxtLink>
+                    </li>
+                    <li class="link">
+                        <NuxtLink to="#">About Us</NuxtLink>
+                    </li>
+                    <li class="link">
+                        <NuxtLink to="#">Benefits</NuxtLink>
+                    </li>
+                    <li class="link">
+                        <NuxtLink to="#">Membership</NuxtLink>
+                    </li>
+
+                    <div class="btn-group link" :class="{ open: isMenuOpen }">
+                        <button class="signin-btn" @click="goToSignup">Sign in</button>
+                        <button class="join-btn" @click="goToSignup">Join now</button>
+                    </div>
                 </div>
             </ul>
         </Transition>
@@ -93,52 +125,68 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-const { $gsap } = useNuxtApp();
+import { ref, onMounted, nextTick, watch, onUnmounted } from 'vue';
+import { useGsapCleanup } from '~/composables/useGsapCleanup';
+const router = useRouter();
 
-const scrollDir = ref('down')
-const scrollY = ref(0)
-const isMenuOpen = ref(false)
+const goToSignup = () => {
+    router.push({ path: "/auth/signup" });
+};
+
+const scrollDir = ref('down');
+const scrollY = ref(0);
+const isMenuOpen = ref(false);
+
+const { $gsap } = useNuxtApp();
+const { add, cleanup } = useGsapCleanup();
 
 onMounted(() => {
     let windowOffset = window.pageYOffset;
 
-    window.addEventListener("scroll", () => {
+    const onScroll = () => {
         const y = window.pageYOffset;
         scrollY.value = y;
 
-        if (y > windowOffset)
-            scrollDir.value = 'down'
-        else
-            scrollDir.value = 'up'
+        scrollDir.value = y > windowOffset ? 'down' : 'up';
         windowOffset = y;
-    })
+    };
 
-    // ⭐ Animate menu links when menu opens
+    window.addEventListener("scroll", onScroll);
+
+    // Animate menu links when menu opens
     watch(isMenuOpen, async (open) => {
-        if (open) {
-            // Wait for DOM to update
-            await nextTick();
-            const links = $gsap.utils.toArray('.open-menu .link');
+        if (!open) return;
 
-            $gsap.fromTo(
-                links,
-                { x: -100, opacity: 0 },
-                { x: 0, opacity: 1, stagger: 0.2, ease: "power3.out", duration: 1 }
-            );
-        }
+        await nextTick();
+        const links = $gsap.utils.toArray('.open-menu .link');
+
+        const tl = $gsap.timeline();
+        add(tl); // Register timeline for cleanup
+
+        tl.fromTo(
+            links,
+            { filter: "blur(20px)", opacity: 0 },
+            { filter: "blur(0px)", opacity: 1, stagger: 0.1, ease: "power3.out", duration: 1 }
+        );
     });
-})
 
+    // Cleanup on unmount
+    onUnmounted(() => {
+        window.removeEventListener("scroll", onScroll);
+        cleanup();
+    });
+});
 </script>
 
+
 <style scoped lang="scss">
-nav {
+nav,
+.bar {
     width: 100%;
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 999;
+    z-index: 998;
     @include clamp-property("padding-inline", 1.25, 8.12);
     @include clamp-property("padding-block", 1, 1);
     display: flex;
@@ -286,7 +334,7 @@ nav {
 
 #fixedNav {
     position: fixed;
-    z-index: 9999;
+    z-index: 998;
     background: $yellow-50;
     transition: all 0.3s;
 
@@ -301,123 +349,155 @@ nav {
 }
 
 .open-menu {
-    width: 100%;
-    @include clamp-property("padding-inline", 1.25, 36.38);
-    @include clamp-property("padding-block", 2, 9);
-    background: $yellow-700;
+    height: 100dvh;
+    width: 100vw;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 998;
-    list-style: none;
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    grid-template-rows: repeat(4, auto);
-    @include clamp-property("row-gap", 1.25, 2.5);
-    column-gap: 6.25rem;
+    z-index: 999;
+
     clip-path: inset(0 0 0 0);
 
-    .btn-group {
-        display: none;
-    }
+    .bar {
+        position: relative;
+        background: $yellow-700;
 
+        .nav-logo {
+            display: none;
+        }
 
-    li {
-        a {
-            color: white;
-            text-decoration: none;
-            @include clamp-property("font-size", 1.5, 2);
-            font-style: normal;
-            font-weight: 400;
-            line-height: 125%;
-            transition: all 0.5s;
+        @media screen and (max-width: 1024px) {
+            flex-direction: row;
+            justify-content: space-between;
 
-            &:hover {
-                color: $yellow-200;
+            .menu {
+                width: 100%;
+                display: flex;
+            }
+
+            .nav-logo {
+                display: block;
             }
         }
     }
 
-    @media screen and (max-width:1024px) {
-        height: 100svh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+    .content {
+        width: 100%;
+        @include clamp-property("padding-inline", 1.25, 36.38);
+        @include clamp-property("padding-block-start", 0, 2.47);
+        @include clamp-property("padding-block-end", 2, 6.72);
+        background: $yellow-700;
 
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        grid-template-rows: repeat(4, auto);
+        @include clamp-property("row-gap", 1.25, 2.5);
+        column-gap: 6.25rem;
 
         .btn-group {
-            padding-top: 2.5rem;
-            border-top: 1px solid $yellow-50;
-            display: flex;
-            justify-content: start;
-            gap: 0.5rem;
+            display: none;
+        }
 
-            @media screen and (max-width:360px) {
-                padding-top: 1.25rem;
-            }
 
-            .signin-btn,
-            .join-btn {
-                font-size: 1rem;
+        li {
+            a {
+                color: white;
+                text-decoration: none;
+                @include clamp-property("font-size", 1.5, 2);
                 font-style: normal;
-                font-weight: 500;
-                line-height: 110%;
-                padding-inline: 1rem;
-                padding-block: 0.62rem;
-                border-radius: 2rem;
-                border: 1px solid $yellow-700;
+                font-weight: 400;
+                line-height: 125%;
                 transition: all 0.5s;
-                text-transform: capitalize;
-            }
-
-            .signin-btn {
-                background: transparent;
-                color: $yellow-700;
 
                 &:hover {
-                    background: $yellow-90;
-                    color: $yellow-900;
-                    border-color: $yellow-900;
-                }
-            }
-
-            .join-btn {
-                background: $yellow-700;
-                color: $yellow-50;
-
-                &:hover {
-                    background: $yellow-900;
-                    border-color: $yellow-900;
+                    color: $yellow-200;
                 }
             }
         }
 
-        .btn-group.open {
-            .signin-btn {
-                border-color: $yellow-100;
-                color: $yellow-100;
+        @media screen and (max-width:1024px) {
+            height: 100svh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
 
-                &:hover {
-                    background: $yellow-200;
-                    color: $yellow-900;
-                    border-color: $yellow-200;
+
+            .btn-group {
+                padding-top: 2.5rem;
+                border-top: 1px solid $yellow-50;
+                display: flex;
+                justify-content: start;
+                gap: 0.5rem;
+
+                @media screen and (max-width:360px) {
+                    padding-top: 1.25rem;
+                }
+
+                .signin-btn,
+                .join-btn {
+                    font-size: 1rem;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: 110%;
+                    padding-inline: 1rem;
+                    padding-block: 0.62rem;
+                    border-radius: 2rem;
+                    border: 1px solid $yellow-700;
+                    transition: all 0.5s;
+                    text-transform: capitalize;
+                }
+
+                .signin-btn {
+                    background: transparent;
+                    color: $yellow-700;
+
+                    &:hover {
+                        background: $yellow-90;
+                        color: $yellow-900;
+                        border-color: $yellow-900;
+                    }
+                }
+
+                .join-btn {
+                    background: $yellow-700;
+                    color: $yellow-50;
+
+                    &:hover {
+                        background: $yellow-900;
+                        border-color: $yellow-900;
+                    }
                 }
             }
 
-            .join-btn {
-                border-color: $yellow-900;
-                background: $yellow-900;
-                color: $yellow-50;
+            .btn-group.open {
+                .signin-btn {
+                    border-color: $yellow-100;
+                    color: $yellow-100;
 
-                &:hover {
-                    background: $yellow-200;
-                    color: $yellow-900;
-                    border-color: $yellow-200;
+                    &:hover {
+                        background: $yellow-200;
+                        color: $yellow-900;
+                        border-color: $yellow-200;
+                    }
+                }
+
+                .join-btn {
+                    border-color: $yellow-900;
+                    background: $yellow-900;
+                    color: $yellow-50;
+
+                    &:hover {
+                        background: $yellow-200;
+                        color: $yellow-900;
+                        border-color: $yellow-200;
+                    }
                 }
             }
         }
     }
 }
+
 
 .fixedNav-enter-active,
 .fixedNav-leave-active {
@@ -431,7 +511,7 @@ nav {
 
 .navMenu-enter-active,
 .navMenu-leave-active {
-    transition: all 0.7s cubic-bezier(.21, .79, .83, .27);
+    transition: clip-path 1s cubic-bezier(0, -0.01, .43, .99);
 }
 
 .navMenu-enter-from,

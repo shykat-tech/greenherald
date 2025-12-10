@@ -7,7 +7,7 @@
       <div class="content" ref="contentRef">
         <div class="section-title" ref="sectionTitleRef">
           <h2>Guiding the alumni community</h2>
-          <CommonPrimaryButton>View All</CommonPrimaryButton>
+          <!-- <CommonPrimaryButton>View All</CommonPrimaryButton> -->
         </div>
 
         <div class="members" ref="membersRef">
@@ -28,7 +28,7 @@
         </h2>
 
         <div ref="cta">
-          <CommonPrimaryButton>Join Now</CommonPrimaryButton>
+          <CommonPrimaryButton @click="globalStore.openModal('membership')">Join Now</CommonPrimaryButton>
         </div>
       </div>
     </div>
@@ -36,7 +36,9 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
+import { useGsapCleanup } from "~/composables/useGsapCleanup";
+const globalStore = useGlobalStore();
 
 const alumniRef = ref(null);
 const membersRef = ref(null);
@@ -47,92 +49,73 @@ const cta = ref(null);
 const contentRef = ref(null);
 
 const members = [
-  {
-    name: "Michael Brown",
-    role: "Contributor",
-    profile_img: "/members/pp1.png",
-  },
-  {
-    name: "Alice Johnson",
-    role: "Participant",
-    profile_img: "/members/pp2.png",
-  },
+  { name: "Michael Brown", role: "Contributor", profile_img: "/members/pp1.png" },
+  { name: "Alice Johnson", role: "Participant", profile_img: "/members/pp2.png" },
   { name: "Emily Davis", role: "Observer", profile_img: "/members/pp3.png" },
   { name: "John Smith", role: "Convener", profile_img: "/members/pp4.png" },
 ];
 
 const { $gsap } = useNuxtApp();
+const { add, cleanup } = useGsapCleanup();
 
 onMounted(() => {
   const cards = $gsap.utils.toArray(".member", membersRef.value);
 
-  setTimeout(() => {
-    const tl = $gsap.timeline({
-      scrollTrigger: {
-        trigger: alumniRef.value,
-        start: "top 80%",
-        end: "top top",
-        scrub: 1.5,
-      },
-    });
+  const tl = $gsap.timeline({
+    scrollTrigger: {
+      trigger: alumniRef.value,
+      start: "top 80%",
+      end: "top top",
+      scrub: 1.5,
+    },
+  });
 
-    tl.fromTo(
-      sectionTitleRef.value,
-      { y: 500 },
-      {
-        y: 0,
-        ease: "power2.out",
-        duration: 2,
-      },
-      0
-    ).fromTo(
-      cards,
-      { y: 500 },
-      {
-        y: 0,
-        ease: "power2.out",
-        duration: 2,
-        stagger: 0.3,
-      },
-      1
-    );
+  add(tl); // Register timeline for automatic cleanup
 
-    const tl2 = $gsap.timeline({
-      scrollTrigger: {
-        trigger: contentRef.value,
-        start: "bottom 80%",
-        end: "5%",
-        toggleActions: "play none none reverse"
-      },
-    });
+  tl.fromTo(
+    sectionTitleRef.value,
+    { y: 500 },
+    { y: 0, ease: "power2.out", duration: 2 },
+    0
+  ).fromTo(
+    cards,
+    { y: 500 },
+    { y: 0, ease: "power2.out", duration: 2, stagger: 0.3 },
+    1
+  );
 
-    tl2
-      .fromTo(
-        CTARef.value,
-        { y: 200 },
-        {
-          y: 0,
-          ease: "power2.out",
-          duration: 1,
-        },
-        0
-      )
-      .fromTo(
-        [CTATitleRef.value, cta.value],
-        { y: 300 },
-        {
-          y: 0,
-          ease: "power2.out",
-          duration: 0.7,
-          stagger: 0.2,
-        },
-        0.5
-      );
-  }, 0)
+  const tl2 = $gsap.timeline({
+    scrollTrigger: {
+      trigger: contentRef.value,
+      start: "bottom 80%",
+      end: "5%",
+      toggleActions: "play none none reverse",
+    },
+  });
 
+  add(tl2); // Register second timeline
 
+  tl2.fromTo(
+    CTARef.value,
+    { y: 200 },
+    { y: 0, ease: "power2.out", duration: 1 },
+    0
+  ).fromTo(
+    [CTATitleRef.value, cta.value],
+    { y: 300 },
+    { y: 0, ease: "power2.out", duration: 0.7, stagger: 0.2 },
+    0.5
+  );
+});
+
+// -------------------
+// Cleanup
+// -------------------
+onBeforeUnmount(() => {
+  cleanup();
 });
 </script>
+
 
 <style scoped lang="scss">
 #alumni {

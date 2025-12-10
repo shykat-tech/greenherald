@@ -101,25 +101,8 @@
           <!-- Buttons -->
           <div class="btn-group">
             <CommonPrimaryButton @click="globalStore.openModal('alumniConfirmation')">Register Now</CommonPrimaryButton>
-            <button class="details-btn">
-              <span>View Details</span>
-
-              <div class="btn-icon-container">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M15.4175 10H4.16748" stroke="#08110B" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                  <path d="M10.8325 15C10.8325 15 15.8325 11.3176 15.8325 10C15.8325 8.68233 10.8325 5 10.8325 5"
-                    stroke="#08110B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M15.4175 10H4.16748" stroke="#08110B" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                  <path d="M10.8325 15C10.8325 15 15.8325 11.3176 15.8325 10C15.8325 8.68233 10.8325 5 10.8325 5"
-                    stroke="#08110B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </div>
-            </button>
+            <!-- <CommonPrimaryButton variant="secondary" @click="globalStore.openModal('alumniConfirmation')">View Details
+            </CommonPrimaryButton> -->
           </div>
         </div>
       </div>
@@ -128,35 +111,39 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
 
 const { $gsap } = useNuxtApp();
 const globalStore = useGlobalStore();
+const { add, cleanup } = useGsapCleanup();
 
+// Refs
 const upcomingEventsRef = ref(null);
 const titleRef = ref(null);
 const containerRef = ref(null);
 
+// Countdown state
 const days = ref("00");
 const hours = ref("00");
 const minutes = ref("00");
 const seconds = ref("00");
 
 const date = "2025-12-30T00:00:00";
-
 let countdown;
+let mm; // matchMedia instance
 
 onMounted(() => {
+  // Start countdown
   countdown = useCountdown(date, (values) => {
     days.value = values.days;
     hours.value = values.hours;
     minutes.value = values.minutes;
     seconds.value = values.seconds;
   });
-
   countdown.start();
 
-  const mm = $gsap.matchMedia();
+  // GSAP MatchMedia
+  mm = $gsap.matchMedia();
 
   mm.add(
     {
@@ -167,37 +154,39 @@ onMounted(() => {
     (context) => {
       const { isMobile } = context.conditions;
 
+      // ScrollTrigger timeline
       const tl = $gsap.timeline({
         scrollTrigger: {
           trigger: upcomingEventsRef.value,
           start: "-30% 80%",
           end: "top top",
           scrub: 1.5,
-        }
-      })
-
-      tl.fromTo(titleRef.value,
-        { y: 500 },
-        {
-          y: 0,
-          ease: "power2.out",
-          duration: 2,
         },
+      });
+
+      add(tl); // Track timeline + its ScrollTrigger
+
+      tl.fromTo(
+        titleRef.value,
+        { y: 500 },
+        { y: 0, ease: "power2.out", duration: 2 },
         0
-      ).fromTo(containerRef.value,
+      ).fromTo(
+        containerRef.value,
         { y: 500 },
-        {
-          y: 0,
-          ease: "power2.out",
-          duration: 2
-
-        },
+        { y: 0, ease: "power2.out", duration: 2 },
         1
       );
     }
   );
 });
+
+onBeforeUnmount(() => {
+  cleanup();   // kills all tracked GSAP timelines, tweens, triggers
+  mm?.kill();  // kills matchMedia context
+});
 </script>
+
 
 <style lang="scss">
 #upcoming-events {
@@ -263,12 +252,14 @@ onMounted(() => {
           gap: 24px;
 
           .block {
+            width: 2.5rem;
             line-height: 150%;
             letter-spacing: -1%;
             display: flex;
             flex-direction: column;
             gap: 2.5px;
             align-items: center;
+            flex-shrink: 0;
 
             .dynamic {
               font-weight: 600;
@@ -279,7 +270,9 @@ onMounted(() => {
 
             .static {
               @include clamp-property("font-size", 0.75, 0.75);
-
+              display: inline-block;
+              text-align: center;
+              width: 100%;
               font-weight: 400;
               color: $gray-900;
             }

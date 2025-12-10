@@ -40,7 +40,8 @@
           </div>
 
           <!-- Join Button -->
-          <CommonPrimaryButton><span>Join as {{ plan.title }} Member</span></CommonPrimaryButton>
+          <CommonPrimaryButton @click="joinMembership"><span>Join as {{ plan.title }} Member</span>
+          </CommonPrimaryButton>
         </div>
       </div>
     </div>
@@ -48,12 +49,32 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
 const { $gsap } = useNuxtApp();
+const { add, cleanup } = useGsapCleanup();
+const globalStore = useGlobalStore();
+const router = useRouter();
 
+const joinMembership = () => {
+  // Logic to handle membership joining
+  //if the user is not authenticated, redirect to login page
+  const isAuthenticated = false; // Replace with actual authentication check
+  if (!isAuthenticated) {
+    router.push({ path: "/auth/signin" });
+  } else {
+    router.push({ path: "/auth/dashboard" });
+  }
+};
+
+// --------------------
+// Refs
+// --------------------
 const titleRef = ref(null);
+const membershipRef = ref(null);
 
-
+// --------------------
+// Data
+// --------------------
 const membershipPlans = [
   {
     title: "Monthly",
@@ -64,7 +85,7 @@ const membershipPlans = [
     currency: "BDT",
     package: "yearly",
     keyPoints: [
-      "Invitations to alumni reunions and networking events",
+      "Invitations to alumni reunions",
       "Access to the online alumni portal & directory",
       "Monthly newsletters and school updates",
       "Eligibility for alumni-only programs & discounts",
@@ -80,7 +101,7 @@ const membershipPlans = [
     currency: "BDT",
     package: "yearly",
     keyPoints: [
-      "Invitations to alumni reunions and networking events",
+      "Invitations to alumni reunions",
       "Access to the online alumni portal & directory",
       "Monthly newsletters and school updates",
       "Eligibility for alumni-only programs & discounts",
@@ -96,7 +117,7 @@ const membershipPlans = [
     currency: "BDT",
     package: "lifetime",
     keyPoints: [
-      "Invitations to alumni reunions and networking events",
+      "Invitations to alumni reunions",
       "Access to the online alumni portal & directory",
       "Monthly newsletters and school updates",
       "Eligibility for alumni-only programs & discounts",
@@ -105,8 +126,9 @@ const membershipPlans = [
   },
 ];
 
-const membershipRef = ref(null)
-
+// --------------------
+// Animations
+// --------------------
 onMounted(() => {
   const plans = $gsap.utils.toArray(".plan");
 
@@ -117,43 +139,46 @@ onMounted(() => {
         start: "top 80%",
         end: "top top",
         scrub: 1.5,
-      }
-    })
-
-    tl.fromTo(titleRef.value,
-      { y: 500 },
-      {
-        y: 0,
-        ease: "power2.out",
-        duration: 2,
       },
+    });
 
-      0
-    ).fromTo(plans,
+    tl.fromTo(
+      titleRef.value,
       { y: 500 },
-      {
-        y: 0,
-        ease: "power2.out",
-        duration: 2,
-        stagger: 0.3
-      }, 1
+      { y: 0, ease: "power2.out", duration: 2 },
+      0
+    ).fromTo(
+      plans,
+      { y: 500 },
+      { y: 0, ease: "power2.out", duration: 2, stagger: 0.3 },
+      1
     );
-  }, 0)
 
+    // Register timeline and ScrollTrigger for cleanup
+    add(tl);
+  }, 0);
+});
 
+// -------------------
+// Cleanup
+// -------------------
+onBeforeUnmount(() => {
+  cleanup();
 });
 </script>
+
 
 <style scoped lang="scss">
 #membership {
   width: 100vw;
-  @include clamp-property("padding-inline", 1.25, 17);
+  @include clamp-property("padding-inline", 1.25, 8.16);
   @include clamp-property("padding-block", 6.25, 8.05);
 
   .sectionTitle {
+    font-family: $font-gloock;
     @include clamp-property("font-size", 2, 4);
     @include clamp-property("margin-bottom", 2.5, 5);
-    font-weight: 500;
+    font-weight: 400;
     line-height: 110%;
     text-align: center;
   }
@@ -176,7 +201,7 @@ onMounted(() => {
       .plan {
         background: $green-500;
         @include clamp-property("border-radius", 1.25, 2);
-        @include clamp-property("padding-inline", 2, 4);
+        @include clamp-property("padding-inline", 2, 3);
         @include clamp-property("padding-block ", 2, 3.12);
         display: flex;
         flex-direction: column;
@@ -233,10 +258,10 @@ onMounted(() => {
           .plan--price {
             font-family: $font-gloock;
             @include clamp-property("font-size", 2, 3);
+            @include clamp-property("margin-bottom", 0.95, 1.5);
 
             line-height: 110%;
             color: $gray-100;
-            margin-bottom: 24px;
             font-weight: 400;
 
             span {
@@ -249,7 +274,7 @@ onMounted(() => {
           }
 
           .plan--key-points>*+* {
-            margin-top: 8px;
+            margin-top: 0.5rem;
           }
 
           .plan--key-points {

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <CommonNavbar />
     <header id="header" ref="headerRef">
       <img src="/assets/images/logo.svg" alt="greenherald-logo" class="logo hiddenLogo" ref="hiddenLogoRef" />
 
@@ -22,9 +21,8 @@
         </div>
 
         <div class="btn-group" ref="btnGroupRef">
-          <CommonPrimaryButton ref="joinBtnRef" @click="globalStore.openModal('membership')">Join Now
-          </CommonPrimaryButton>
-          <!-- <CommonSecondaryButton>Explore Event</CommonSecondaryButton> -->
+          <CommonPrimaryButton ref="joinBtnRef" @click="globalStore.openModal('membership')">Join
+            Now</CommonPrimaryButton>
         </div>
       </div>
 
@@ -41,11 +39,11 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
 
 const globalStore = useGlobalStore();
-
 const { $gsap, $lenis } = useNuxtApp();
+const { add, cleanup } = useGsapCleanup();
 
 // refs
 const logoRef = ref(null);
@@ -57,14 +55,15 @@ const btnGroupRef = ref(null);
 const imagesRef = ref(null);
 const headerRef = ref(null);
 
+let mm; // for matchMedia so we can clean it
+
 onMounted(() => {
   const viewportHeight = window.innerHeight;
   const logoPos = hiddenLogoRef.value.getBoundingClientRect();
-
-  const mm = $gsap.matchMedia();
-
   const imgs = imagesRef.value.querySelectorAll("img");
 
+  // MATCH-MEDIA instance
+  mm = $gsap.matchMedia();
 
   mm.add(
     {
@@ -75,90 +74,82 @@ onMounted(() => {
     (context) => {
       const { sm, md, lg } = context.conditions;
 
-      const tl = $gsap.timeline({
-        duration: 1.5,
-        ease: "power1.out",
-      });
+      // ---------------------------
+      // MAIN TIMELINE
+      // ---------------------------
+      const tl = $gsap.timeline({ duration: 1.5 });
+      add(tl);
 
       tl.to(logoRef.value, {
         scale: 1,
         top: hiddenLogoRef.value.offsetTop + logoPos.height / 2,
-        onComplete: () => {
-          $lenis.start();
-        }
-      }).to([headerContentRef.value, imagesRef.value], { opacity: 1 }, "<")
+        ease: "power3.out",
+        onComplete: () => $lenis.start()
+      })
+        .to([headerContentRef.value, imagesRef.value], {
+          opacity: 1,
+          ease: "power3.out",
+        }, "<")
         .to("#baseNav", {
           y: 0,
           duration: 1
-        })
+        });
 
-      tl.fromTo(headerContentRef.value, { y: viewportHeight }, { y: 0 }, "<");
+      tl.fromTo(
+        headerContentRef.value,
+        { y: viewportHeight },
+        { y: 0, ease: "power3.out" },
+        "<"
+      );
 
       const positions = lg
         ? ["-5%", "22%", "50%", "77.5%", "105%"]
         : ["0%", "-20%", "50%", "137%", "100%"];
 
       // First Transition
-      tl.fromTo(
+      const tImagesIn = tl.fromTo(
         imgs,
         { y: "120%" },
-        {
-          y: "0%", stagger: 0.2, ease: "power2.out",
-        }
+        { y: "0%", stagger: 0.2, ease: "power2.out" }
       );
+      add(tImagesIn);
 
-      // Images wide Transition
+      // Images wide Transition (all part of tl)
+      // no need to add individually because tl is already added
+
       tl.to(imgs[0], {
         x: `-${positions[0]}`,
         y: "-16.6rem",
         left: positions[0],
         rotate: 0,
       })
+        .to(imgs[1], {
+          x: `-${positions[1]}`,
+          y: "-5.25rem",
+          left: positions[1],
+          rotate: 0,
+        }, "<")
+        .to(imgs[2], {
+          x: `-${positions[2]}`,
+          left: positions[2],
+          rotate: 0,
+        }, "<")
+        .to(imgs[3], {
+          x: `-${positions[3]}`,
+          y: "-5.25rem",
+          left: positions[3],
+          rotate: 0,
+        }, "<")
+        .to(imgs[4], {
+          x: `-${positions[4]}`,
+          y: "-16.6rem",
+          left: positions[4],
+          rotate: 0,
+        }, "<");
 
-        .to(
-          imgs[1],
-          {
-            x: `-${positions[1]}`,
-            y: "-5.25rem",
-            left: positions[1],
-            rotate: 0,
-          },
-          "<"
-        )
-
-        .to(
-          imgs[2],
-          {
-            x: `-${positions[2]}`,
-            left: positions[2],
-            rotate: 0,
-          },
-          "<"
-        )
-
-        .to(
-          imgs[3],
-          {
-            x: `-${positions[3]}`,
-            y: "-5.25rem",
-            left: positions[3],
-            rotate: 0,
-          },
-          "<"
-        )
-
-        .to(
-          imgs[4],
-          {
-            x: `-${positions[4]}`,
-            y: "-16.6rem",
-            left: positions[4],
-            rotate: 0,
-          },
-          "<"
-        );
-
-      // Parallax Transition
+      // ---------------------------
+      // PARALLAX TIMELINE
+      // ---------------------------
       const tl2 = $gsap.timeline({
         scrollTrigger: {
           trigger: headerRef.value,
@@ -168,43 +159,30 @@ onMounted(() => {
         },
       });
 
+      add(tl2);
+
       tl2
-        .to(logoRef.value, {
-          y: -250,
-        })
-        .to(
-          headingRef.value,
-          {
-            y: lg ? -220 : -160,
-          },
-          "<"
-        )
-        .to(
-          subHeadingRef.value,
-          {
-            y: lg ? -220 : -140,
-          },
-          "<"
-        )
-        .to(
-          btnGroupRef.value,
-          {
-            y: lg ? -220 : -120,
-          },
-          "<"
-        )
-        // Parallax depth layers
+        .to(logoRef.value, { y: -250 })
+        .to(headingRef.value, { y: lg ? -220 : -160 }, "<")
+        .to(subHeadingRef.value, { y: lg ? -220 : -140 }, "<")
+        .to(btnGroupRef.value, { y: lg ? -220 : -120 }, "<")
         .to([imgs[0], imgs[4]], { yPercent: -80, duration: 1 }, "<")
-        .to(
-          [imgs[1], imgs[3]],
-          { yPercent: sm ? -60 : md ? -60 : -60, duration: 0.7 },
-          "<"
-        )
-        .to([imgs[2]], { yPercent: -50, duration: 1 }, "<");
+        .to([imgs[1], imgs[3]], {
+          yPercent: -60,
+          duration: 0.7,
+        }, "<")
+        .to(imgs[2], { yPercent: -50, duration: 1 }, "<");
     }
   );
 });
+
+// CLEANUP EVERYTHING
+onBeforeUnmount(() => {
+  cleanup();        // kills all tweens + timelines + triggers tracked in "add"
+  mm?.kill();       // kill matchMedia context
+});
 </script>
+
 
 <style scoped lang="scss">
 header {
@@ -243,8 +221,6 @@ header {
     will-change: transform;
     opacity: 0;
   }
-
-
 
   .logo {
     @include clamp-property("width", 7, 11.25);

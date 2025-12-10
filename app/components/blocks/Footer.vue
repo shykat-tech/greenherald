@@ -5,11 +5,11 @@
                 <NuxtLink to="/">Upcoming Event</NuxtLink>
             </li> -->
             <li>
-                <NuxtLink to="/">Contact</NuxtLink>
+                <NuxtLink target="_blank" to="/">Contact</NuxtLink>
             </li>
             <li>
                 <span>Follow us</span>
-                <NuxtLink to="/">
+                <NuxtLink target="_blank" to="/">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_1057_568)">
                             <path
@@ -24,7 +24,7 @@
                     </svg>
                 </NuxtLink>
 
-                <NuxtLink to="/">
+                <NuxtLink target="_blank" to="/">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_1057_571)">
                             <g clip-path="url(#clip1_1057_571)">
@@ -53,7 +53,7 @@
         <div class="right-section">
             <span>© 2025 SFX Greenherald. All Rights Reserved.</span>
 
-            <NuxtLink to="https://co.design/">
+            <NuxtLink target="_blank" to="https://co.design/">
                 <span>Made by</span>
                 &nbsp;
                 <svg width="32" height="16" viewBox="0 0 32 16" fill="none" xmlns="http://www.w3.org/2000/svg">

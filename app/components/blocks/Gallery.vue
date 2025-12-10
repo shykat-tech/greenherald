@@ -13,65 +13,48 @@
           Reconnect?
         </h2>
 
-        <CommonPrimaryButton ref="joinButtonRef">Join Now</CommonPrimaryButton>
+        <CommonPrimaryButton ref="joinButtonRef" @click="globalStore.openModal('membership')">Join Now
+        </CommonPrimaryButton>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
+const { $gsap } = useNuxtApp();
+const { add, cleanup } = useGsapCleanup();
+const globalStore = useGlobalStore();
 
-const { $gsap, $ScrollTrigger } = useNuxtApp();
-
-const galleryRef = ref(null);
+// Refs
 const connectRef = ref(null);
 const imageWrapperRef = ref(null);
 const imageContainerRef = ref(null);
 const titleContainerRef = ref(null);
-const joinButtonRef = ref(null);
-// const gradientBack = ref(null);
-const connectTitle = ref(null);
-
 
 const windowWidth = ref(0);
+let mm; // matchMedia instance
+
+// -------------------
+// Resize Listener
+// -------------------
+const handleResize = () => {
+  windowWidth.value = window.innerWidth;
+};
 
 onMounted(() => {
-  const upcomingHeight =
-    document.getElementById("stories")?.getBoundingClientRect().height || 0;
-  const totalHeight = window.innerHeight + upcomingHeight;
-
-  // gradientBack.value.style.height = `${totalHeight}px`;
-
-
-  // Set initial width on client
+  // Set initial width
   windowWidth.value = window.innerWidth;
-
-  const handleResize = () => {
-    windowWidth.value = window.innerWidth;
-  };
-
   window.addEventListener("resize", handleResize);
-
-  onUnmounted(() => {
-    window.removeEventListener("resize", handleResize);
-  });
 });
 
+// -------------------
+// GSAP Animations
+// -------------------
 onMounted(() => {
-  // $ScrollTrigger.create({
-  //   trigger: galleryRef.value,
-  //   start: "top top",
-  //   end: "center center",
-  //   pin: true,
-  //   scrub: 1.5,
-  //   pinSpacing: true,
-  // });
-
   const images = $gsap.utils.toArray(imageContainerRef.value);
 
-
-  const mm = $gsap.matchMedia();
+  mm = $gsap.matchMedia();
 
   mm.add(
     {
@@ -85,6 +68,9 @@ onMounted(() => {
     (context) => {
       const { xs, sm, md, lg, xl, xxl } = context.conditions;
 
+      // ---------------------------
+      // Timeline for images
+      // ---------------------------
       const tl = $gsap.timeline({
         ease: "none",
         scrollTrigger: {
@@ -96,53 +82,60 @@ onMounted(() => {
         },
       });
 
-      tl
-        .to([images[0]], {
-          y: 0,
-        })
+      add(tl); // track timeline + its ScrollTrigger
+
+      tl.to([images[0]], { y: 0 })
         .to([images[1]], {
           top: xs ? "10%" : sm ? "10%" : md ? "-40%" : "-20%",
-          left: xs ? "-25%" : sm ? "-25%" : md ? "2%" : lg ? "5%" : "12%"
+          left: xs ? "-25%" : sm ? "-25%" : md ? "2%" : lg ? "5%" : "12%",
         }, "<")
-        .to([images[2]], {
-          top: xs ? "-8%" : sm ? "-12%" : md ? "-40%" : "-20%",
-        }, "<")
-
+        .to([images[2]], { top: xs ? "-8%" : sm ? "-12%" : md ? "-40%" : "-20%" }, "<")
         .to([images[4]], {
           top: xs ? "20%" : sm ? "15%" : md ? "20%" : "17%",
-          right: xs ? "-24%" : sm ? "-24%" : md ? "-10%" : lg ? "-2%" : "5%"
+          right: xs ? "-24%" : sm ? "-24%" : md ? "-10%" : lg ? "-2%" : "5%",
         }, "<")
         .to([images[3]], {
           top: xs ? "45%" : sm ? "40%" : md ? "33%" : lg ? "40%" : "30%",
-          left: xs ? "-50%" : sm ? "-40%" : md ? "-15%" : lg ? "5%" : "12%"
+          left: xs ? "-50%" : sm ? "-40%" : md ? "-15%" : lg ? "5%" : "12%",
         }, "<")
-        .to(images[0].querySelector(".img"), {
-          scale: 1.1,
-        }, "<")
+        .to(images[0].querySelector(".img"), { scale: 1.1 }, "<")
         .to([images[5]], {
           top: xs ? "100%" : sm ? "100%" : md ? "80%" : lg ? "80%" : "70%",
-          left: xs ? "-30%" : sm ? "-30%" : md ? "-10%" : lg ? "-5%" : "5%"
+          left: xs ? "-30%" : sm ? "-30%" : md ? "-10%" : lg ? "-5%" : "5%",
         }, "<")
         .to([images[6]], {
           top: xs ? "65%" : sm ? "65%" : md ? "70%" : lg ? "65%" : "60%",
-        }, "<")
+        }, "<");
 
+      // ---------------------------
+      // Timeline for title/connection
+      // ---------------------------
       const tl2 = $gsap.timeline({
         scrollTrigger: {
           trigger: titleContainerRef.value,
           start: "bottom 90%",
           toggleActions: "play none none reverse",
-          duration: 0.7
+          duration: 0.7,
         },
       });
 
-      tl2.to(connectRef.value, {
-        y: 0,
-        duration: 0.6
-      })
-    })
+      add(tl2);
+
+      tl2.to(connectRef.value, { y: 0, duration: 0.6 });
+    }
+  );
+});
+
+// -------------------
+// Cleanup
+// -------------------
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", handleResize);
+  cleanup();       // kills all GSAP timelines, tweens, ScrollTriggers
+  mm?.kill();      // kills matchMedia
 });
 </script>
+
 
 <style scoped lang="scss">
 #gallery {
@@ -153,7 +146,6 @@ onMounted(() => {
   @include flex-center;
   flex-direction: column;
   @include clamp-property("padding-bottom", 2, 10);
-  // overflow: hidden;
 
   .images-wrapper {
     position: relative;
@@ -325,7 +317,6 @@ onMounted(() => {
   }
 
   .title-container {
-    overflow: hidden;
 
     .title {
       @include clamp-property("font-size", 2.125, 5);
@@ -338,19 +329,9 @@ onMounted(() => {
       @include flex-center;
       flex-direction: column;
       @include clamp-property("gap", 1, 1.5);
-      transform: translateY(100%);
+      transform: translateY(200%);
     }
   }
-
-  // .gallery-gradient-back {
-  //   width: 100%;
-  //   // height: 200vh; // -> handled by JS
-  //   background: linear-gradient(to top, $green-500, $green-500);
-  //   position: absolute;
-  //   top: 0;
-  //   z-index: -15;
-  // }
-
 
 }
 </style>
