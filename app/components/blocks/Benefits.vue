@@ -326,7 +326,7 @@ onMounted(() => {
         .to(nextTitleRef.value, {
           x: `${exactXposition}px`,
           y: `${exactYposition}px`,
-          fontSize: sm ? 32 : md ? 32 : lg ? 48 : xl ? 56 : 64,
+          // fontSize: sm ? 32 : md ? 32 : lg ? 48 : xl ? 56 : 64,
         }, "<")
         .to(stepsRef.value, {
           x: md ? "-65%" : lg ? "-48%" : xlg ? "-43%" : xl ? "-40%" : "-35%",
@@ -406,6 +406,7 @@ onBeforeUnmount(() => {
         @include clamp-property("line-height", 2.55, 4.95);
         @include clamp-property("margin-bottom", 5, 15.87);
         color: white;
+        opacity: 0;
       }
 
       .blocks {
@@ -429,6 +430,26 @@ onBeforeUnmount(() => {
             @include clamp-property("font-size", 1.5, 2.5);
             color: $gray-100;
             position: relative;
+
+            @media screen and (min-width: 768px) {
+              font-size: 2rem;
+            }
+
+            @media screen and (min-width: 1440px) {
+              font-size: 3.5rem;
+            }
+
+            @media screen and (min-width: 1530px) {
+              font-size: 3rem;
+            }
+
+            @media screen and (min-width: 1920px) {
+              font-size: 2.5rem;
+            }
+
+            @media screen and (min-width: 2560px) {
+              font-size: 3.5rem;
+            }
           }
 
           span {
@@ -493,6 +514,10 @@ onBeforeUnmount(() => {
       clip-path: circle(0% at 60% 73%);
     }
 
+    @media screen and (min-width: 1150px) {
+      clip-path: circle(0% at 80% 65%);
+    }
+
     @media screen and (min-width: 1366px) {
       clip-path: circle(0% at 83% 62%);
 
@@ -507,8 +532,27 @@ onBeforeUnmount(() => {
         text-wrap: nowrap;
         @include clamp-property("font-size", 1.5, 2.5);
         transition: font-size 0.3s;
-
         will-change: transform;
+
+        @media screen and (min-width: 768px) {
+          font-size: 2rem;
+        }
+
+        @media screen and (min-width: 1440px) {
+          font-size: 3.5rem;
+        }
+
+        @media screen and (min-width: 1530px) {
+          font-size: 3rem;
+        }
+
+        @media screen and (min-width: 1920px) {
+          font-size: 2.5rem;
+        }
+
+        @media screen and (min-width: 2560px) {
+          font-size: 3.5rem;
+        }
       }
     }
   }
@@ -579,29 +623,47 @@ onBeforeUnmount(() => {
             align-items: center;
             justify-content: start;
             @include clamp-property("gap", 4, 7.5);
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
             position: relative;
             width: max-content;
           }
 
           .steps-line {
             position: relative;
-            margin-inline: 7%;
 
-            @media screen and (max-width: 768px) {
-              width: 70%;
-            }
-
-            @media screen and (min-width: 769px) and (max-width: 1024px) {
+            @media screen and (min-width: 768px) {
+              margin-inline: 8%;
               width: 73%;
             }
 
-            @media screen and (min-width: 1025px) and (max-width: 1440px) {
-              width: 71%;
+            @media screen and (min-width: 1150px) {
+              margin-inline: 7%;
+              width: 72%;
             }
 
-            @media screen and (min-width: 1441px) {
+            @media screen and (min-width: 1280px) {
+              margin-inline: 5%;
+              width: 74%;
+            }
+
+            @media screen and (min-width: 1440px) {
+              margin-inline: 7%;
+              width: 73%;
+            }
+
+            @media screen and (min-width: 1530px) {
+              margin-inline: 6%;
               width: 72%;
+            }
+
+            @media screen and (min-width: 1920px) {
+              margin-inline: 7%;
+              width: 72%;
+            }
+
+            @media screen and (min-width: 2560px) {
+              margin-inline: 7%;
+              width: 73%;
             }
 
             .counts {

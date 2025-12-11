@@ -41,14 +41,38 @@ const props = defineProps({
 
   img {
     @include clamp-property("border-radius", 1.5, 2);
-    @include clamp-property("width", 12, 26);
-    @include clamp-property("height", 14, 30);
     aspect-ratio: 4/5;
     object-fit: cover;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4/5;
 
-    @media screen and (max-width: 767px) {
-      width: 100%;
-      height: 100%;
+    @media screen and (min-width: 768px) {
+      width: 24rem;
+    }
+
+    @media screen and (min-width: 1024px) {
+      width: 20rem;
+    }
+
+    @media screen and (min-width: 1280px) {
+      width: 15rem;
+    }
+
+    @media screen and (min-width: 1440px) {
+      width: 22rem;
+    }
+
+    @media screen and (min-width: 1530px) {
+      width: 19rem;
+    }
+
+    @media screen and (min-width: 1920px) {
+      width: 25rem;
+    }
+
+    @media screen and (min-width: 2560px) {
+      width: 30rem;
     }
   }
 

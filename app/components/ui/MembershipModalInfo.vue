@@ -22,6 +22,11 @@ import Membership from '~/components/blocks/Membership.vue'
       padding: 0;
     }
 
+    :deep(.sectionTitle) {
+      @include clamp-property("font-size", 1.5, 3.5);
+      @include clamp-property("margin-bottom", 1.5, 2);
+    }
+
     :deep(.container) {
       width: 100%;
 
@@ -34,19 +39,19 @@ import Membership from '~/components/blocks/Membership.vue'
           }
 
           .dashed-border {
-            @include clamp-property("margin-top", 1, 1.5);
-            @include clamp-property("margin-bottom", 2, 2.5);
+            @include clamp-property("margin-top", 1, 1);
+            @include clamp-property("margin-bottom", 1.5, 1.5);
           }
 
           .plan--package {
             margin-bottom: auto;
 
             .plan--price {
-              @include clamp-property("font-size", 2, 2.5);
+              @include clamp-property("font-size", 1.5, 2);
             }
 
             .plan--key-points {
-              @include clamp-property("margin-bottom", 2.38, 3.75);
+              @include clamp-property("margin-bottom", 2, 3);
 
               li {
                 span {
