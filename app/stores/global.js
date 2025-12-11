@@ -64,6 +64,8 @@ export const useGlobalStore = defineStore('global', {
         closeModal() {
             this.isModalOpen = false
             this.openModalType = ''
+
+            document.documentElement.style.removeProperty("--modal-bg-color");
         },
         
         setAlumniStatus(status) {

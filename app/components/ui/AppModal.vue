@@ -124,7 +124,7 @@ onUnmounted(() => {
     @include clamp-property("padding-block", 1.5, 2.5);
     @include clamp-property("border-radius", 0.75, 2.5);
 
-    background: #f7f5f0;
+    background: var(--modal-bg-color, #f7f5f0);
     max-height: 90vh;
     max-width: 90vw;
     overflow-y: auto;

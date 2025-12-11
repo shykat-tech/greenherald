@@ -78,7 +78,12 @@
 
         <div class="form-group" v-if="!globalStore.alumniStatus">
           <label for="batch">Batch</label>
-          <select name="batch" id="batch">
+          <select
+            name="batch"
+            id="batch"
+            :class="{ 'placeholder-selected': !formData.batch }"
+            v-model="formData.batch"
+          >
             <option value="" disabled selected>Select Your Batch</option>
             <option value="2000-2005">2000-2005</option>
             <option value="2006-2010">2006-2010</option>
@@ -99,7 +104,7 @@
           </p>
         </div>
 
-        <div class="form-group">
+        <div class="form-group phone-input-group">
           <label>Phone Number</label>
 
           <VueTelInput
@@ -365,6 +370,27 @@ const validateForm = () => {
         }
       }
 
+      select {
+        padding-right: 2.5rem !important;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.5rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5rem 1.5rem;
+
+        &.placeholder-selected {
+          color: rgba($green-900, 0.5);
+          opacity: 0.7;
+        }
+
+        option {
+          color: $green-900;
+          opacity: 1;
+        }
+      }
+
       // .input {
       //   @include clamp-property("font-size", 0.935, 1);
       //   @include clamp-property("padding", 1, 1.25);
@@ -401,10 +427,17 @@ const validateForm = () => {
       //   }
       // }
 
+      &.phone-input-group {
+        input {
+          border: none;
+          outline: none;
+        }
+      }
+
       // Vue Tel Input specific styling
       :deep(.vue-tel-input) {
         border-radius: 0.75rem;
-        border: 1px solid $gray-600;
+        // border: 1px solid $gray-600;
         background: transparent;
         transition: all 0.2s ease-in-out;
 
@@ -415,7 +448,7 @@ const validateForm = () => {
 
         .vti__dropdown {
           background: $neutral-white;
-          border: 1px solid $gray-600;
+          // border: 1px solid $gray-600;
           border-radius: 0.75rem;
 
           .vti__selection {
@@ -454,7 +487,7 @@ const validateForm = () => {
         @include clamp-property("border-radius", 0.6, 0.75);
 
         background: $neutral-white;
-        border: 1px solid $gray-600;
+        // border: 1px solid $gray-600;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 
         max-height: 200px;

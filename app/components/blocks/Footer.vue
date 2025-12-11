@@ -92,6 +92,8 @@ const globalStore = useGlobalStore();
 
 const openContactModal = () => {
   globalStore.openModal("contactForm");
+  //set background color for modal
+  document.documentElement.style.setProperty("--modal-bg-color", "#FFF");
 };
 </script>
 
