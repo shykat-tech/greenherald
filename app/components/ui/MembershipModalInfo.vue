@@ -11,10 +11,12 @@ import Membership from '~/components/blocks/Membership.vue'
 
 <style lang="scss" scoped>
 #modal-cards {
+
   #membership {
     width: 100%;
+    overflow: hidden;
     padding-block: 0;
-    @include clamp-property("padding-inline", 1.25, 2.5);
+    padding: 0;
 
     @media screen and (max-width: 480px) {
       padding: 0;
@@ -25,6 +27,8 @@ import Membership from '~/components/blocks/Membership.vue'
 
       .plans {
         .plan {
+          @include clamp-property("padding", 1.5, 1.5);
+
           .plan--desc {
             @include clamp-property("font-size", 0.875, 0.875);
           }
