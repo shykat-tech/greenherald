@@ -69,10 +69,12 @@ onMounted(() => {
     {
       sm: "(max-width: 480px)",
       md: "(min-width: 481px) and (max-width: 1024px)",
-      lg: "(min-width: 1025px)",
+      lg: "(min-width: 1024px)",
+      xl: "(min-width: 1366px)",
+      xxl: "(min-width: 1920px)",
     },
     (context) => {
-      const { sm, md, lg } = context.conditions;
+      const { sm, md, lg, xl, xxl } = context.conditions;
 
       // ---------------------------
       // MAIN TIMELINE
@@ -83,49 +85,66 @@ onMounted(() => {
       tl.to(logoRef.value, {
         scale: 1,
         top: hiddenLogoRef.value.offsetTop + logoPos.height / 2,
-        ease: "power3.out",
+        duration: 0.5,
         onComplete: () => $lenis.start()
       })
         .to([headerContentRef.value, imagesRef.value], {
           opacity: 1,
-          ease: "power3.out",
         }, "<")
         .to("#baseNav", {
           y: 0,
           duration: 1
-        });
-
-      tl.fromTo(
-        headerContentRef.value,
-        { y: viewportHeight },
-        { y: 0, ease: "power3.out" },
-        "<"
-      );
+        }, "<")
+        .fromTo(
+          headingRef.value,
+          { y: viewportHeight },
+          {
+            y: 0,
+            duration: 0.5
+          },
+          "<"
+        )
+        .fromTo(
+          subHeadingRef.value,
+          { y: viewportHeight },
+          {
+            y: 0,
+            duration: 0.6
+          },
+          "<"
+        )
+        .fromTo(
+          btnGroupRef.value,
+          { y: viewportHeight },
+          {
+            y: 0,
+            duration: 0.7
+          },
+          "<"
+        )
+        .fromTo(
+          imgs,
+          { y: "120%" },
+          { y: "0%", stagger: 0.2, duration: 0.5 }, "-=0.7"
+        );
 
       const positions = lg
         ? ["-5%", "22%", "50%", "77.5%", "105%"]
-        : ["0%", "-20%", "50%", "137%", "100%"];
+        : ["0%", "-20%", "50%", "135%", "100%"];
 
-      // First Transition
-      const tImagesIn = tl.fromTo(
-        imgs,
-        { y: "120%" },
-        { y: "0%", stagger: 0.2, ease: "power2.out" }
-      );
-      add(tImagesIn);
 
       // Images wide Transition (all part of tl)
       // no need to add individually because tl is already added
 
       tl.to(imgs[0], {
         x: `-${positions[0]}`,
-        y: "-16.6rem",
+        y: "-14rem",
         left: positions[0],
         rotate: 0,
       })
         .to(imgs[1], {
           x: `-${positions[1]}`,
-          y: "-5.25rem",
+          y: "-6rem",
           left: positions[1],
           rotate: 0,
         }, "<")
@@ -136,13 +155,13 @@ onMounted(() => {
         }, "<")
         .to(imgs[3], {
           x: `-${positions[3]}`,
-          y: "-5.25rem",
+          y: "-6rem",
           left: positions[3],
           rotate: 0,
         }, "<")
         .to(imgs[4], {
           x: `-${positions[4]}`,
-          y: "-16.6rem",
+          y: "-14rem",
           left: positions[4],
           rotate: 0,
         }, "<");
@@ -163,15 +182,15 @@ onMounted(() => {
 
       tl2
         .to(logoRef.value, { y: -250 })
-        .to(headingRef.value, { y: lg ? -220 : -160 }, "<")
-        .to(subHeadingRef.value, { y: lg ? -220 : -140 }, "<")
-        .to(btnGroupRef.value, { y: lg ? -220 : -120 }, "<")
-        .to([imgs[0], imgs[4]], { yPercent: -80, duration: 1 }, "<")
+        .to(headingRef.value, { y: xxl ? -180 : xl ? -250 : lg ? -200 : -160 }, "<")
+        .to(subHeadingRef.value, { y: xxl ? -150 : xl ? -250 : lg ? -200 : -140 }, "<")
+        .to(btnGroupRef.value, { y: xxl ? -120 : xl ? -250 : lg ? -200 : -120 }, "<")
+        .to([imgs[0], imgs[4]], { yPercent: xxl ? -70 : xl ? -90 : lg ? -100 : -80, duration: 1 }, "<")
         .to([imgs[1], imgs[3]], {
-          yPercent: -60,
+          yPercent: xxl ? -50 : xl ? -80 : lg ? -90 : -60,
           duration: 0.7,
         }, "<")
-        .to(imgs[2], { yPercent: -50, duration: 1 }, "<");
+        .to(imgs[2], { yPercent: xxl ? -20 : xl ? -80 : lg ? -100 : -50, duration: 1 }, "<");
     }
   );
 });
@@ -186,7 +205,6 @@ onBeforeUnmount(() => {
 
 <style scoped lang="scss">
 header {
-  height: 120vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -195,25 +213,34 @@ header {
   @include clamp-property("padding-top", 4.5, 6);
   background: $yellow-50;
   transition: all 0.5s ease-in-out;
+  height: 100vh;
 
-  @media screen and (max-width: 320px) {
-    height: 110vh;
+  @media screen and (min-width: 375px) {
+    height: 105vh;
   }
 
-  @media screen and (min-width: 321px) and (max-width: 768px) {
+  @media screen and (min-width: 400px) {
     height: 100vh;
   }
 
-  @media screen and (min-width: 769px) and (max-width: 1024px) {
-    height: 150vh;
+  @media screen and (min-width: 1280px) {
+    height: 120vh;
   }
 
-  @media screen and (min-width: 1025px) and (max-width: 1366px) {
-    height: 130vh;
+  @media screen and (min-width: 1440px) {
+    height: 100vh;
   }
 
-  @media screen and (min-width: 1367px) and (max-width: 1920px) {
+  @media screen and (min-width: 1530px) {
     height: 110vh;
+  }
+
+  @media screen and (min-width: 1920px) {
+    height: 120vh;
+  }
+
+  @media screen and (min-width: 2560px) {
+    height: 112vh;
   }
 
   .header-content {
@@ -322,7 +349,7 @@ header {
     width: 100%;
     @include flex-center;
     gap: 4px;
-    @include clamp-property("margin-bottom", 3.73, 7.85);
+    @include clamp-property("margin-bottom", 7, 7);
 
     @media screen and (max-width: 480px) {
       gap: 0.5rem;
@@ -344,17 +371,22 @@ header {
     img {
       aspect-ratio: 4/5;
       object-fit: cover;
-      width: 19%;
+      width: 42%;
       height: auto;
       position: absolute;
 
-      @media screen and (max-width: 1024px) {
-        width: 45%;
+      @media screen and (min-width: 1024px) {
+        width: 20%;
+      }
+
+      @media screen and (min-width: 2560px) {
+        width: 20.5%;
       }
     }
 
     img:nth-child(1) {
       transform: rotate(-16deg);
+      opacity: 0;
     }
 
     img:nth-child(2) {
@@ -368,13 +400,14 @@ header {
 
     img:nth-child(5) {
       transform: rotate(-1deg);
+      opacity: 0;
     }
 
-    @media screen and (max-width: 1024px) {
+    @media screen and (min-width: 1024px) {
 
       img:nth-child(1),
       img:nth-child(5) {
-        display: none;
+        opacity: 1
       }
     }
   }

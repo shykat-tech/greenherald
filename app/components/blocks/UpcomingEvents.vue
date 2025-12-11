@@ -191,10 +191,21 @@ onBeforeUnmount(() => {
 <style lang="scss">
 #upcoming-events {
   width: 100%;
-  @include clamp-property("padding-top", 6.25, 8.875);
   @include clamp-property("padding-inline", 1.25, 17);
   position: relative;
   z-index: 5;
+
+  @media screen and (min-height: 530px) {
+    padding-top: 3.5rem;
+  }
+
+  @media screen and (min-height: 700px) {
+    padding-top: 0rem;
+  }
+
+  @media screen and (min-width: 1024px) {
+    @include clamp-property("padding-top", 3.5, 8.875)
+  }
 
   .heading {
     text-align: center;
@@ -334,15 +345,19 @@ onBeforeUnmount(() => {
             .head {
               display: flex;
               align-items: center;
-              gap: 6px;
+              gap: 0.38rem;
+              margin-bottom: 0.38rem;
 
               strong {
                 font-weight: 600;
+                line-height: 150%;
               }
             }
 
             span {
               font-weight: 400;
+              line-height: 150%;
+
             }
           }
         }

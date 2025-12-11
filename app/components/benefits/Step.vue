@@ -36,7 +36,7 @@ const props = defineProps({
 
   @media screen and (max-width: 767px) {
     flex-direction: column;
-    overflow: auto;
+    overflow-y: auto;
   }
 
   img {

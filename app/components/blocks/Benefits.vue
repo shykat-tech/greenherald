@@ -69,7 +69,8 @@
 
     <section id="smallSteps">
       <h2>Simple to Join</h2>
-      <div class="steps-slider" ref="sliderWrapper">
+      <div class="steps-slider" ref="sliderWrapper" @touchstart="onTouchStart" @touchmove="onTouchMove"
+        @touchend="onTouchEnd">
         <div class="slide" v-for="step in stepCards" :key="step.title">
           <BenefitsStep :step="step" />
         </div>
@@ -137,6 +138,10 @@ const currentIndex = ref(0);
 let slideWidth = 0;
 const activeSlide = ref(1);
 
+const isDragging = ref(false);
+const startX = ref(0);
+const currentScroll = ref(0);
+
 // --------------------
 // Step Cards
 // --------------------
@@ -178,6 +183,32 @@ const stepCards = ref([
 const updateSlideWidth = () => {
   slideWidth = sliderWrapper.value.querySelector(".slide")?.offsetWidth || 0;
 };
+
+const onTouchStart = (e) => {
+  isDragging.value = true;
+  startX.value = e.touches[0].pageX;
+  currentScroll.value = currentIndex.value;
+};
+
+const onTouchMove = (e) => {
+  if (!isDragging.value) return;
+  const x = e.touches[0].pageX;
+  const diff = startX.value - x;
+
+  // only change slide if diff exceeds threshold
+  if (diff > 50 && currentIndex.value < stepCards.value.length - 1) {
+    nextSlide();
+    startX.value = x; // reset starting point
+  } else if (diff < -50 && currentIndex.value > 0) {
+    prevSlide();
+    startX.value = x; // reset starting point
+  }
+};
+
+const onTouchEnd = () => {
+  isDragging.value = false;
+};
+
 
 const goToSlide = (index) => {
   activeSlide.value = index + 1;
@@ -638,11 +669,16 @@ onBeforeUnmount(() => {
       display: flex;
       transition: transform 0.5s;
       width: 100%;
+      /* only vertical scroll allowed, horizontal handled manually */
+      touch-action: pan-y;
+      user-select: none;
+      // overflow-x: hidden;
 
       .slide {
         width: 100%;
         flex-shrink: 0;
         padding-inline: 1.25rem;
+        overflow-x: hidden;
       }
     }
 

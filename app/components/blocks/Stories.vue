@@ -54,7 +54,6 @@
               </div>
 
               <!-- Right Image -->
-
               <div class="img-container">
                 <Transition name="slide-img" mode="in-out">
                   <img v-if="slides[activeIndex]" :key="slides[activeIndex].id" :src="slides[activeIndex].image"
@@ -62,6 +61,32 @@
                 </Transition>
               </div>
             </div>
+
+
+          </div>
+          <div class="slider-btn-group mobile-view">
+            <button @click="prevSlide" class="slider-button-prev" :disabled="currentIndex === 0">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.49216 12L18.9922 12" stroke="#FCFCFC" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M11 6C11 6 5 10.4189 5 12C5 13.5812 11 18 11 18" stroke="#FCFCFC" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+
+            <div class="slider-pagination">
+              <span v-for="(_, i) in Math.min(slides.length, sliderLimit)" :key="i" class="nav"
+                :class="{ active: i + 1 === activeSlide }" @click="goToSlide(i)" />
+            </div>
+
+            <button @click="nextSlide" class="slider-button-next" :disabled="currentIndex === slides.length - 1">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.5078 12L5.00781 12" stroke="#FCFCFC" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M13 6C13 6 19 10.4189 19 12C19 13.5812 13 18 13 18" stroke="#FCFCFC" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
           </div>
 
 
@@ -342,6 +367,7 @@ onBeforeUnmount(() => {
 
         .img-container {
           width: 35%;
+          height: 100%;
           overflow: hidden;
           @include clamp-property("border-radius", 1.5, 2.5);
           position: relative;
@@ -395,6 +421,11 @@ onBeforeUnmount(() => {
   gap: 24px;
   height: auto;
   margin-bottom: 1rem;
+  display: none;
+
+  @media screen and (min-width: 1024px) {
+    display: flex;
+  }
 
   .slider-pagination {
     position: relative;
@@ -459,6 +490,19 @@ onBeforeUnmount(() => {
     }
   }
 }
+
+.slider-btn-group.mobile-view {
+  @include clamp-property("padding-inline", 1.25, 8.12);
+  display: flex;
+  justify-content: start;
+  margin-top: 2rem;
+
+  @media screen and (min-width: 1024px) {
+    display: none;
+  }
+}
+
+
 
 .slide-img-enter-active,
 .slide-img-leave-active {

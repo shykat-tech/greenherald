@@ -59,7 +59,7 @@ const joinMembership = () => {
   //if the user is not authenticated, redirect to login page
   const isAuthenticated = false; // Replace with actual authentication check
   if (!isAuthenticated) {
-    router.push({ path: "/auth/signin" });
+    router.push({ path: "/auth/signup" });
   } else {
     router.push({ path: "/auth/dashboard" });
   }

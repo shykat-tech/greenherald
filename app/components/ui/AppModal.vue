@@ -1,25 +1,10 @@
 <template>
-  <div
-    class="modal-wrapper"
-    @click.self="globalStore.closeModal"
-    @wheel.prevent
-  >
+  <div class="modal-wrapper" @click.self="globalStore.closeModal" @wheel.prevent>
     <div class="modal-content" ref="modalContent" @wheel.stop>
       <button class="close-icon-wrapper" @click="globalStore.closeModal">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M18 6L6.00081 17.9992M17.9992 18L6 6.00085"
-            stroke="#4B3F2A"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6.00081 17.9992M17.9992 18L6 6.00085" stroke="#4B3F2A" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
       </button>
       <component :is="compLookup[globalStore.openModalType]" />
@@ -53,11 +38,15 @@ onMounted(() => {
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
 
+    // ---------------------
+    // ❌ Lenis - creating problem when scrolling inside modal
+    // ---------------------
+
     // Stop Lenis smooth scrolling if available
-    const { $lenis } = useNuxtApp();
-    if ($lenis) {
-      $lenis.stop();
-    }
+    // const { $lenis } = useNuxtApp();
+    // if ($lenis) {
+    //   $lenis.stop();
+    // }
 
     // Prevent wheel events on the document but allow them inside modal content
     const preventBodyScroll = (e) => {
@@ -130,7 +119,6 @@ onUnmounted(() => {
     overflow-y: auto;
     overflow-x: hidden;
     animation: slideInScale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-
     // Improve scrolling behavior
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
@@ -168,6 +156,7 @@ onUnmounted(() => {
       position: absolute;
       top: 1rem;
       right: 1rem;
+      z-index: 1;
       // background: transparent;
       // border: none;
       // cursor: pointer;
@@ -213,6 +202,7 @@ onUnmounted(() => {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -223,6 +213,7 @@ onUnmounted(() => {
     opacity: 0;
     transform: scale(1) translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);

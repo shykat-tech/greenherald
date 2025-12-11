@@ -4,7 +4,7 @@
             <div class="menu">
                 <button class="menu-btn" @click="isMenuOpen = !isMenuOpen">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                        class="menu-icon" :class="{ open: isMenuOpen }">
+                        class="" :class="{ open: isMenuOpen }">
                         <path d="M4 5H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round"
                             stroke-linejoin="round" />
                         <path d="M4 12H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round"
@@ -31,7 +31,7 @@
                 <div class="menu">
                     <button class="menu-btn" @click="isMenuOpen = !isMenuOpen">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                            class="menu-icon" :class="{ open: isMenuOpen }">
+                            class="" :class="{ open: isMenuOpen }">
                             <path d="M4 5H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round"
                                 stroke-linejoin="round" />
                             <path d="M4 12H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round"
@@ -59,8 +59,12 @@
             </nav>
         </Transition>
 
+        <Transition name="backDrop">
+            <div v-if="isMenuOpen" class="backdrop" :class="{ open: isMenuOpen }" />
+        </Transition>
+
         <Transition name="navMenu">
-            <ul class="open-menu" v-if="isMenuOpen" :class="{ open: isMenuOpen }">
+            <ul class="open-menu" @click="isMenuOpen = false" v-if="isMenuOpen" :class="{ open: isMenuOpen }">
                 <div class="bar">
                     <NuxtLink to="/">
                         <img src="/assets/images/logo.svg" class="nav-logo" :class="{ open: isMenuOpen }"
@@ -93,29 +97,29 @@
                 </div>
                 <div class="content">
                     <li class="link">
-                        <NuxtLink to="#">Events</NuxtLink>
+                        <NuxtLink to="/#upcoming-events">Events</NuxtLink>
                     </li>
                     <li class="link">
-                        <NuxtLink to="#">Stories</NuxtLink>
+                        <NuxtLink to="/#storyContainer">Stories</NuxtLink>
                     </li>
                     <li class="link">
-                        <NuxtLink to="#">How to Join</NuxtLink>
+                        <NuxtLink to="/#smallSteps">How to Join</NuxtLink>
                     </li>
                     <li class="link">
-                        <NuxtLink to="#">The Board</NuxtLink>
+                        <NuxtLink to="/#alumni">The Board</NuxtLink>
                     </li>
                     <li class="link">
-                        <NuxtLink to="#">About Us</NuxtLink>
+                        <NuxtLink to="/#about">About Us</NuxtLink>
                     </li>
                     <li class="link">
-                        <NuxtLink to="#">Benefits</NuxtLink>
+                        <NuxtLink to="/#benefits">Benefits</NuxtLink>
                     </li>
                     <li class="link">
-                        <NuxtLink to="#">Membership</NuxtLink>
+                        <NuxtLink to="/#membership">Membership</NuxtLink>
                     </li>
 
                     <div class="btn-group link" :class="{ open: isMenuOpen }">
-                        <button class="signin-btn" @click="goToSignup">Sign in</button>
+                        <button class="signin-btn" @click="goToSignin">Sign in</button>
                         <button class="join-btn" @click="goToSignup">Join now</button>
                     </div>
                 </div>
@@ -194,11 +198,12 @@ nav,
     @include clamp-property("padding-inline", 1.25, 8.12);
     @include clamp-property("padding-block", 1, 1);
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
 
     .menu {
-        flex: 1;
+        display: flex;
+        justify-content: end;
 
         .menu-btn {
             background: transparent;
@@ -206,34 +211,14 @@ nav,
             @include flex-center;
             flex-direction: row;
             gap: 0.25rem;
+            justify-content: end;
 
             .menu-btn-text {
                 color: $yellow-700;
-                font-size: 1rem;
+                @include clamp-property("font-size", 1, 1.1);
                 font-style: normal;
                 font-weight: 500;
                 line-height: 110%;
-            }
-
-
-            .menu-icon.open path {
-                stroke: white;
-                transition: all 0.5s;
-                transform-origin: center;
-                width: 30px;
-            }
-
-            .menu-icon.open path:nth-child(1) {
-                transform: translate(-8px, 6px) rotate(45deg) scale(1.4);
-            }
-
-            .menu-icon.open path:nth-child(2) {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-
-            .menu-icon.open path:nth-child(3) {
-                transform: translate(-8px, -8px) rotate(-45deg) scale(1.4);
             }
         }
     }
@@ -242,7 +227,7 @@ nav,
         @include flex-center;
 
         .nav-logo {
-            width: 3rem;
+            @include clamp-property("width", 3, 3.5);
             transition: all 0.3s;
         }
 
@@ -263,12 +248,12 @@ nav,
 
         .signin-btn,
         .join-btn {
-            font-size: 1rem;
+            @include clamp-property("font-size", 1, 1);
             font-style: normal;
             font-weight: 500;
             line-height: 110%;
-            padding-inline: 1rem;
-            padding-block: 0.62rem;
+            @include clamp-property("padding-inline", 0.5, 1.1);
+            @include clamp-property("padding-block", 0.5, 0.62);
             border-radius: 2rem;
             border: 1px solid $yellow-700;
             transition: all 0.5s;
@@ -323,22 +308,43 @@ nav,
     }
 
     @media screen and (max-width:1024px) {
-        justify-content: end;
-        flex-direction: row-reverse;
+        // justify-content: end;
+        // flex-direction: row-reverse;
 
-        .menu {
-            flex: 0
-        }
+        // .menu {
+        //     flex: 0
+        // }
     }
+}
+
+.menu-icon.open path {
+    stroke: white;
+    transition: all 0.5s;
+    transform-origin: center;
+    width: 30px;
+}
+
+.menu-icon.open path:nth-child(1) {
+    transform: translate(-8px, 6px) rotate(45deg) scale(1.4);
+}
+
+.menu-icon.open path:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+.menu-icon.open path:nth-child(3) {
+    transform: translate(-8px, -8px) rotate(-45deg) scale(1.4);
 }
 
 #baseNav {
     transform: translateY(-100%);
+
 }
 
 #fixedNav {
     position: fixed;
-    z-index: 998;
+    z-index: 999;
     background: $yellow-50;
     transition: all 0.3s;
 
@@ -350,6 +356,21 @@ nav,
 
 #fixedNav.open {
     background: $yellow-700;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+
+    @media screen and (max-width: 1024px) {
+        display: none;
+    }
 }
 
 .open-menu {
@@ -418,6 +439,16 @@ nav,
             }
         }
 
+        @media screen and (max-width:375px) {
+            padding-top: 1rem;
+
+            li {
+                a {
+                    font-size: 1rem;
+                }
+            }
+        }
+
         @media screen and (max-width:1024px) {
             height: 100vh;
             display: flex;
@@ -427,15 +458,11 @@ nav,
 
             .btn-group {
                 width: 100%;
-                padding-top: 4.75rem;
+                padding-top: 3rem;
                 display: flex;
                 flex-direction: column;
                 justify-content: start;
-                gap: 0.6rem;
-
-                @media screen and (max-width:360px) {
-                    padding-top: 1.25rem;
-                }
+                gap: 1rem;
 
                 .signin-btn,
                 .join-btn {
@@ -453,8 +480,7 @@ nav,
 
                 .signin-btn {
                     background: none;
-                    // color: $yellow-700;
-                    color: red;
+                    color: $yellow-700;
                 }
 
                 .join-btn {
@@ -491,6 +517,16 @@ nav,
                         border-color: $yellow-200;
                     }
                 }
+
+                @media screen and (max-width:375px) {
+                    padding-top: 0;
+
+                    .signin-btn,
+                    .join-btn {
+                        padding-block: 0.7rem;
+                    }
+
+                }
             }
         }
     }
@@ -507,9 +543,19 @@ nav,
     transform: translateY(-100%);
 }
 
+.backDrop-enter-active,
+.backDrop-leave-active {
+    transition: all 0.7s;
+}
+
+.backDrop-enter-from,
+.backDrop-leave-to {
+    opacity: 0;
+}
+
 .navMenu-enter-active,
 .navMenu-leave-active {
-    transition: clip-path 1s cubic-bezier(0, -0.01, .43, .99);
+    transition: clip-path 0.7s cubic-bezier(0, -0.01, .43, .99);
 }
 
 .navMenu-enter-from,
