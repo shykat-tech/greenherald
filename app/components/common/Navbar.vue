@@ -203,7 +203,11 @@ nav,
 
     .menu {
         display: flex;
-        justify-content: end;
+
+        @media screen and (min-width: 1024px) {
+            justify-content: start;
+            flex: 1;
+        }
 
         .menu-btn {
             background: transparent;
@@ -307,14 +311,6 @@ nav,
         }
     }
 
-    @media screen and (max-width:1024px) {
-        // justify-content: end;
-        // flex-direction: row-reverse;
-
-        // .menu {
-        //     flex: 0
-        // }
-    }
 }
 
 .menu-icon.open path {
@@ -350,7 +346,7 @@ nav,
 
     @media screen and (max-width:1024px) {
         justify-content: space-between;
-        flex-direction: row-reverse;
+        // flex-direction: row-reverse;
     }
 }
 
@@ -392,12 +388,13 @@ nav,
         }
 
         @media screen and (max-width: 1024px) {
-            flex-direction: row;
+            flex-direction: row-reverse;
             justify-content: space-between;
 
             .menu {
                 width: 100%;
                 display: flex;
+                flex: 0;
             }
 
             .nav-logo {
