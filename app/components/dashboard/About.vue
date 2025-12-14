@@ -17,6 +17,7 @@ const globalStore = useGlobalStore();
 const handleEditClick = () => {
   // Logic to handle edit click can be added here
   globalStore.openModal("editAboutMe");
+  document.documentElement.style.setProperty("--modal-bg-color", "#FFF");
 };
 </script>
 

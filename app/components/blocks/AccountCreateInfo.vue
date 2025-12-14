@@ -3,6 +3,18 @@
     <h2>Provide your details to verify your alumni account</h2>
 
     <form @submit.prevent="handleFormSubmit" class="form">
+      <!-- Email Field -->
+      <div class="form-group full-width">
+        <label>Email</label>
+        <input
+          v-model="email"
+          type="email"
+          class="input"
+          :disabled="isLoading"
+        />
+        <p v-if="errors.email" class="error-text">{{ errors.email }}</p>
+      </div>
+
       <div class="form-group full-width">
         <label>Full Name</label>
         <input v-model="name" type="text" class="input" required />
@@ -29,7 +41,7 @@
       <div class="form-group">
         <label>Batch</label>
         <select v-model="batch" class="input" required>
-          <option value="" disabled selected>Your batch</option>
+          <option value="" disabled selected></option>
           <option value="2015">2015</option>
           <option value="2016">2016</option>
           <option value="2017">2017</option>
@@ -50,7 +62,7 @@
       <div class="form-group">
         <label>Blood Group</label>
         <select v-model="blood_group" class="input" required>
-          <option value="" disabled selected>Your blood group</option>
+          <option value="" disabled selected></option>
           <option value="A+">A+</option>
           <option value="A-">A-</option>
           <option value="B+">B+</option>
@@ -156,6 +168,7 @@ const hasAttemptedSubmit = ref(false);
 
 const { handleSubmit, errors, meta } = useForm({
   validationSchema: yup.object({
+    email: yup.string().email("Invalid email").required("Email is required"),
     name: yup.string().required("Full name is required"),
     father_name: yup.string().required("Father's name is required"),
     mother_name: yup.string().required("Mother's name is required"),
@@ -170,6 +183,7 @@ const { handleSubmit, errors, meta } = useForm({
   }),
   validateOnMount: false,
 });
+const { value: email } = useField("email");
 
 const { value: name, meta: nameMeta } = useField("name", undefined, {
   validateOnMount: false,

@@ -5,26 +5,12 @@
                 <NuxtLink to="/">Upcoming Event</NuxtLink>
             </li> -->
       <li>
-        <NuxtLink to="/" @click="openContactModal">Contact</NuxtLink>
+        <NuxtLink to="/" @click="openContactModal" aria-label="Contact Form Open">Contact</NuxtLink>
       </li>
       <li>
         <span>Follow us</span>
-        <!-- <NuxtLink to="/">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_1057_568)">
-              <path
-                d="M19.9861 2.25H4.01393C3.03975 2.25 2.25 3.03975 2.25 4.01393V19.986C2.25 20.9602 3.03975 21.75 4.01393 21.75H19.986C20.9602 21.75 21.75 20.9602 21.75 19.986V4.01393C21.75 3.03975 20.9603 2.25 19.9861 2.25ZM8.28413 19.0876C8.28413 19.3711 8.05431 19.6009 7.7708 19.6009H5.58567C5.30216 19.6009 5.07234 19.3711 5.07234 19.0876V9.92764C5.07234 9.64412 5.30216 9.41431 5.58567 9.41431H7.7708C8.05431 9.41431 8.28413 9.64412 8.28413 9.92764V19.0876ZM6.67824 8.55085C5.53177 8.55085 4.60235 7.62143 4.60235 6.47497C4.60235 5.3285 5.53177 4.39908 6.67824 4.39908C7.8247 4.39908 8.75412 5.3285 8.75412 6.47497C8.75412 7.62143 7.82475 8.55085 6.67824 8.55085ZM19.7035 19.1289C19.7035 19.3896 19.4922 19.6009 19.2315 19.6009H16.8867C16.6261 19.6009 16.4148 19.3896 16.4148 19.1289V14.8324C16.4148 14.1915 16.6028 12.0237 14.7397 12.0237C13.2947 12.0237 13.0015 13.5075 12.9427 14.1733V19.1289C12.9427 19.3896 12.7314 19.6009 12.4707 19.6009H10.2029C9.94224 19.6009 9.7309 19.3896 9.7309 19.1289V9.88629C9.7309 9.62565 9.94224 9.41431 10.2029 9.41431H12.4707C12.7314 9.41431 12.9427 9.62565 12.9427 9.88629V10.6854C13.4785 9.88129 14.2749 9.26061 15.9704 9.26061C19.725 9.26061 19.7035 12.7684 19.7035 14.6957V19.1289Z"
-                fill="#08110B" />
-            </g>
-            <defs>
-              <clipPath id="clip0_1057_568">
-                <rect width="24" height="24" fill="white" />
-              </clipPath>
-            </defs>
-          </svg>
-        </NuxtLink> -->
 
-        <NuxtLink to="/">
+        <NuxtLink to="/" target="_blank" aria-label="Facebook Link">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_1057_571)">
               <g clip-path="url(#clip1_1057_571)">
@@ -48,7 +34,7 @@
     <div class="right-section">
       <span>© 2025 SFX Greenherald. All Rights Reserved.</span>
 
-      <NuxtLink to="https://co.design/">
+      <NuxtLink to="https://co.design/" aria-label="COdesign link" target="_blank">
         <span>Made by</span>
         &nbsp;
         <svg width="32" height="16" viewBox="0 0 32 16" fill="none" xmlns="http://www.w3.org/2000/svg">

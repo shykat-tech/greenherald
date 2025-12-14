@@ -109,7 +109,10 @@
             </div>
           </div>
           <ul>
-            <li>
+            <li
+              role="button"
+              @click="router.push('/dashboard/change-password')"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"

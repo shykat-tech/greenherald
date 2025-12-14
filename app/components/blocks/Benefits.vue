@@ -329,7 +329,7 @@ onMounted(() => {
           // fontSize: sm ? 32 : md ? 32 : lg ? 48 : xl ? 56 : 64,
         }, "<")
         .to(stepsRef.value, {
-          x: md ? "-65%" : lg ? "-48%" : xlg ? "-43%" : xl ? "-40%" : "-35%",
+          x: md ? "-65%" : lg ? "-48%" : xlg ? "-48%" : xl ? "-40%" : "-35%",
           duration: 2.7,
         }, "-=0.5")
         .to(progressRef.value, {
@@ -406,7 +406,6 @@ onBeforeUnmount(() => {
         @include clamp-property("line-height", 2.55, 4.95);
         @include clamp-property("margin-bottom", 5, 15.87);
         color: white;
-        opacity: 0;
       }
 
       .blocks {
@@ -436,14 +435,10 @@ onBeforeUnmount(() => {
             }
 
             @media screen and (min-width: 1440px) {
-              font-size: 3.5rem;
+              font-size: 2rem;
             }
 
             @media screen and (min-width: 1530px) {
-              font-size: 3rem;
-            }
-
-            @media screen and (min-width: 1920px) {
               font-size: 2.5rem;
             }
 
@@ -459,7 +454,7 @@ onBeforeUnmount(() => {
             display: inline-block;
             position: relative;
 
-            @media screen and (max-width: 1440px) {
+            @media screen and (max-width: 1540px) {
               br {
                 display: none;
               }
@@ -539,14 +534,10 @@ onBeforeUnmount(() => {
         }
 
         @media screen and (min-width: 1440px) {
-          font-size: 3.5rem;
+          font-size: 2rem;
         }
 
         @media screen and (min-width: 1530px) {
-          font-size: 3rem;
-        }
-
-        @media screen and (min-width: 1920px) {
           font-size: 2.5rem;
         }
 

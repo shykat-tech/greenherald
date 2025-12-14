@@ -376,13 +376,12 @@ const tabs = [
 ];
 
 const handleTabClick = (tab) => {
-  // Logic to handle tab click can be added here
   activeTab.value = tab.name;
 };
 
 const handleEditClick = () => {
-  // Logic to handle edit click can be added here
   globalStore.openModal("personalDetail");
+  document.documentElement.style.setProperty("--modal-bg-color", "#FFF");
 };
 </script>
 
@@ -420,7 +419,6 @@ const handleEditClick = () => {
         font-weight: 550;
         line-height: 110%; /* 1.2375rem */
 
-        // border-bottom: 1px solid transparent;
         transition: all 0.3s ease-in-out;
 
         position: relative;
@@ -449,7 +447,6 @@ const handleEditClick = () => {
   }
 
   .tab-content-panel {
-    // padding: 20px;
     @include clamp-property("padding-inline", 0, 1.5);
     @include clamp-property("padding-block", 0.5, 2.5);
 
@@ -522,7 +519,6 @@ const handleEditClick = () => {
   }
 }
 
-// Tab transition styles
 .tab-fade-enter-active,
 .tab-fade-leave-active {
   transition: all 0.3s ease-in-out;

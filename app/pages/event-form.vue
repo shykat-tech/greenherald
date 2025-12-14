@@ -53,6 +53,174 @@
           <p class="info-detail">Paid</p>
         </div>
       </div>
+
+      <div class="form-container-wrapper">
+        <h3 class="event-form-title">
+          To secure your spot at this exclusive alumni event, fill in your
+          details below.
+        </h3>
+
+        <form @submit.prevent="handleFormSubmit">
+          <div class="form-group" v-if="!globalStore.alumniStatus">
+            <label for="batch" required>Batch</label>
+            <select name="batch" id="batch" required>
+              <option value="" disabled selected>Select Your Batch</option>
+              <option value="2000-2005">2000-2005</option>
+              <option value="2006-2010">2006-2010</option>
+              <option value="2011-2015">2011-2015</option>
+              <option value="2016-2020">2016-2020</option>
+              <option value="2021-2025">2021-2025</option>
+            </select>
+          </div>
+
+          <div class="form-group" v-if="!globalStore.alumniStatus">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" required />
+          </div>
+
+          <div class="form-group" v-if="!globalStore.alumniStatus">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+
+          <div class="form-group">
+            <label>Phone Number</label>
+
+            <VueTelInput
+              v-model="phone"
+              :inputOptions="{
+                required: true,
+                class: 'tel-input',
+              }"
+              mode="international"
+              :preferred-countries="['bd', 'us', 'gb', 'ca']"
+              :auto-format="true"
+            />
+            <p v-if="errors.phone && hasAttemptedSubmit" class="error-text">
+              {{ errors.phone }}
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label>Payment methods</label>
+            <div class="radio-group">
+              <label class="payment-option">
+                <input
+                  v-model="paymentMethod"
+                  type="radio"
+                  value="card-transfer"
+                />
+                <div class="options">
+                  <p>Credit or debit card</p>
+
+                  <div>
+                    <img
+                      src="../assets/images/dashboard/visa-logo.svg"
+                      alt="Visa"
+                      width="40"
+                    />
+                    <img
+                      src="../assets/images/dashboard/mastercard-logo.svg"
+                      alt="Mastercard"
+                      width="40"
+                    />
+                    <img
+                      src="../assets/images/dashboard/amex-logo.svg"
+                      alt="Amex"
+                      width="40"
+                    />
+                  </div>
+                </div>
+              </label>
+
+              <label class="payment-option">
+                <input
+                  v-model="paymentMethod"
+                  type="radio"
+                  value="mobile-transfer"
+                />
+
+                <div class="options">
+                  <p>Mobile Payment</p>
+
+                  <div>
+                    <img
+                      src="../assets/images/dashboard/nagad.png"
+                      alt="Nagad"
+                      width="40"
+                    />
+                    <img
+                      src="../assets/images/dashboard/bkash.png"
+                      alt="Nagad"
+                      width="40"
+                    />
+                  </div>
+                </div>
+              </label>
+            </div>
+            <p v-if="errors.paymentMethod" class="error-text">
+              {{ errors.paymentMethod }}
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label>Food Preferences</label>
+            <div class="radio-group">
+              <label>
+                <input
+                  v-model="foodPreferences"
+                  type="radio"
+                  value="vegetarian"
+                />
+                Vegetarian
+              </label>
+              <label>
+                <input v-model="foodPreferences" type="radio" value="vegan" />
+                Vegan
+              </label>
+              <label>
+                <input
+                  v-model="foodPreferences"
+                  type="radio"
+                  value="non-vegetarian"
+                />
+                Non-Vegetarian
+              </label>
+            </div>
+            <p v-if="errors.foodPreferences" class="error-text">
+              {{ errors.foodPreferences }}
+            </p>
+          </div>
+
+          <!-- radio button for t shirt -->
+          <div class="form-group">
+            <label>T-Shirt Size</label>
+            <div class="radio-group">
+              <label>
+                <input v-model="tshirtSize" type="radio" value="S" />
+                Small
+              </label>
+              <label>
+                <input v-model="tshirtSize" type="radio" value="M" />
+                Medium
+              </label>
+              <label>
+                <input v-model="tshirtSize" type="radio" value="L" />
+                Large
+              </label>
+              <label>
+                <input v-model="tshirtSize" type="radio" value="XL" />
+                Extra Large
+              </label>
+            </div>
+            <p v-if="errors.tshirtSize" class="error-text">
+              {{ errors.tshirtSize }}
+            </p>
+          </div>
+
+          <button type="submit" class="btn-submit">Proceed to Payment</button>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -128,7 +296,7 @@ const handleFormSubmit = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 10vh;
+  padding-block: 10vh;
   background: $green-50;
   min-height: 100dvh;
 
@@ -320,7 +488,7 @@ const handleFormSubmit = async () => {
           select {
             @include clamp-property("padding", 1, 1.25);
             @include clamp-property("font-size", 1, 1.125);
-            // @include clamp-property("height", 3.5, 4);
+
             @include clamp-property("border-radius", 0.5, 0.75);
 
             border: 1px solid $gray-600;
@@ -341,43 +509,6 @@ const handleFormSubmit = async () => {
             }
           }
 
-          // .input {
-          //   @include clamp-property("font-size", 0.935, 1);
-          //   @include clamp-property("padding", 1, 1.25);
-          //   @include clamp-property("height", 3.5, 4);
-          //   @include clamp-property("border-radius", 0.6, 0.75);
-
-          //   outline: none;
-
-          //   background: rgba(255, 255, 255, 0.06);
-          //   display: flex;
-
-          //   align-items: center;
-          //   gap: 0.5rem;
-          //   align-self: stretch;
-          //   border: 2px solid transparent;
-          //   transition: all 0.2s ease-in-out;
-          //   color: #fff;
-
-          //   width: 100%;
-
-          //   &::placeholder {
-          //     @include clamp-property("font-size", 0.935, 1);
-          //     color: rgba(255, 255, 255, 0.6);
-          //     font-family: $font-manrope;
-          //     font-weight: 400;
-          //     font-style: normal;
-          //     line-height: normal;
-          //     opacity: 1;
-          //   }
-
-          //   &:focus {
-          //     @include clamp-property("border-radius", 0.6, 0.75);
-          //     border-color: $yellow-600;
-          //   }
-          // }
-
-          // Vue Tel Input specific styling
           :deep(.vue-tel-input) {
             border-radius: 0.75rem;
             border: 1px solid $gray-600;

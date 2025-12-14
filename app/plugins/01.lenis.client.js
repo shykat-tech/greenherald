@@ -11,7 +11,16 @@ export default defineNuxtPlugin((nuxtApp) => {
     document.documentElement.style.overflow = "hidden";
   }
 
-  const lenis = new Lenis();
+  const lenis = new Lenis(
+    {
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easeOutExpo
+      smooth: true,
+      autoRaf: false,
+      
+    }
+
+  );
   nuxtApp.provide("lenis", lenis);
 
   // ⛔ Stop lenis only for homepage (to wait for GSAP animation)

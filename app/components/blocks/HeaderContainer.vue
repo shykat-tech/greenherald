@@ -1,9 +1,11 @@
 <template>
   <div>
     <header id="header" ref="headerRef">
-      <img src="/assets/images/logo.svg" alt="greenherald-logo" class="logo hiddenLogo" ref="hiddenLogoRef" />
+      <img src="/assets/images/logo.svg" alt="greenherald-logo" class="logo hiddenLogo" ref="hiddenLogoRef"
+        fetchpriority="high" />
 
-      <img src="/assets/images/logo.svg" alt="greenherald-logo" class="logo animLogo" ref="logoRef" />
+      <img src="/assets/images/logo.svg" alt="greenherald-logo" class="logo animLogo" ref="logoRef"
+        fetchpriority="high" />
 
       <div class="header-content" ref="headerContentRef">
         <h1 class="heading font-heading" ref="headingRef">
@@ -28,11 +30,11 @@
 
       <!-- images -->
       <div class="imagesContainer" ref="imagesRef">
-        <img src="/assets/images/left-2.jpg" />
-        <img src="/assets/images/left-1.jpg" />
-        <img src="/assets/images/middle.jpg" />
-        <img src="/assets/images/right-1.jpg" />
-        <img src="/assets/images/right-2.jpg" />
+        <img src="/assets/images/left-2.webp" alt="top-left-image" />
+        <img src="/assets/images/left-1.webp" alt="left-image" />
+        <img src="/assets/images/middle.webp" alt="middle-image" />
+        <img src="/assets/images/right-1.webp" alt="right-image" />
+        <img src="/assets/images/right-2.webp" alt="top-right-image" />
       </div>
     </header>
   </div>

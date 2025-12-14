@@ -1,6 +1,6 @@
 <template>
   <div id="loader">
-    <img src="/assets/images/logo.svg" alt="greenherald-logo" id="animLogo" />
+    <img src="/assets/images/logo.svg" alt="greenherald-logo" id="animLogo" fetchpriority="high" />
   </div>
 </template>
 

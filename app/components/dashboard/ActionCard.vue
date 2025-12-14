@@ -210,6 +210,7 @@ const { type } = defineProps({
 const globalStore = useGlobalStore();
 
 const handleEditClick = () => {
+  document.documentElement.style.setProperty("--modal-bg-color", "#FFF");
   // Logic to handle edit action based on type
   switch (type) {
     case "edit":
@@ -255,7 +256,7 @@ const handleEditClick = () => {
   @include clamp-property("border-radius", 0.5, 1.125);
 
   display: flex;
-  flex-direction: row; // Row layout for larger screens
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
 
@@ -267,14 +268,12 @@ const handleEditClick = () => {
   max-width: 90svw;
   overflow: hidden;
 
-  // Ensure row layout on medium and larger screens
   @include mediaMd {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
   }
 
-  // Column layout only on small screens
   @include mediaSm {
     flex-direction: column;
     align-items: flex-start;
@@ -286,11 +285,10 @@ const handleEditClick = () => {
 
     flex: 1;
     display: flex;
-    flex-direction: row; // Row layout for larger screens by default
+    flex-direction: row;
     align-items: center;
     text-align: left;
 
-    // Ensure row layout on medium and larger screens
     @include mediaMd {
       flex-direction: row;
       align-items: center;
@@ -298,7 +296,6 @@ const handleEditClick = () => {
       text-align: left;
     }
 
-    // Column layout only on small screens
     @include mediaSm {
       width: 100%;
       flex-direction: column;
@@ -324,7 +321,7 @@ const handleEditClick = () => {
     }
 
     .action-details {
-      flex: 1; // Take remaining space
+      flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -344,7 +341,7 @@ const handleEditClick = () => {
       font-style: normal;
       font-weight: 550;
       line-height: 110%; /* 17.6px */
-      margin: 0; // Remove default margin
+      margin: 0;
 
       @include mediaSm {
         text-align: center;
@@ -357,7 +354,7 @@ const handleEditClick = () => {
       font-style: normal;
       font-weight: 400;
       line-height: 140%; /* 1.225rem */
-      margin: 0; // Remove default margin
+      margin: 0;
 
       @include mediaSm {
         text-align: center;
@@ -369,15 +366,13 @@ const handleEditClick = () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0; // Prevent button from shrinking
+    flex-shrink: 0;
 
-    // Ensure proper positioning on medium and larger screens
     @include mediaMd {
       margin-top: 0;
       width: auto;
     }
 
-    // Full width on small screens
     @include mediaSm {
       margin-top: 0.75rem;
       text-align: center;

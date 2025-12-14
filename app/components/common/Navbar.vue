@@ -97,25 +97,28 @@
                 </div>
                 <div class="content">
                     <li class="link">
-                        <NuxtLink to="/#upcoming-events">Events</NuxtLink>
+                        <NuxtLink to="#upcoming-events" @click.prevent="$lenis.scrollTo('##upcoming-events')">Events
+                        </NuxtLink>
                     </li>
                     <li class="link">
-                        <NuxtLink to="/#storyContainer">Stories</NuxtLink>
+                        <NuxtLink to="#storyContainer" @click.prevent="$lenis.scrollTo('#storyContainer')">Stories
+                        </NuxtLink>
                     </li>
                     <li class="link">
-                        <NuxtLink to="/#smallSteps">How to Join</NuxtLink>
+                        <NuxtLink to="#smallSteps" @click.prevent="$lenis.scrollTo('#smallSteps')">How to Join
+                        </NuxtLink>
                     </li>
                     <li class="link">
-                        <NuxtLink to="/#alumni">The Board</NuxtLink>
+                        <NuxtLink to="#alumni" @click.prevent="$lenis.scrollTo('#alumni')">The Board</NuxtLink>
                     </li>
                     <li class="link">
-                        <NuxtLink to="/#about">About Us</NuxtLink>
+                        <NuxtLink to="#about" @click.prevent="$lenis.scrollTo('#about')">About Us</NuxtLink>
                     </li>
                     <li class="link">
-                        <NuxtLink to="/#benefits">Benefits</NuxtLink>
+                        <NuxtLink to="#benefits" @click.prevent="$lenis.scrollTo('#benefits')">Benefits</NuxtLink>
                     </li>
                     <li class="link">
-                        <NuxtLink to="/#membership">Membership</NuxtLink>
+                        <NuxtLink to="#membership" @click.prevent="$lenis.scrollTo('#membership')">Membership</NuxtLink>
                     </li>
 
                     <div class="btn-group link" :class="{ open: isMenuOpen }">

@@ -17,6 +17,7 @@
                       fill="#F2EDE4" />
                   </svg>
 
+
                   <p class="slide-text" ref="storyRef">
                     {{ slide.story }}
                   </p>
@@ -64,8 +65,10 @@
 
 
           </div>
-          <div class="slider-btn-group mobile-view">
-            <button @click="prevSlide" class="slider-button-prev" :disabled="currentIndex === 0">
+          <div class="slider-btn-group mobile-view" role="region" aria-label="Image Slider Controls">
+            <!-- Previous Button -->
+            <button @click="prevSlide" class="slider-button-prev" :disabled="currentIndex === 0"
+              aria-label="Previous slide" :aria-disabled="currentIndex === 0">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M5.49216 12L18.9922 12" stroke="#FCFCFC" stroke-width="1.5" stroke-linecap="round"
                   stroke-linejoin="round" />
@@ -74,12 +77,16 @@
               </svg>
             </button>
 
-            <div class="slider-pagination">
-              <span v-for="(_, i) in Math.min(slides.length, sliderLimit)" :key="i" class="nav"
-                :class="{ active: i + 1 === activeSlide }" @click="goToSlide(i)" />
+            <!-- Pagination -->
+            <div class="slider-pagination" role="tablist" aria-label="Slider Pagination">
+              <button v-for="(_, i) in Math.min(slides.length, sliderLimit)" :key="i" class="nav"
+                :class="{ active: i + 1 === activeSlide }" @click="goToSlide(i)" role="tab"
+                :aria-selected="i + 1 === activeSlide" :aria-label="'Go to slide ' + (i + 1)" tabindex="0" />
             </div>
 
-            <button @click="nextSlide" class="slider-button-next" :disabled="currentIndex === slides.length - 1">
+            <!-- Next Button -->
+            <button @click="nextSlide" class="slider-button-next" :disabled="currentIndex === slides.length - 1"
+              aria-label="Next slide" :aria-disabled="currentIndex === slides.length - 1">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18.5078 12L5.00781 12" stroke="#FCFCFC" stroke-width="1.5" stroke-linecap="round"
                   stroke-linejoin="round" />
@@ -88,6 +95,7 @@
               </svg>
             </button>
           </div>
+
 
 
         </div>
@@ -211,6 +219,8 @@ onMounted(() => {
     (context) => {
       const { sm, md, lg } = context.conditions;
 
+      if (!lg) retrun; // Only apply animations for large screens
+
       // Scale story container with scroll
       const scaleTween = $gsap.to(storyContainerRef.value, {
         scale: lg ? 0.9 : 1,
@@ -218,7 +228,7 @@ onMounted(() => {
         scrollTrigger: {
           trigger: storyContainerRef.value,
           start: "top top",
-          end: "+=100%",
+          end: "+=250%",
           pin: lg && true,
           scrub: 1.5,
           pinSpacing: false,
@@ -278,7 +288,16 @@ onBeforeUnmount(() => {
 
   @media screen and (min-width: 1024px) {
     height: 100vh;
-    padding-block: 0rem;
+    padding-bottom: 7rem;
+    margin-bottom: 50rem;
+  }
+
+  @media screen and (min-width: 1440px) {
+    margin-bottom: 20rem;
+  }
+
+  @media screen and (min-width: 1440px) {
+    margin-bottom: 0rem;
   }
 
   #stories {
@@ -320,6 +339,12 @@ onBeforeUnmount(() => {
           flex-shrink: 0;
           @include clamp-property("padding-inline", 1.25, 8.12);
 
+          // @media screen and (min-width: 1024px) {
+          //   align-items: start;
+          // }
+
+
+
           @media screen and (max-width: 769px) {
             & {
               flex-direction: column;
@@ -337,12 +362,19 @@ onBeforeUnmount(() => {
             @media screen and (max-width: 768px) {
               & {
                 width: 100%;
-
-                svg {
-                  width: 70px;
-                  height: 70px;
-                }
               }
+            }
+
+            @media screen and (min-width: 1150px) {
+              justify-content: start;
+            }
+
+            @media screen and (min-width: 1440px) {
+              justify-content: space-between;
+            }
+
+            svg {
+              @include clamp-property("width", 3, 8);
             }
 
             p {
@@ -353,6 +385,21 @@ onBeforeUnmount(() => {
               font-weight: 400;
               line-height: 140%;
               letter-spacing: -0.015rem;
+
+              @media screen and (min-width: 1280px) {
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+              }
+
+              @media screen and (min-width: 1366px) {
+                @include clamp-property("font-size", 1.125,
+                  1.5);
+                @include clamp-property("margin-bottom", 1.5, 4.5);
+              }
+
+              @media screen and (min-width: 2560px) {
+                font-size: 2rem;
+              }
             }
 
             strong {
@@ -361,36 +408,80 @@ onBeforeUnmount(() => {
               line-height: 140%;
               text-align: start;
               letter-spacing: -0.0175rem;
+
+              @media screen and (min-width: 1280px) {
+                font-size: 1.2rem;
+              }
+
+              @media screen and (min-width: 1366px) {
+                @include clamp-property("font-size", 1.25, 1.75);
+              }
+
+              @media screen and (min-width: 2560px) {
+                font-size: 2.5rem;
+              }
             }
           }
         }
 
         .img-container {
-          width: 35%;
           height: 100%;
+          width: auto;
           overflow: hidden;
           @include clamp-property("border-radius", 1.5, 2.5);
           position: relative;
-          aspect-ratio: 10/11;
+          aspect-ratio: 8/9;
 
-          @media screen and (max-width: 420px) {
+          @media screen and (min-width: 1150px) {
             & {
-              aspect-ratio: 4/5;
+              width: 45%;
+              // height: 70%;
             }
           }
 
-          @media screen and (max-width: 768px) {
+          @media screen and (min-width: 1280px) {
             & {
-              width: 100%;
-
+              width: 40%;
+              // height: 80%;
             }
           }
 
-          @media screen and (min-width: 769px) and (max-width: 1366px) {
+          @media screen and (min-width: 1366px) {
             & {
-              width: 35%;
+              height: 95%;
             }
           }
+
+          @media screen and (min-width: 1440px) {
+            & {
+              height: 100%;
+            }
+          }
+
+          @media screen and (min-width: 1536px) {
+            & {
+              height: 95%;
+            }
+          }
+
+          // @media screen and (max-width: 420px) {
+          //   & {
+          //     aspect-ratio: 4/5;
+          //   }
+          // }
+
+          // @media screen and (max-width: 768px) {
+          //   & {
+          //     width: 100%;
+
+          //   }
+          // }
+
+          // @media screen and (min-width: 769px) and (max-width: 1366px) {
+          //   & {
+          //     width: 35%;
+          //   }
+          // }
 
           img {
             width: 100%;
@@ -421,10 +512,18 @@ onBeforeUnmount(() => {
   gap: 24px;
   height: auto;
   margin-bottom: 1rem;
+  margin-top: 4rem;
   display: none;
+
 
   @media screen and (min-width: 1024px) {
     display: flex;
+  }
+
+
+  @media screen and (min-width: 1920px) {
+    margin-bottom: 4rem;
+
   }
 
   .slider-pagination {
@@ -487,6 +586,16 @@ onBeforeUnmount(() => {
 
     &:disabled {
       background: $yellow-100;
+    }
+
+    @media screen and (min-width: 1280px) {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    @media screen and (min-width: 1440px) {
+      @include clamp-property("width", 2.75, 3.25);
+      @include clamp-property("height", 2.75, 3.25);
     }
   }
 }
