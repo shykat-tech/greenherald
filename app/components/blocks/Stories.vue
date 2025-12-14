@@ -219,7 +219,7 @@ onMounted(() => {
     (context) => {
       const { sm, md, lg } = context.conditions;
 
-      if (!lg) retrun; // Only apply animations for large screens
+      if (!lg) return; // Only apply animations for large screens
 
       // Scale story container with scroll
       const scaleTween = $gsap.to(storyContainerRef.value, {
