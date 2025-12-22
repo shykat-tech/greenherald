@@ -119,11 +119,19 @@
       <!-- Back Button -->
       <div class="button-group">
         <!-- <button type="button" @click="handleBack" class="btn-back">Back</button> -->
-        <button type="submit" class="btn-submit" :disabled="isLoading">
+        <button
+          type="submit"
+          class="btn-submit auth-global-btn"
+          :disabled="isLoading"
+        >
           {{ isLoading ? "Processing..." : "Proceed to Payment" }}
         </button>
 
-        <button type="button" @click="handlePayLater" class="btn-pay-later">
+        <button
+          type="button"
+          @click="handlePayLater"
+          class="btn-pay-later auth-global-btn"
+        >
           Pay Later
         </button>
       </div>
@@ -241,7 +249,7 @@ const handleBack = () => {
         p {
           @include clamp-property("font-size", 1.25, 1.5);
 
-          color: $neutral-white;
+          color: $white;
           font-family: $font-manrope;
 
           font-style: normal;
@@ -265,7 +273,7 @@ const handleBack = () => {
           }
 
           span {
-            color: $neutral-white;
+            color: $white;
             font-family: $font-manrope;
             font-size: 0.875rem;
             font-style: normal;
@@ -329,7 +337,7 @@ const handleBack = () => {
 
       h3 {
         @include clamp-property("font-size", 1.75, 1.5);
-        color: $neutral-white;
+        color: $white;
         font-family: $font-manrope;
         font-style: normal;
         font-weight: 500;
@@ -350,7 +358,7 @@ const handleBack = () => {
       @include clamp-property("font-size", 1.25, 2);
       @include clamp-property("margin-bottom", 1.25, 2);
 
-      color: $neutral-white;
+      color: $white;
       font-family: $font-manrope;
       font-style: normal;
       font-weight: 500;
@@ -394,7 +402,7 @@ const handleBack = () => {
             gap: 0.5rem;
 
             .payment-method-item-title {
-              color: $neutral-white;
+              color: $white;
 
               font-family: $font-manrope;
               font-size: 1rem;
@@ -479,26 +487,11 @@ const handleBack = () => {
     .btn-submit {
       @include clamp-property("padding", 1.25, 1.5);
       @include clamp-property("font-size", 1, 1.125);
-      @include clamp-property("height", 3.5, 4.5);
 
       color: $white;
-      font-family: $font-manrope;
       background: $golden-700;
 
-      border-radius: 5rem;
       flex: 2;
-      cursor: pointer;
-      border: none;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-
-      font-style: normal;
-      font-weight: 550;
-      line-height: 110%;
-      transition: all 0.2s ease-in-out;
 
       &:hover:not(:disabled) {
         background: $yellow-600;
@@ -527,7 +520,6 @@ const handleBack = () => {
   }
 }
 
-// radio input style
 input[type="radio"] {
   @include clamp-property("width", 1, 1);
   @include clamp-property("height", 1, 1);

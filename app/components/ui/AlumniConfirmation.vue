@@ -134,7 +134,7 @@ const denyAlumni = () => {
       @include clamp-property("font-size", 1, 1.125);
 
       background: $golden-700;
-      color: $neutral-white;
+      color: $white;
       border: none;
       border-radius: 0.625rem;
       cursor: pointer;
@@ -163,7 +163,7 @@ const denyAlumni = () => {
 
         &:hover {
           background: $golden-600;
-          color: $neutral-white;
+          color: $white;
           border-color: $golden-600;
         }
       }

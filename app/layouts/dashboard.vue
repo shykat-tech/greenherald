@@ -3,7 +3,11 @@
     <DashboardNav />
 
     <div class="content-wrapper">
-      <slot />
+      <Transition name="dashboard-page">
+        <div :key="route.fullPath" class="page-container">
+          <slot />
+        </div>
+      </Transition>
     </div>
 
     <div class="dashboard-footer" v-if="route.name !== 'dashboard'">
@@ -41,6 +45,43 @@ const route = useRoute();
 </script>
 
 <style lang="scss" scoped>
+// Dashboard page transition styles - slide animations without flicker
+.page-container {
+  position: relative;
+  width: 100%;
+}
+
+.dashboard-page-enter-active {
+  animation: moveToLeft 0.2s ease both;
+}
+
+.dashboard-page-leave-active {
+  animation: moveToRight 0.2s ease both;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+}
+
+@keyframes moveToLeft {
+  from {
+    transform: translateY(10%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes moveToRight {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-10%);
+  }
+}
+
 .dashboard-wrapper {
   background-color: $golden-80;
   min-height: 100dvh;

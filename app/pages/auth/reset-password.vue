@@ -1,106 +1,42 @@
 <template>
-  <div class="page-wrapper">
-    <div class="back-btn">
-      <button @click="router.back()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M5.5 12.0039H19"
-            stroke="#5E5E5E"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M10.9999 18.0001C10.9999 18.0001 5.00001 13.581 5 11.9999C4.99999 10.4188 11 6 11 6"
-            stroke="#5E5E5E"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-        <span> Back </span>
-      </button>
+  <div class="block-wrapper">
+    <div class="logo">
+      <img src="../../assets/icons/logo.svg" alt="" />
     </div>
-    <h2 class="page-title">Change Password</h2>
 
-    <div class="form-wrapper">
-      <form @submit.prevent="handleChangePassSubmit" class="form">
+    <!-- Error Message Display -->
+    <MessageBlock
+      v-if="showError"
+      :loadingStatus="'error'"
+      :title="'Oops!'"
+      :isDarkBg="true"
+      :message="'Something went wrong. We couldn’t complete your request. Please try again.'"
+    />
+
+    <!-- Success Message Display -->
+    <MessageBlock
+      v-else-if="showSuccess"
+      :loadingStatus="'success'"
+      :title="'Success!'"
+      :message="'Password reset successfully!'"
+      :isDarkBg="true"
+    />
+
+    <div v-else class="form-wrapper">
+      <h2>Reset your password</h2>
+      <p class="subtitle">
+        Please choose a password that hasn't been used before.
+      </p>
+
+      <form @submit.prevent="handleResetPasswordSubmit" class="form">
         <!-- Password Field -->
         <div class="form-group password-wrapper">
-          <label>Current Password <span> * </span></label>
-
-          <div class="password-input-container">
-            <input
-              :type="showCurrentPassword ? 'text' : 'password'"
-              v-model="currentPassword"
-              placeholder="Enter your password"
-              class="input"
-              :disabled="isLoading"
-            />
-
-            <!-- Eye toggle button -->
-            <button
-              type="button"
-              class="toggle-eye"
-              @click="showCurrentPassword = !showCurrentPassword"
-            >
-              <transition name="eye-fade" mode="out-in">
-                <svg
-                  v-if="showCurrentPassword"
-                  key="eye-off"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#fff"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M1 1l22 22"></path>
-                  <path d="M10.58 10.58a2 2 0 102.83 2.83"></path>
-                  <path
-                    d="M9.88 4.24A10.07 10.07 0 0112 4c5 0 9 4 10 7-0.33 1.03-1 2.5-2.12 3.88M6.12 6.12A10.07 10.07 0 002 11c0.33 1.03 1 2.5 2.12 3.88A10.07 10.07 0 0012 20a9.94 9.94 0 004.12-.88"
-                  ></path>
-                </svg>
-
-                <svg
-                  v-else
-                  key="eye-on"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#fff"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              </transition>
-            </button>
-          </div>
-
-          <p v-if="errors.currentPassword" class="error-text">
-            {{ errors.currentPassword }}
-          </p>
-        </div>
-
-        <!-- Password Field -->
-        <div class="form-group password-wrapper">
-          <label>New Password</label>
+          <label>Password</label>
 
           <div class="password-input-container">
             <input
               :type="showPassword ? 'text' : 'password'"
               v-model="password"
-              placeholder="Enter your password"
               class="input"
               :disabled="isLoading"
               @input="checkPasswordRules"
@@ -117,7 +53,8 @@
                   v-if="showPassword"
                   key="eye-off"
                   xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
+                  width="22"
+                  height="22"
                   fill="none"
                   stroke="#fff"
                   stroke-width="2"
@@ -135,7 +72,8 @@
                   v-else
                   key="eye-on"
                   xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
+                  width="22"
+                  height="22"
                   fill="none"
                   stroke="#fff"
                   stroke-width="2"
@@ -156,7 +94,7 @@
 
         <!-- Password Requirements -->
         <div class="password-requirements">
-          <h5>Your password must contain at least</h5>
+          <h5>Your password must contain:</h5>
 
           <div class="radio-group">
             <div class="checkbox-wrapper">
@@ -264,7 +202,6 @@
             <input
               :type="showConfirmPassword ? 'text' : 'password'"
               v-model="confirmPassword"
-              placeholder="Confirm your password"
               class="input"
               :disabled="isLoading"
             />
@@ -280,7 +217,8 @@
                   v-if="showConfirmPassword"
                   key="eye-off"
                   xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
+                  width="22"
+                  height="22"
                   fill="none"
                   stroke="#fff"
                   stroke-width="2"
@@ -298,7 +236,8 @@
                   v-else
                   key="eye-on"
                   xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
+                  width="22"
+                  height="22"
                   fill="none"
                   stroke="#fff"
                   stroke-width="2"
@@ -317,6 +256,7 @@
           </p>
         </div>
 
+        <!-- Submit -->
         <div class="button-container">
           <button class="auth-global-btn btn-cancel" @click="router.back()">
             Cancel
@@ -327,7 +267,7 @@
             class="auth-global-btn btn-submit"
             :disabled="isLoading"
           >
-            {{ isLoading ? "Saving..." : "Save" }}
+            {{ isLoading ? "Resetting Password..." : "Reset Password" }}
           </button>
         </div>
       </form>
@@ -337,13 +277,15 @@
 
 <script setup>
 definePageMeta({
-  layout: "dashboard",
-  middleware: ["auth"],
+  layout: "auth",
+  middleware: ["guest"],
 });
 
 import { ref, watch, onMounted } from "vue";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
+
+const router = useRouter();
 
 // Simple reactive state
 const isLoading = ref(false);
@@ -351,7 +293,6 @@ const showError = ref(false);
 const showSuccess = ref(false);
 
 // Password visibility
-const showCurrentPassword = ref(false);
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
@@ -370,7 +311,6 @@ const checkPasswordRules = () => {
 // Form validation
 const { handleSubmit, errors } = useForm({
   validationSchema: yup.object({
-    currentPassword: yup.string().required("Password is required"),
     password: yup
       .string()
       .matches(/[A-Za-z]/, "Password must contain at least one letter")
@@ -383,7 +323,6 @@ const { handleSubmit, errors } = useForm({
   }),
 });
 
-const { value: currentPassword } = useField("currentPassword");
 const { value: password } = useField("password");
 const { value: confirmPassword } = useField("confirmPassword");
 
@@ -395,19 +334,8 @@ watch(
   }
 );
 
-// Initialize form on mount
-onMounted(() => {
-  // Initialize password validation
-  checkPasswordRules();
-});
-
-const router = useRouter();
-
-const handleBack = () => {
-  router.back();
-};
-
-const handleChangePassSubmit = handleSubmit(async (values) => {
+// Signup handler
+const handleResetPasswordSubmit = handleSubmit(async (values) => {
   isLoading.value = true;
   showError.value = false;
 
@@ -440,121 +368,135 @@ const handleChangePassSubmit = handleSubmit(async (values) => {
     isLoading.value = false;
   }
 });
+
+const handleGoogleSignup = () => {
+  // Implement Google OAuth signup
+  console.log("Google signup clicked");
+};
+
+// Initialize form on mount
+onMounted(() => {
+  // Initialize password validation
+  checkPasswordRules();
+});
 </script>
 
 <style lang="scss" scoped>
-.page-wrapper {
-  /** dashboard layout */
-  max-width: min(68rem, calc(100svw - 50rem));
-  margin-inline: auto;
-  // max-width: 50svw;
+.check-fade-enter-active {
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
 
-  background: $white;
+.check-fade-leave-active {
+  transition: all 0.2s ease;
+}
 
-  @include clamp-property("border-radius", 1.125, 1.125);
-  @include clamp-property("padding-inline", 1.25, 2.5);
-  @include clamp-property("padding-block", 1.5, 2.5);
+.check-fade-enter-from {
+  opacity: 0;
+  transform: scale(0.5);
+}
 
-  @include mediaLg {
-    max-width: min(68rem, calc(100svw - 20rem));
-  }
+.check-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.block-wrapper {
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+
+  min-width: 40rem;
+  max-width: 90dvw;
+
+  @include clamp-property("gap", 3, 4);
+  @include clamp-property("padding-top", 2, 3);
+  @include clamp-property("padding-bottom", 6, 11.19);
 
   @include mediaSm {
-    max-width: 90svw;
+    min-width: unset;
+    width: 90svw;
   }
 
-  .back-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  .logo {
+    display: block;
+    margin: 0 auto;
 
-    @include clamp-property("padding-bottom", 1, 2);
-
-    svg {
-      aspect-ratio: 1/1;
-
-      @include clamp-property("width", 1.25, 1.5);
-      @include clamp-property("height", 1.25, 1.5);
+    img {
+      @include clamp-property("width", 5.4585, 7.4585);
+      @include clamp-property("height", 5.4585, 7.5);
     }
-    button {
-      display: flex;
-      align-items: center;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-
-      @include clamp-property("font-size", 0.875, 1);
-      @include clamp-property("gap", 0.5, 0.75);
-
-      span {
-        color: $gray-900;
-        font-family: $font-manrope;
-        font-size: 1rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 110%; /* 1.1rem */
-      }
-    }
-  }
-
-  .page-title {
-    color: $gray-900;
-    font-family: $font-manrope;
-
-    font-style: normal;
-    font-weight: 600;
-    line-height: 130%; /* 3.25rem */
-
-    @include clamp-property("font-size", 1.5, 2.5);
   }
 
   .form-wrapper {
     width: 100%;
+
+    h2 {
+      color: #fff;
+      text-align: center;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 110%;
+      font-family: $font-gloock;
+
+      @include clamp-property("font-size", 2, 3);
+      @include clamp-property("margin-bottom", 0.75, 1);
+    }
+
+    .subtitle {
+      color: $gray-700;
+      text-align: center;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%; /* 1.5rem */
+
+      @include clamp-property("font-size", 0.875, 1);
+      @include clamp-property("margin-bottom", 1, 1.5);
+    }
 
     .form {
       .form-group {
         display: flex;
         flex-direction: column;
 
-        @include clamp-property("margin-top", 1.5, 2.5);
-        label {
-          @include clamp-property("font-size", 1, 1.125);
+        @include clamp-property("margin-top", 1.25, 2);
 
+        label {
           margin-bottom: 0.5rem;
-          color: $green-900;
+
+          color: #fff;
           font-family: $font-manrope;
-          font-size: 1.125rem;
           font-style: normal;
           font-weight: 500;
           line-height: normal;
 
-          opacity: 0.9;
+          @include clamp-property("font-size", 1, 1.125);
+        }
+
+        .error-text {
+          color: #ef4444;
+          font-size: 0.85rem;
+          margin-top: 4px;
         }
 
         .input {
           outline: none;
+          border-radius: 0.75rem;
           background: rgba(255, 255, 255, 0.06);
           display: flex;
 
           align-items: center;
           gap: 0.5rem;
           align-self: stretch;
+          border: 2px solid transparent;
           transition: all 0.2s ease-in-out;
+          color: #fff;
 
           width: 100%;
-          color: $green-100;
-          /* Body */
-          font-family: $font-manrope;
-          font-size: 1rem;
-          font-style: normal;
-          font-weight: 400;
-          line-height: 150%; /* 1.5rem */
-          border: 1px solid $gray-600;
-          opacity: 0.9;
 
           @include clamp-property("padding", 1.25, 1.25);
-          @include clamp-property("border-radius", 0.75, 0.75);
-
           &:focus {
             border-color: $yellow-600;
             border-radius: 0.75rem;
@@ -576,32 +518,25 @@ const handleChangePassSubmit = handleSubmit(async (values) => {
       }
 
       .toggle-eye {
+        @include clamp-property("width", 1.75, 2);
+        @include clamp-property("height", 1.75, 2);
         position: absolute;
-        right: 0.5rem;
+        right: 1rem;
         top: 50%;
         transform: translateY(-50%);
         background: none;
         border: none;
         cursor: pointer;
-        padding: 0.5rem;
+        padding: 0;
         display: flex;
         align-items: center;
-        justify-content: center;
-        border-radius: 0.375rem;
 
         svg {
-          stroke: $green-900 !important;
-          stroke-width: 1.5px !important;
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
 
-          flex-shrink: 0;
-          display: block;
-
-          @include clamp-property("width", 1.25, 1.5);
-          @include clamp-property("height", 1.25, 1.5);
-        }
-
-        &:hover {
-          // background: rgba(0, 0, 0, 0.05);
+          stroke: $green-50;
         }
       }
 
@@ -623,23 +558,13 @@ const handleChangePassSubmit = handleSubmit(async (values) => {
   }
 
   .password-requirements {
-    @include clamp-property("margin-top", 1.5, 2);
-
     color: #e8eae8;
     font-family: $font-manrope;
     font-size: 1rem;
     font-style: normal;
     font-weight: 500;
     line-height: 150%;
-
-    color: var(--Neutral-Gray-900, #5e5e5e);
-    font-family: Manrope;
-    font-size: 1rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 150%; /* 1.5rem */
-
-    opacity: 0.9;
+    @include clamp-property("margin-top", 1.5, 2);
 
     h5 {
       color: #e8eae8;
@@ -648,13 +573,6 @@ const handleChangePassSubmit = handleSubmit(async (values) => {
       font-style: normal;
       font-weight: 500;
       line-height: 150%;
-
-      color: var(--Neutral-Gray-900, #5e5e5e);
-      font-family: Manrope;
-      font-size: 1rem;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 150%; /* 1.5rem */
     }
 
     .radio-group {
@@ -685,15 +603,6 @@ const handleChangePassSubmit = handleSubmit(async (values) => {
         font-style: normal;
         font-weight: 500;
         line-height: 150%;
-
-        color: var(--Neutral-Gray-900, #5e5e5e);
-        font-family: Manrope;
-        font-size: 0.875rem;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 150%; /* 1.3125rem */
-
-        opacity: 0.9;
       }
     }
   }

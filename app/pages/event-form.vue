@@ -310,7 +310,7 @@ const handleFormSubmit = async () => {
     align-items: center;
 
     border-radius: 1.75rem;
-    background: $neutral-white;
+    background: $white;
     @include mediaSm {
       min-width: unset;
       padding-block: 2.125rem;
@@ -326,7 +326,7 @@ const handleFormSubmit = async () => {
     flex-direction: column;
     align-items: center;
     border-radius: 1.75rem;
-    background: $neutral-white;
+    background: $white;
     max-width: 50rem;
 
     .event-page-title {
@@ -521,7 +521,7 @@ const handleFormSubmit = async () => {
             }
 
             .vti__dropdown {
-              background: $neutral-white;
+              background: $white;
               border: 1px solid $gray-600;
               border-radius: 0.75rem;
 
@@ -560,7 +560,7 @@ const handleFormSubmit = async () => {
           :deep(.vti__dropdown-list) {
             @include clamp-property("border-radius", 0.6, 0.75);
 
-            background: $neutral-white;
+            background: $white;
             border: 1px solid $gray-600;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 

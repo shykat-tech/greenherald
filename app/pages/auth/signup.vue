@@ -5,7 +5,7 @@
       <MessageBlock
         :loadingStatus="'pending'"
         :title="'Verification in Progress'"
-        :message="'Thank you! Your information has been submitted successfully.  Our team will verify your details. Please check your email for updates. This process may take up to 24–48 hours.'"
+        :message="'Thank you! Your information has been submitted successfully. Our team will verify your details. Please check your email for updates. This process may take up to 24–48 hours.'"
         :isDarkBg="true"
       />
     </div>

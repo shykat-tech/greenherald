@@ -1605,7 +1605,7 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
 
-    background-color: $neutral-white;
+    background-color: $white;
 
     .icon-wrapper {
       @include clamp-property("padding", 0.62, 0.75);
@@ -1751,7 +1751,7 @@ onUnmounted(() => {
 
     border-radius: 5rem;
     background: transparent;
-    color: $neutral-white;
+    color: $white;
 
     /* Btn 18 */
     font-family: $font-manrope;
@@ -1789,7 +1789,7 @@ onUnmounted(() => {
 
     &:last-child {
       background: $golden-700;
-      color: $neutral-white;
+      color: $white;
 
       &:hover {}
     }
@@ -1822,7 +1822,7 @@ onUnmounted(() => {
   padding: 1rem 1.25rem;
   border-radius: 0.75rem;
   border: 1px solid $neutral-gray-600;
-  background-color: $neutral-white;
+  background-color: $white;
 
   color: $green-900;
   font-family: $font-manrope;

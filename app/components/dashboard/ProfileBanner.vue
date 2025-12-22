@@ -46,7 +46,7 @@ const handleEditProfile = () => {
 .profile-banner-wrapper {
   width: 100%;
   height: auto;
-  background-color: $neutral-white;
+  background-color: $white;
   border-radius: 1.75rem;
   overflow: hidden;
 
@@ -92,7 +92,7 @@ const handleEditProfile = () => {
 
         border-radius: 50%;
         overflow: hidden;
-        border: 1px solid $neutral-white;
+        border: 1px solid $white;
 
         position: absolute;
         bottom: calc(

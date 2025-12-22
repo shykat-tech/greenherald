@@ -476,7 +476,7 @@ const handleEditClick = () => {
         display: flex;
         align-items: center;
 
-        background-color: $neutral-white;
+        background-color: $white;
 
         .icon-wrapper {
           @include clamp-property("padding", 0.62, 0.75);

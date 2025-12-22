@@ -5,7 +5,7 @@
     <form @submit.prevent="handleFormSubmit" class="form">
       <!-- Email Field -->
       <div class="form-group full-width">
-        <label>Email</label>
+        <label>Email Address</label>
         <input
           v-model="email"
           type="email"
@@ -13,6 +13,10 @@
           :disabled="isLoading"
         />
         <p v-if="errors.email" class="error-text">{{ errors.email }}</p>
+        <p class="email-info">
+          This email cannot be changed later. All communication will be sent
+          here.
+        </p>
       </div>
 
       <div class="form-group full-width">
@@ -40,20 +44,39 @@
 
       <div class="form-group">
         <label>Batch</label>
-        <select v-model="batch" class="input" required>
-          <option value="" disabled selected></option>
-          <option value="2015">2015</option>
-          <option value="2016">2016</option>
-          <option value="2017">2017</option>
-          <option value="2018">2018</option>
-          <option value="2019">2019</option>
-          <option value="2020">2020</option>
-          <option value="2021">2021</option>
-          <option value="2022">2022</option>
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
-          <option value="2025">2025</option>
-        </select>
+        <div class="custom-select-wrapper">
+          <div
+            class="custom-select"
+            :class="{ 'is-open': batchDropdownOpen, 'is-selected': batch }"
+            @click="toggleBatchDropdown"
+          >
+            <span class="selected-value">{{ batch }}</span>
+            <span class="dropdown-arrow">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6,9 12,15 18,9"></polyline>
+              </svg>
+            </span>
+          </div>
+          <div v-if="batchDropdownOpen" class="dropdown-options">
+            <div
+              v-for="year in batchOptions"
+              :key="year"
+              class="dropdown-option"
+              :class="{ selected: batch === year }"
+              @click="selectBatch(year)"
+            >
+              {{ year }}
+            </div>
+          </div>
+        </div>
         <p v-if="errors.batch && hasAttemptedSubmit" class="error-text">
           {{ errors.batch }}
         </p>
@@ -61,23 +84,48 @@
 
       <div class="form-group">
         <label>Blood Group</label>
-        <select v-model="blood_group" class="input" required>
-          <option value="" disabled selected></option>
-          <option value="A+">A+</option>
-          <option value="A-">A-</option>
-          <option value="B+">B+</option>
-          <option value="B-">B-</option>
-          <option value="AB+">AB+</option>
-          <option value="AB-">AB-</option>
-          <option value="O+">O+</option>
-          <option value="O-">O-</option>
-        </select>
+        <div class="custom-select-wrapper">
+          <div
+            class="custom-select"
+            :class="{
+              'is-open': bloodGroupDropdownOpen,
+              'is-selected': blood_group,
+            }"
+            @click="toggleBloodGroupDropdown"
+          >
+            <span class="selected-value">{{ blood_group }}</span>
+            <span class="dropdown-arrow">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6,9 12,15 18,9"></polyline>
+              </svg>
+            </span>
+          </div>
+          <div v-if="bloodGroupDropdownOpen" class="dropdown-options">
+            <div
+              v-for="group in bloodGroupOptions"
+              :key="group"
+              class="dropdown-option"
+              :class="{ selected: blood_group === group }"
+              @click="selectBloodGroup(group)"
+            >
+              {{ group }}
+            </div>
+          </div>
+        </div>
         <p v-if="errors.blood_group && hasAttemptedSubmit" class="error-text">
           {{ errors.blood_group }}
         </p>
       </div>
 
-      <div class="form-group full-width">
+      <div class="phone-number-wrapper full-width">
         <label>Phone Number</label>
         <!-- <input
           v-model="phone"
@@ -137,13 +185,15 @@
         </p>
       </div>
       <!-- Submit -->
-      <button type="submit" class="btn-submit full-width">Next</button>
+      <button type="submit" class="btn-submit full-width auth-global-btn">
+        Next
+      </button>
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import { VueTelInput } from "vue-tel-input";
@@ -244,6 +294,70 @@ const { value: terms, meta: termsMeta } = useField("terms", undefined, {
   validateOnValueUpdate: false,
 });
 
+// Custom dropdown state
+const batchDropdownOpen = ref(false);
+const bloodGroupDropdownOpen = ref(false);
+
+// Dropdown options
+const batchOptions = [
+  "2015",
+  "2016",
+  "2017",
+  "2018",
+  "2019",
+  "2020",
+  "2021",
+  "2022",
+  "2023",
+  "2024",
+  "2025",
+];
+const bloodGroupOptions = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+
+// Dropdown methods
+const toggleBatchDropdown = () => {
+  batchDropdownOpen.value = !batchDropdownOpen.value;
+  if (batchDropdownOpen.value) {
+    bloodGroupDropdownOpen.value = false;
+  }
+};
+
+const toggleBloodGroupDropdown = () => {
+  bloodGroupDropdownOpen.value = !bloodGroupDropdownOpen.value;
+  if (bloodGroupDropdownOpen.value) {
+    batchDropdownOpen.value = false;
+  }
+};
+
+const selectBatch = (year) => {
+  batch.value = year;
+  batchDropdownOpen.value = false;
+};
+
+const selectBloodGroup = (group) => {
+  blood_group.value = group;
+  bloodGroupDropdownOpen.value = false;
+};
+
+// Close dropdowns when clicking outside
+const closeDropdowns = () => {
+  batchDropdownOpen.value = false;
+  bloodGroupDropdownOpen.value = false;
+};
+
+// Add click outside listener
+onMounted(() => {
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".custom-select-wrapper")) {
+      closeDropdowns();
+    }
+  });
+});
+
+onUnmounted(() => {
+  document.removeEventListener("click", closeDropdowns);
+});
+
 // Form submission handler that emits to parent
 const handleFormSubmit = handleSubmit(
   async (values) => {
@@ -309,12 +423,10 @@ const handleFormSubmit = handleSubmit(
   }
 
   .form {
-    @include clamp-property("gap", 1, 2);
-
     display: grid;
-
     grid-template-columns: repeat(2, 1fr);
 
+    @include clamp-property("gap", 1, 2);
     @include mediaSm {
       grid-template-columns: 1fr;
     }
@@ -410,24 +522,21 @@ const handleFormSubmit = handleSubmit(
       }
 
       label {
-        @include clamp-property("font-size", 1, 1.125);
-
         margin-bottom: 0.5rem;
-
         color: #fff;
         font-family: $font-manrope;
-
         font-style: normal;
         font-weight: 500;
         line-height: normal;
 
         opacity: 0.8;
+
+        @include clamp-property("font-size", 1, 1.125);
       }
 
       .input {
         @include clamp-property("font-size", 0.935, 1);
         @include clamp-property("padding", 1, 1.25);
-        @include clamp-property("height", 3.5, 4);
         @include clamp-property("border-radius", 0.6, 0.75);
 
         outline: none;
@@ -460,46 +569,168 @@ const handleFormSubmit = handleSubmit(
         }
       }
 
-      // Style select elements specifically
-      select.input {
-        @include clamp-property("font-size", 1, 1.125);
-        cursor: pointer;
-        padding-right: 2rem; // Add extra padding for dropdown arrow
-        appearance: none; // Remove default styling
-        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-position: right 0.75rem center;
-        background-size: 1rem;
+      .email-info {
+        color: $white;
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%; /* 1.3125rem */
+        margin-top: 0.5rem;
+      }
 
-        option {
-          @include clamp-property("font-size", 1, 1.125);
-          background: #2a2a2a;
+      // Custom dropdown styling
+      .custom-select-wrapper {
+        position: relative;
+        width: 100%;
+
+        .custom-select {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+
+          outline: none;
+          background: rgba(255, 255, 255, 0.06);
+          border: 2px solid transparent;
+          transition: all 0.2s ease-in-out;
           color: #fff;
-          padding: 0.5rem;
+          font-family: $font-manrope;
+          font-weight: 400;
+          line-height: normal;
 
-          &:disabled {
-            color: #888;
-            opacity: 0.7;
+          @include clamp-property("font-size", 1, 1.125);
+          @include clamp-property("padding", 1, 1.25);
+          @include clamp-property("border-radius", 0.6, 0.75);
+
+          &:hover,
+          &.is-open {
+            border-color: $yellow-600;
+          }
+
+          .selected-value {
+            flex: 1;
+            color: #fff;
+
+            &:empty::after {
+              content: attr(data-placeholder);
+              color: rgba(255, 255, 255, 0.6);
+            }
+          }
+
+          &:not(.is-selected) .selected-value {
+            color: rgba(255, 255, 255, 0.6);
+          }
+
+          .dropdown-arrow {
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+
+            svg {
+              width: 100%;
+              height: 100%;
+            }
+          }
+
+          &.is-open .dropdown-arrow {
+            transform: rotate(180deg);
           }
         }
 
-        // Style for placeholder state
-        &:invalid {
-          @include clamp-property("font-size", 1, 1.125);
-          color: rgba(255, 255, 255, 0.6);
-          font-family: $font-manrope;
-          font-weight: 400;
-          font-style: normal;
-          line-height: normal;
-          opacity: 0.8;
+        .dropdown-options {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          z-index: 1000;
+
+          background: #2a2a2a;
+          border: 2px solid rgba(255, 255, 255, 0.1);
+          max-height: 200px;
+          overflow-y: auto;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+          @include clamp-property("border-radius", 0.6, 0.75);
+          @include clamp-property("margin-top", 0.25, 0.5);
+
+          .dropdown-option {
+            color: #fff;
+            font-family: $font-manrope;
+            font-weight: 400;
+            line-height: 150%;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+            @include clamp-property("font-size", 1.125, 1.25);
+            @include clamp-property("padding", 0.75, 1);
+
+            &:last-child {
+              border-bottom: none;
+            }
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.1);
+            }
+
+            &.selected {
+              background: rgba(178, 151, 100, 0.2);
+              color: $yellow-600;
+            }
+
+            // Enhanced mobile touch target
+            @include mediaSm {
+              min-height: 40px; // iOS recommended touch target
+              display: flex;
+              align-items: center;
+
+              @include clamp-property("padding", 1, 1.25);
+              @include clamp-property("font-size", 1.25, 1.375);
+            }
+          }
+
+          // Mobile-specific dropdown styling
+          @include mediaSm {
+            max-height: 250px;
+            border-width: 1px;
+          }
         }
+
+        // Mobile-specific wrapper styling
+        @include mediaSm {
+          .custom-select {
+            @include clamp-property("font-size", 1.125, 1.25);
+          }
+        }
+      }
+    }
+
+    .phone-number-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        color: #fff;
+        font-family: $font-manrope;
+
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        opacity: 0.8;
+
+        @include clamp-property("font-size", 1, 1.125);
       }
 
       // Vue Tel Input specific styling
       :deep(.vue-tel-input) {
         outline: none;
         border-radius: 0.75rem;
-        background: rgba(255, 255, 255, 0.06);
+        // background: rgba(255, 255, 255, 0.06);
         border: 2px solid transparent;
         transition: all 0.2s ease-in-out;
 
@@ -508,41 +739,52 @@ const handleFormSubmit = handleSubmit(
         }
 
         .vti__dropdown {
-          background: rgba(255, 255, 255, 0.06);
           border: none;
-          border-radius: 0.75rem 0 0 0.75rem;
+          background: rgba(255, 255, 255, 0.06);
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          @include clamp-property("padding-block", 1, 1.25);
+          @include clamp-property("padding-inline", 0.5, 1.25);
+          @include clamp-property("border-radius", 0.6, 0.75);
+          @include clamp-property("gap", 0.25, 0.5);
 
           .vti__selection {
-            @include clamp-property("font-size", 0.935, 1);
             color: #fff;
-            padding: 0 0.5rem;
+
+            @include clamp-property("font-size", 0.935, 1);
+            @include clamp-property("border-radius", 0.6, 0.75);
           }
 
           .vti__dropdown-arrow {
             color: #fff;
+            margin-left: 0.25rem;
           }
         }
 
         .vti__input {
-          @include clamp-property("font-size", 0.935, 1);
-          @include clamp-property("padding", 1, 1.25);
-          @include clamp-property("height", 3.5, 4);
-          @include clamp-property("border-radius", 0.6, 0.75);
-
+          border-radius: 0.75rem;
           background: transparent;
           border: none;
           color: #fff;
-
           outline: none;
 
+          background: rgba(255, 255, 255, 0.06);
+          margin-left: 1rem;
+
+          @include clamp-property("font-size", 0.935, 1);
+          @include clamp-property("border-radius", 0.6, 0.75);
+          @include clamp-property("padding", 1, 1.25);
+
           &::placeholder {
-            @include clamp-property("font-size", 0.935, 1);
             color: rgba(255, 255, 255, 0.6);
             font-family: $font-manrope;
             font-weight: 400;
             font-style: normal;
             line-height: normal;
             opacity: 0;
+            @include clamp-property("font-size", 0.935, 1);
           }
         }
       }
@@ -552,7 +794,7 @@ const handleFormSubmit = handleSubmit(
         @include clamp-property("border-radius", 0.6, 0.75);
 
         background: #2a2a2a;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        // border: 1px solid rgba(255, 255, 255, 0.1);
 
         max-height: 200px;
         overflow-y: auto;
@@ -560,7 +802,7 @@ const handleFormSubmit = handleSubmit(
         .vti__dropdown-item {
           color: #fff;
           padding: 0.5rem 1rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          // border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
           &:hover,
           &.highlighted {
@@ -586,28 +828,8 @@ const handleFormSubmit = handleSubmit(
   @include clamp-property("font-size", 1, 1.125);
   @include clamp-property("padding", 1.25, 1.5);
 
-  width: 100%;
-  cursor: pointer;
-  border: none;
-
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
-  align-self: stretch;
-
-  border-radius: 5rem;
-  background: #7e6b47;
-  text-align: center;
-
-  color: #fff;
-
-  /* Btn 18 */
-  font-family: $font-manrope;
-  font-style: normal;
-  font-weight: 550;
-  line-height: 110%;
-  transition: all 0.2s ease-in-out;
+  color: $white;
+  background: $golden-700;
 
   &:hover {
     background: $yellow-600;

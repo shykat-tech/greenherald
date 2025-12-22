@@ -177,7 +177,7 @@ const offerId = router.currentRoute.value.params.id;
   align-self: stretch;
 
   border-radius: 1.125rem;
-  background: $neutral-white;
+  background: $white;
 
   .back-btn {
     @include clamp-property("padding-bottom", 2, 1);

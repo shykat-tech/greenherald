@@ -731,7 +731,7 @@ onMounted(() => {
         @include clamp-property("font-size", 0.875, 1);
         @include clamp-property("gap", 1, 1.375);
 
-        color: $neutral-white;
+        color: $white;
         font-family: $font-manrope;
         display: flex;
         justify-content: center;

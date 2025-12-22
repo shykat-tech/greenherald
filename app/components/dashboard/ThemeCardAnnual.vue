@@ -21,7 +21,7 @@
 
   overflow: hidden;
 
-  background-color: $neutral-white;
+  background-color: $white;
   position: relative;
 
   display: flex;
@@ -60,7 +60,7 @@
     position: absolute;
     z-index: 1;
     text-align: center;
-    color: $neutral-white;
+    color: $white;
     inset: 0;
 
     display: flex;
@@ -89,7 +89,7 @@
     h2 {
       @include clamp-property("font-size", 1.5, 2.5);
 
-      color: $neutral-white;
+      color: $white;
       font-family: $font-manrope;
       text-align: center;
       font-style: normal;

@@ -86,7 +86,9 @@
       </p>
 
       <div class="message-actions" v-if="showButton">
-        <button @click="backToHome" class="btn-reset">Back to home</button>
+        <button @click="backToHome" class="auth-global-btn btn-reset">
+          Back to home
+        </button>
       </div>
     </div>
   </div>
@@ -141,11 +143,6 @@ const backToHome = () => {
     max-width: 40rem;
 
     .icon {
-      @include clamp-property("width", 4.5, 8);
-      @include clamp-property("height", 4.5, 8);
-      @include clamp-property("padding", 1, 1.5);
-      @include clamp-property("margin-bottom", 2, 3);
-
       border-radius: 62.5rem;
 
       display: flex;
@@ -154,6 +151,11 @@ const backToHome = () => {
 
       gap: 0.5rem;
       aspect-ratio: 1/1;
+
+      @include clamp-property("width", 4.5, 8);
+      @include clamp-property("height", 4.5, 8);
+      @include clamp-property("padding", 1, 1.5);
+      @include clamp-property("margin-bottom", 2, 3);
 
       &.success-icon {
         background: $golden-700;
@@ -165,19 +167,16 @@ const backToHome = () => {
     }
 
     .message-title {
-      @include clamp-property("font-size", 2, 3);
       font-family: $font-gloock;
 
       text-align: center;
       font-style: normal;
       font-weight: 400;
       line-height: 110%; /* 3.3rem */
+      @include clamp-property("font-size", 2, 3);
     }
 
     p {
-      @include clamp-property("margin-top", 0.75, 1.25);
-      @include clamp-property("font-size", 0.875, 1);
-
       text-align: center;
 
       /* Body */
@@ -185,6 +184,9 @@ const backToHome = () => {
       font-style: normal;
       font-weight: 400;
       line-height: 150%; /* 1.5rem */
+
+      @include clamp-property("margin-top", 0.75, 1.25);
+      @include clamp-property("font-size", 0.875, 1);
     }
 
     .message-actions {
@@ -203,45 +205,17 @@ const backToHome = () => {
       }
 
       .btn-reset {
-        @include clamp-property("padding-inline", 1.5, 2.5);
-        @include clamp-property("padding-block", 1.25, 1.5);
-        @include clamp-property("font-size", 1, 1.125);
-        @include clamp-property("height", 3.5, 4.5);
-
-        color: $white;
-        font-family: $font-manrope;
-        border-radius: 5rem;
-        cursor: pointer;
-        border: none;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-
-        font-style: normal;
-
         transition: all 0.2s ease-in-out;
 
-        display: flex;
         min-width: min(19.0625rem, 90svw);
 
-        justify-content: center;
-        align-items: center;
-        gap: 0.625rem;
-
-        background-color: transparent;
-
-        border-radius: 5rem;
         border: 1px solid $golden-700;
 
         color: $golden-700;
-        font-family: $font-manrope;
 
-        font-size: 1.125rem;
-        font-style: normal;
-        font-weight: 550;
-        line-height: 110%;
+        &:hover {
+          color: $golden-600;
+        }
 
         &:disabled {
           opacity: 0.6;
@@ -263,7 +237,7 @@ const backToHome = () => {
   // Dark background styles with higher specificity
   &.dark-bg {
     .message-title {
-      color: $neutral-white !important;
+      color: $white !important;
     }
 
     p {

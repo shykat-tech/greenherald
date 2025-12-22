@@ -79,7 +79,7 @@ const gotToOfferDetails = (id) => {
       align-items: center;
       gap: 0.625rem;
 
-      color: $neutral-white;
+      color: $white;
       font-family: $font-manrope;
       font-size: 0.75rem;
       font-style: normal;
@@ -123,7 +123,7 @@ const gotToOfferDetails = (id) => {
         gap: 0.5rem;
 
         background-color: transparent;
-        color: $neutral-white;
+        color: $white;
         border: none;
 
         font-family: $font-manrope;

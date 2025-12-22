@@ -312,7 +312,7 @@ const handleEditClick = () => {
 
       border-radius: 4rem;
       border: 1px solid $green-50;
-      background: $neutral-white;
+      background: $white;
 
       svg {
         width: 1.5rem;
@@ -384,7 +384,7 @@ const handleEditClick = () => {
       @include clamp-property("padding-inline", 1.25, 1.5);
       @include clamp-property("font-size", 0.8125, 0.875);
 
-      color: $neutral-white;
+      color: $white;
       background: $golden-700;
       font-family: $font-manrope;
 

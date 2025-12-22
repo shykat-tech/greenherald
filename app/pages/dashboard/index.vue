@@ -4,8 +4,6 @@
       <ProfileBanner />
 
       <div class="only-mobile gap-between-sections">
-        <!-- <ThemeCard /> -->
-
         <ThemeCardLifetime v-if="globalStore.getSiteTheme === 'lifetime'" />
         <ThemeCardAnnual v-if="globalStore.getSiteTheme === 'annual'" />
       </div>
@@ -18,8 +16,6 @@
 
     <div class="right-section">
       <div class="sticky-card">
-        <!-- <ThemeCard /> -->
-
         <ThemeCardLifetime v-if="globalStore.getSiteTheme === 'lifetime'" />
         <ThemeCardAnnual v-if="globalStore.getSiteTheme === 'annual'" />
         <div class="theme-bottom">
@@ -64,6 +60,7 @@ const globalStore = useGlobalStore();
 .profile-wrapper {
   @include clamp-property("gap", 1.5, 2.53);
 
+  /** dashboard layout */
   max-width: calc(100svw - 30rem);
   position: relative;
 
@@ -100,7 +97,7 @@ const globalStore = useGlobalStore();
     @include clamp-property("border-radius", 1, 1.125);
 
     width: 100%;
-    background-color: $neutral-white;
+    background-color: $white;
     border-radius: 1.125rem;
   }
 

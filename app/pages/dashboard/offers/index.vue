@@ -184,7 +184,7 @@ const offers = [
   @include clamp-property("padding-block", 1.5, 2.5);
 
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
-  background: $neutral-white;
+  background: $white;
 
   .back-btn {
     @include clamp-property("padding-bottom", 1, 2);

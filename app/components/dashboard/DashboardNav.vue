@@ -109,10 +109,7 @@
             </div>
           </div>
           <ul>
-            <li
-              role="button"
-              @click="router.push('/dashboard/change-password')"
-            >
+            <li role="button" @click="goToChangePassword">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -176,6 +173,11 @@ const router = useRouter();
 
 const authStore = useAuthStore();
 
+const goToChangePassword = () => {
+  console.log("Navigating to Change Password page");
+  router.push("/dashboard/change-password");
+};
+
 const handleLogout = () => {
   console.log("Logout: Before logout - Auth state:", {
     isAuthenticated: authStore.isAuthenticated,
@@ -227,7 +229,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: $neutral-white;
+  background-color: $white;
   position: fixed;
   width: 100%;
   z-index: 20;
@@ -275,8 +277,6 @@ nav {
         @include clamp-property("font-size", 0.875, 1rem);
         min-width: 30rem;
 
-        // border: 1px solid $neutral-gray-300;
-
         border: none;
         outline: none;
 
@@ -291,7 +291,7 @@ nav {
         border: 1px solid $green-50;
         background: #f6f6f6;
 
-        padding-left: 2.75rem; // Adjusted padding to accommodate the search icon
+        padding-left: 2.75rem;
 
         &::placeholder {
           color: $gray-900;
@@ -386,16 +386,30 @@ nav {
       }
       .profile-dropdown-panel {
         position: absolute;
-        top: 110%;
+        top: 100%;
         right: 0;
-        background-color: $neutral-white;
+        background-color: $white;
         box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
         border-radius: 0.5rem;
         overflow: hidden;
-        transition: all 0.3s ease;
 
-        display: none;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-15px) scale(0.9);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
         z-index: 10;
+        margin-top: 0.5rem;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: -0.5rem;
+          left: 0;
+          right: 0;
+          height: 0.5rem;
+          background: transparent;
+        }
 
         .profile-info {
           display: flex;
@@ -480,8 +494,11 @@ nav {
           }
         }
       }
-      &:hover .profile-dropdown-panel {
-        display: block;
+      &:hover .profile-dropdown-panel,
+      .profile-dropdown-panel:hover {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
       }
     }
   }

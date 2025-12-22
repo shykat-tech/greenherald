@@ -75,18 +75,22 @@
         </div>
 
         <div class="forgot-password">
-          <p><span>Forgot password?</span></p>
+          <p @click="router.push({ path: '/auth/forgot-password' })">
+            <span>Forgot password?</span>
+          </p>
         </div>
 
         <!-- Submit -->
 
         <div class="btn-group">
-          <button type="submit" class="btn-submit">Login</button>
+          <button type="submit" class="btn-submit auth-global-btn">
+            Login
+          </button>
 
           <div class="separator"><span>or</span></div>
 
           <div class="social-login">
-            <button>
+            <button class="auth-global-btn">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="25"
@@ -399,31 +403,15 @@ const onSubmit = handleSubmit(async (values) => {
         width: 100%;
       }
       .btn-submit {
-        @include clamp-property("padding", 1.25, 1.5);
-
-        @include clamp-property("margin-top", 1.5, 2);
-        @include clamp-property("font-size", 1, 1.125);
-        @include clamp-property("height", 3.5, 4.5);
-
         color: $white;
-        font-family: $font-manrope;
         background: $golden-700;
 
         border-radius: 5rem;
         width: 100%;
-        cursor: pointer;
-        border: none;
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        align-self: stretch;
-        text-align: center;
-
-        font-style: normal;
-        font-weight: 550;
-        line-height: 110%;
         transition: all 0.2s ease-in-out;
+
+        @include clamp-property("margin-top", 1.5, 2);
 
         &:hover {
           background: $yellow-600;
@@ -431,34 +419,23 @@ const onSubmit = handleSubmit(async (values) => {
       }
 
       .social-login {
-        @include clamp-property("height", 3.25, 4);
-
-        border-radius: 5rem;
-        border: 1px solid #fff;
         display: flex;
         justify-content: center;
         align-items: center;
 
         button {
-          @include clamp-property("padding", 1.25, 1.5);
+          border: 1px solid #fff;
 
           width: 100%;
-          cursor: pointer;
-          border: none;
 
           display: flex;
           justify-content: center;
           align-items: center;
           align-self: stretch;
-          border-radius: 5rem;
-          background: transparent;
-          text-align: center;
+          @include clamp-property("padding", 0.973, 0.973);
 
           span {
-            @include clamp-property("font-size", 0.875, 1);
-            @include clamp-property("gap", 1, 1.375);
-
-            color: $neutral-white;
+            color: $white;
             font-family: $font-manrope;
             display: flex;
             justify-content: center;
@@ -467,8 +444,11 @@ const onSubmit = handleSubmit(async (values) => {
           }
 
           svg {
+            height: fit-content;
+            aspect-ratio: 1/1;
+
             @include clamp-property("margin-right", 0.75, 1.375);
-            @include clamp-property("width", 1.875, 2.5);
+            @include clamp-property("width", 1.75, 2.5);
           }
         }
       }

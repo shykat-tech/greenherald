@@ -80,8 +80,6 @@ const cancelEdit = () => {
 .edit-modal-wrapper {
   // Add your styles here
 
-  width: min(100%, 40rem);
-
   h2 {
     @include clamp-property("font-size", 1.5, 2.5);
     @include clamp-property("margin-bottom", 1.5, 2.5);
@@ -186,7 +184,7 @@ const cancelEdit = () => {
 
       border-radius: 5rem;
       background: transparent;
-      color: $neutral-white;
+      color: $white;
 
       /* Btn 18 */
       font-family: $font-manrope;
@@ -222,7 +220,7 @@ const cancelEdit = () => {
 
       &:last-child {
         background: $golden-700;
-        color: $neutral-white;
+        color: $white;
 
         &:hover {
           // background: darken($neutral-gray-800, 5%);

@@ -36,6 +36,25 @@ export const useAuthStore = defineStore('auth', {
   },
   
   actions: {
+    //forget password action
+    async forgotPassword(email) {
+      this.loading = true
+      try {
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        // In a real app, you would send a request to the backend here
+        console.log(`Password reset link sent to ${email}`)
+        
+        return { success: true }
+      } catch (error) {
+        console.error('Forgot password error:', error)
+        return { success: false, error: error.message }
+      } finally {
+        this.loading = false
+      }
+    },
+    
     // Login action
     async login(credentials) {
       this.loading = true

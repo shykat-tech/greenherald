@@ -235,7 +235,7 @@ const validateForm = () => {
 
   width: min(80svw, 50rem);
 
-  //   background: $neutral-white;
+  //   background: $white;
 }
 .form-container-wrapper {
   .contact-info-card {
@@ -447,7 +447,7 @@ const validateForm = () => {
         }
 
         .vti__dropdown {
-          background: $neutral-white;
+          background: $white;
           // border: 1px solid $gray-600;
           border-radius: 0.75rem;
 
@@ -486,7 +486,7 @@ const validateForm = () => {
       :deep(.vti__dropdown-list) {
         @include clamp-property("border-radius", 0.6, 0.75);
 
-        background: $neutral-white;
+        background: $white;
         // border: 1px solid $gray-600;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 

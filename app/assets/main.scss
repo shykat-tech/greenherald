@@ -37,6 +37,31 @@ button {
 }
 
 
+.auth-global-btn {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+      cursor: pointer;
+
+      font-family: $font-manrope;
+      border-radius: 5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-self: stretch;
+      text-align: center;
+      font-style: normal;
+      font-weight: 450;
+      line-height: 110%;
+      transition: all 0.2s ease-in-out;
+
+      @include clamp-property("padding", 1.25, 1.25);
+      @include clamp-property("font-size", 1, 1);
+}
+
+
+
 @media (hover: none) and (pointer: coarse) {
   button {
     user-select: none;
