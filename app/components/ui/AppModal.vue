@@ -1,10 +1,25 @@
 <template>
-  <div class="modal-wrapper" @click.self="globalStore.closeModal" @wheel.prevent>
+  <div
+    class="modal-wrapper"
+    @click.self="globalStore.closeModal"
+    @wheel.prevent
+  >
     <div class="modal-content" ref="modalContent" @wheel.stop>
       <button class="close-icon-wrapper" @click="globalStore.closeModal">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M18 6L6.00081 17.9992M17.9992 18L6 6.00085" stroke="#4B3F2A" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M18 6L6.00081 17.9992M17.9992 18L6 6.00085"
+            stroke="#4B3F2A"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
       </button>
       <component :is="compLookup[globalStore.openModalType]" />
@@ -109,8 +124,8 @@ onUnmounted(() => {
   overflow: hidden; // Prevent any background scrolling
 
   .modal-content {
-    @include clamp-property("padding-inline", 1.25, 2.5);
-    @include clamp-property("padding-block", 1.5, 2.5);
+    @include clamp-property("padding-inline", 1, 2.5);
+    @include clamp-property("padding-block", 1, 2.5);
     @include clamp-property("border-radius", 0.75, 2.5);
 
     background: var(--modal-bg-color, #f7f5f0);
@@ -151,7 +166,7 @@ onUnmounted(() => {
     position: relative;
 
     .close-icon-wrapper {
-      @include clamp-property("padding", 0.75, 1);
+      @include clamp-property("padding", 0.3, 1);
 
       position: absolute;
       top: 1rem;

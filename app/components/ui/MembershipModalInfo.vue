@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import Membership from '~/components/blocks/Membership.vue'
-
+import Membership from "~/components/blocks/Membership.vue";
 </script>
 
 <template>
-  <div id="modal-cards">
-    <Membership />
-  </div>
+  <div id="modal-cards"><Membership :disableScrollAnimation="true" /></div>
 </template>
 
 <style lang="scss" scoped>
 #modal-cards {
-
   #membership {
     width: 100%;
     overflow: hidden;
@@ -23,8 +19,8 @@ import Membership from '~/components/blocks/Membership.vue'
     }
 
     :deep(.sectionTitle) {
-      @include clamp-property("font-size", 1.5, 3.5);
-      @include clamp-property("margin-bottom", 1.5, 2);
+      @include clamp-property("font-size", 1.25, 3.5);
+      @include clamp-property("margin-bottom", 1.25, 2);
     }
 
     :deep(.container) {
