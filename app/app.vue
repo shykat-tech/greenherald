@@ -14,101 +14,88 @@
   </NuxtLayout>
 
   <Transition name="arrow">
-    <div class="arrow" ref="arrow" v-if="showArrow" @click="handleArrowClick">
+    <div
+      class="arrow"
+      v-show="showArrow"
+      @click="handleArrowClick"
+      :class="{ toggle: scrollAtBottom }"
+    >
       <div class="arr">
-        <svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"
-          class="top-arrow" data-v-e05cd847="">
-          <path d="M12 3V21M12 3L5 10M12 3L19 10" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-            class="top-arrow-path" data-v-e05cd847=""></path>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          xmlns="http://www.w3.org/2000/svg"
+          class="top-arrow"
+        >
+          <path
+            d="M12 3V21M12 3L5 10M12 3L19 10"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          ></path>
         </svg>
       </div>
     </div>
-
   </Transition>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useGlobalStore } from "./stores/global";
 
 const loading = ref(true);
 const showArrow = ref(false);
-const arrow = ref(null);
+const scrollAtBottom = ref(false);
 
+const globalStore = useGlobalStore();
+
+// Handle arrow click
 const handleArrowClick = () => {
-  if (!arrow.value) return;
-
-  if (arrow.value.classList.contains("toggle")) {
+  if (scrollAtBottom.value) {
     // Scroll to top
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: "smooth",
     });
   } else {
     // Scroll to bottom
     window.scrollTo({
       top: document.documentElement.scrollHeight,
-      behavior: "smooth"
+      behavior: "smooth",
     });
   }
-}
+};
+
+// Scroll listener
+const handleScroll = () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight;
+  const winHeight = window.innerHeight;
+
+  const scrollPercent = (scrollTop / (docHeight - winHeight)) * 100;
+
+  showArrow.value = scrollPercent >= 5;
+  scrollAtBottom.value = scrollPercent >= 50;
+};
 
 onMounted(() => {
+  // Fake loader
   setTimeout(() => {
     loading.value = false;
-  }, 1000)
-
-
-  // Scroll listener
-  const handleScroll = () => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight;
-    const winHeight = window.innerHeight;
-
-    const scrollPercent = (scrollTop / (docHeight - winHeight)) * 100;
-
-    if (showArrow.value) {
-      if (scrollPercent >= 50) {
-        arrow.value.classList.add("toggle")
-      } else {
-        arrow.value.classList.remove("toggle")
-      }
-    }
-
-    showArrow.value = scrollPercent >= 5;
-  };
-
-
+  }, 1000);
 
   window.addEventListener("scroll", handleScroll);
-  handleScroll(); // initial check
+  handleScroll(); // Initial check
+});
 
-  onBeforeUnmount(() => {
-    window.removeEventListener("scroll", handleScroll);
-  });
-})
-
-const globalStore = useGlobalStore();
-
-
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <style lang="scss">
-/* Modal transition styles */
-.modal-enter-active {
-  transition: none;
-  /* Let CSS animations handle the entrance */
-}
-
-.modal-leave-active {
-  transition: all 0.25s ease-in;
-}
-
-.modal-leave-to {
-  opacity: 0;
-  transform: scale(1);
-}
-
 #bg-overlay {
   width: 100%;
   height: 200vh;
@@ -135,12 +122,10 @@ const globalStore = useGlobalStore();
   mix-blend-mode: difference;
   color: white;
 
-
   .arr {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -150,7 +135,7 @@ const globalStore = useGlobalStore();
       color: inherit;
     }
 
-    @media screen and (max-width:768px) {
+    @media screen and (max-width: 768px) {
       width: 36px;
       height: 36px;
     }
