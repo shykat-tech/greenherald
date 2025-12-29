@@ -43,7 +43,9 @@
         </div>
 
         <div class="package-price-block">
-          <h5>Change plan</h5>
+          <h5 role="button" @click="globalStore.openModal('membership')">
+            Change plan
+          </h5>
           <div>
             <h3>BDT <span> 5000,000 </span></h3>
           </div>
@@ -149,6 +151,8 @@ const props = defineProps({
   },
 });
 
+const globalStore = useGlobalStore();
+
 // Reactive refs for message display
 const showError = ref(false);
 
@@ -181,7 +185,7 @@ const handleSubmit = () => {
   // }
 
   // if (paymentData.paymentMethodType === "mfs" && !paymentData.mfsMethod) {
-  //   showError.value = true;
+  //   showError.value = true;π
   //   return;
   // }
 
@@ -319,7 +323,6 @@ const handleBack = () => {
       }
 
       h5 {
-        @include clamp-property("font-size", 1, 1);
         color: $golden-500;
         font-family: $font-manrope;
 
@@ -333,6 +336,9 @@ const handleBack = () => {
         text-underline-offset: auto;
         text-underline-position: from-font;
         opacity: 0.75;
+        cursor: pointer;
+
+        @include clamp-property("font-size", 1, 1);
       }
 
       h3 {

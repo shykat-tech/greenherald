@@ -84,7 +84,7 @@
             :class="{ 'placeholder-selected': !formData.batch }"
             v-model="formData.batch"
           >
-            <option value="" disabled selected>Select Your Batch</option>
+            <option value="" disabled selected></option>
             <option value="2000-2005">2000-2005</option>
             <option value="2006-2010">2006-2010</option>
             <option value="2011-2015">2011-2015</option>

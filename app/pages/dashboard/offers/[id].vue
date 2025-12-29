@@ -232,10 +232,18 @@ const offerId = router.currentRoute.value.params.id;
       aspect-ratio: 1004/418.33;
       overflow: hidden;
 
+      @include mediaSm {
+        aspect-ratio: 21.875/13.625;
+      }
+
       img {
         width: 100%;
         aspect-ratio: 1004/418.33;
         object-fit: cover;
+
+        @include mediaSm {
+          aspect-ratio: 21.875/13.625;
+        }
       }
     }
 

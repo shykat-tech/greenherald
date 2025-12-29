@@ -37,34 +37,33 @@
         </div>
       </div>
 
-      <div class="registered-user-profile" v-if="globalStore.alumniStatus">
-        <div class="info-item">
-          <h4>Name</h4>
-          <p class="info-detail">John Doe</p>
-        </div>
-
-        <div class="info-item">
-          <h4>Batch</h4>
-          <p class="info-detail">2010-2015</p>
-        </div>
-
-        <div class="info-item">
-          <h4>Email</h4>
-          <p class="info-detail">Paid</p>
-        </div>
-      </div>
-
       <div class="form-container-wrapper">
         <h3 class="event-form-title">
           To secure your spot at this exclusive alumni event, fill in your
           details below.
         </h3>
 
+        <div class="registered-user-profile" v-if="globalStore.alumniStatus">
+          <div class="info-item">
+            <h4>Name</h4>
+            <p class="info-detail">John Doe</p>
+          </div>
+
+          <div class="info-item">
+            <h4>Batch</h4>
+            <p class="info-detail">2010-2015</p>
+          </div>
+
+          <div class="info-item">
+            <h4>Email</h4>
+            <p class="info-detail">Paid</p>
+          </div>
+        </div>
         <form @submit.prevent="handleFormSubmit">
           <div class="form-group" v-if="!globalStore.alumniStatus">
             <label for="batch" required>Batch</label>
             <select name="batch" id="batch" required>
-              <option value="" disabled selected>Select Your Batch</option>
+              <option value="" disabled selected></option>
               <option value="2000-2005">2000-2005</option>
               <option value="2006-2010">2006-2010</option>
               <option value="2011-2015">2011-2015</option>
@@ -84,7 +83,7 @@
           </div>
 
           <div class="form-group">
-            <label>Phone Number</label>
+            <label>Phone Number <span>*</span></label>
 
             <VueTelInput
               v-model="phone"
@@ -101,8 +100,63 @@
             </p>
           </div>
 
+          <div class="form-group" v-if="globalStore.alumniStatus">
+            <label>Food Preferences</label>
+            <div class="radio-group">
+              <label>
+                <input
+                  v-model="foodPreferences"
+                  type="radio"
+                  value="vegetarian"
+                />
+                Vegetarian
+              </label>
+              <label>
+                <input v-model="foodPreferences" type="radio" value="vegan" />
+                Vegan
+              </label>
+              <label>
+                <input
+                  v-model="foodPreferences"
+                  type="radio"
+                  value="non-vegetarian"
+                />
+                Non-Vegetarian
+              </label>
+            </div>
+            <p v-if="errors.foodPreferences" class="error-text">
+              {{ errors.foodPreferences }}
+            </p>
+          </div>
+
+          <!-- radio button for t shirt -->
+          <div class="form-group" v-if="globalStore.alumniStatus">
+            <label>T-Shirt Size</label>
+            <div class="radio-group">
+              <label>
+                <input v-model="tshirtSize" type="radio" value="S" />
+                Small
+              </label>
+              <label>
+                <input v-model="tshirtSize" type="radio" value="M" />
+                Medium
+              </label>
+              <label>
+                <input v-model="tshirtSize" type="radio" value="L" />
+                Large
+              </label>
+              <label>
+                <input v-model="tshirtSize" type="radio" value="XL" />
+                Extra Large
+              </label>
+            </div>
+            <p v-if="errors.tshirtSize" class="error-text">
+              {{ errors.tshirtSize }}
+            </p>
+          </div>
+
           <div class="form-group">
-            <label>Payment methods</label>
+            <label>Payment methods <span>*</span></label>
             <div class="radio-group">
               <label class="payment-option">
                 <input
@@ -160,61 +214,6 @@
             </div>
             <p v-if="errors.paymentMethod" class="error-text">
               {{ errors.paymentMethod }}
-            </p>
-          </div>
-
-          <div class="form-group">
-            <label>Food Preferences</label>
-            <div class="radio-group">
-              <label>
-                <input
-                  v-model="foodPreferences"
-                  type="radio"
-                  value="vegetarian"
-                />
-                Vegetarian
-              </label>
-              <label>
-                <input v-model="foodPreferences" type="radio" value="vegan" />
-                Vegan
-              </label>
-              <label>
-                <input
-                  v-model="foodPreferences"
-                  type="radio"
-                  value="non-vegetarian"
-                />
-                Non-Vegetarian
-              </label>
-            </div>
-            <p v-if="errors.foodPreferences" class="error-text">
-              {{ errors.foodPreferences }}
-            </p>
-          </div>
-
-          <!-- radio button for t shirt -->
-          <div class="form-group">
-            <label>T-Shirt Size</label>
-            <div class="radio-group">
-              <label>
-                <input v-model="tshirtSize" type="radio" value="S" />
-                Small
-              </label>
-              <label>
-                <input v-model="tshirtSize" type="radio" value="M" />
-                Medium
-              </label>
-              <label>
-                <input v-model="tshirtSize" type="radio" value="L" />
-                Large
-              </label>
-              <label>
-                <input v-model="tshirtSize" type="radio" value="XL" />
-                Extra Large
-              </label>
-            </div>
-            <p v-if="errors.tshirtSize" class="error-text">
-              {{ errors.tshirtSize }}
             </p>
           </div>
 
@@ -511,9 +510,11 @@ const handleFormSubmit = async () => {
 
           :deep(.vue-tel-input) {
             border-radius: 0.75rem;
-            border: 1px solid $gray-600;
+            // border: 1px solid $gray-600;
             background: transparent;
             transition: all 0.2s ease-in-out;
+
+            border: none;
 
             &:focus-within {
               border-color: $golden-700;
@@ -546,6 +547,9 @@ const handleFormSubmit = async () => {
               color: $green-900;
               outline: none;
               font-family: $font-manrope;
+
+              border: 1px solid $gray-600;
+              margin-left: 0.75em;
 
               &::placeholder {
                 color: rgba($green-900, 0.6);

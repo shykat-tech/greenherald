@@ -171,7 +171,7 @@
 
       <div class="full-width terms-conditions">
         <div class="input-wrapper">
-          <input type="checkbox" id="terms" v-model="terms" />
+          <input type="checkbox" id="terms" v-model="terms" required />
           <label for="terms">
             <p>
               By proceeding, you agree to our <span>Terms of Service</span> and

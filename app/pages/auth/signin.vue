@@ -84,7 +84,7 @@
 
         <div class="btn-group">
           <button type="submit" class="btn-submit auth-global-btn">
-            Login
+            Sign in
           </button>
 
           <div class="separator"><span>or</span></div>
@@ -160,7 +160,7 @@ const rules = ref({
 });
 
 const goToSignup = () => {
-  router.push({ path: "/auth/signup" });
+  router.push({ path: "/auth/signup", hash: "#step-1" });
 };
 
 const checkPasswordRules = () => {

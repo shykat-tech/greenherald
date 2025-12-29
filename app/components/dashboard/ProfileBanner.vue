@@ -64,6 +64,10 @@ const handleEditProfile = () => {
 
       height: 100%;
 
+      @include mediaSm {
+        aspect-ratio: 24.42775 / 10.88919;
+      }
+
       img {
         @include clamp-property("border-bottom-left-radius", 0, 1.75);
         @include clamp-property("border-bottom-right-radius", 0, 1.75);

@@ -5,7 +5,7 @@
         <img src="../../assets/images/logo.svg" alt="" />
       </div>
 
-      <div class="search-field">
+      <!-- <div class="search-field">
         <div class="search-icon">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -31,11 +31,11 @@
           </svg>
         </div>
         <input type="text" placeholder="Search..." />
-      </div>
+      </div> -->
     </div>
 
     <div class="right">
-      <div class="mbl-search-icon">
+      <!-- <div class="mbl-search-icon">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -58,7 +58,7 @@
             stroke-linejoin="round"
           />
         </svg>
-      </div>
+      </div> -->
       <div class="notification-icon">
         <svg
           xmlns="http://www.w3.org/2000/svg"

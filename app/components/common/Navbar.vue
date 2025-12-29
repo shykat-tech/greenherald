@@ -250,7 +250,7 @@ import { useGsapCleanup } from "~/composables/useGsapCleanup";
 const router = useRouter();
 
 const goToSignup = () => {
-  router.push({ path: "/auth/signup" });
+  router.push({ path: "/auth/signup", hash: "#step-1" });
 };
 
 const goToSignin = () => {

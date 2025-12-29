@@ -181,18 +181,29 @@ const handlePaymentSubmit = async (data) => {
 // URL hash management for step tracking
 const updateUrlHash = (step) => {
   if (process.client) {
-    window.location.hash = `step-${step}`;
+    // Use replaceState to avoid creating new history entries when updating hash
+    const newHash = `#step-${step}`;
+    if (window.location.hash !== newHash) {
+      window.history.replaceState(
+        null,
+        null,
+        `${window.location.pathname}${newHash}`
+      );
+    }
   }
 };
 
 const initializeFromHash = () => {
-  if (process.client && window.location.hash) {
-    const hashStep = window.location.hash.replace("#step-", "");
-    const stepNumber = parseInt(hashStep);
-    if (stepNumber >= 1 && stepNumber <= 2) {
-      authStore.setSignupStep(stepNumber);
+  if (process.client) {
+    if (window.location.hash) {
+      const hashStep = window.location.hash.replace("#step-", "");
+      const stepNumber = parseInt(hashStep);
+      if (stepNumber >= 1 && stepNumber <= 2) {
+        authStore.setSignupStep(stepNumber);
+        return; // Don't update hash if it's already correct
+      }
     }
-  } else {
+    // Only set default if no valid hash exists
     authStore.setSignupStep(1);
     updateUrlHash(1);
   }
