@@ -54,7 +54,7 @@
           </div>
 
           <!-- Join Button -->
-          <CommonPrimaryButton @click="joinMembership"
+          <CommonPrimaryButton @click="joinMembership(plan)"
             ><span>Join as {{ plan.title }} Member</span>
           </CommonPrimaryButton>
         </div>
@@ -76,8 +76,13 @@ const props = defineProps({
   },
 });
 
-const joinMembership = () => {
+const globalStore = useGlobalStore();
+
+const joinMembership = (plan) => {
   // Logic to handle membership joining
+
+  globalStore.setMembershipPlan(plan);
+
   //if the user is not authenticated, redirect to login page
   const isAuthenticated = false; // Replace with actual authentication check
   if (!isAuthenticated) {

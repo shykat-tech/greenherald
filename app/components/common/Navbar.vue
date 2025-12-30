@@ -3,43 +3,14 @@
     <nav id="baseNav" :class="{ open: isMenuOpen }">
       <div class="menu">
         <button class="menu-btn" @click="isMenuOpen = !isMenuOpen">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class=""
-            :class="{ open: isMenuOpen }"
-          >
-            <path
-              d="M4 5H20"
-              stroke="#7E6B47"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M4 12H20"
-              stroke="#7E6B47"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M4 19H20"
-              stroke="#7E6B47"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class=""
+            :class="{ open: isMenuOpen }">
+            <path d="M4 5H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M4 12H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M4 19H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
 
-          <span
-            :key="isMenuOpen"
-            class="menu-btn-text"
-            :style="{ color: isMenuOpen && 'white' }"
-          >
+          <span :key="isMenuOpen" class="menu-btn-text" :style="{ color: isMenuOpen && 'white' }">
             {{ isMenuOpen ? "Close" : "Menu" }}
           </span>
         </button>
@@ -50,63 +21,24 @@
     </nav>
 
     <Transition name="fixedNav">
-      <nav
-        v-if="scrollDir === 'up' && scrollY >= 250"
-        id="fixedNav"
-        :class="{ open: isMenuOpen }"
-        ref="fixedNavRef"
-      >
+      <nav v-if="scrollDir === 'up' && scrollY >= 250" id="fixedNav" :class="{ open: isMenuOpen }" ref="fixedNavRef">
         <div class="menu">
           <button class="menu-btn" @click="isMenuOpen = !isMenuOpen">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class=""
-              :class="{ open: isMenuOpen }"
-            >
-              <path
-                d="M4 5H20"
-                stroke="#7E6B47"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M4 12H20"
-                stroke="#7E6B47"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M4 19H20"
-                stroke="#7E6B47"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class=""
+              :class="{ open: isMenuOpen }">
+              <path d="M4 5H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M4 12H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M4 19H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
-            <span
-              :key="isMenuOpen"
-              class="menu-btn-text"
-              :style="{ color: isMenuOpen && 'white' }"
-            >
+            <span :key="isMenuOpen" class="menu-btn-text" :style="{ color: isMenuOpen && 'white' }">
               {{ isMenuOpen ? "Close" : "Menu" }}
             </span>
           </button>
         </div>
 
         <NuxtLink to="/">
-          <img
-            src="/assets/images/logo.svg"
-            class="nav-logo"
-            :class="{ open: isMenuOpen }"
-            alt="greenherald-logo"
-            ref="navLogoRef"
-          />
+          <img src="/assets/images/logo.svg" class="nav-logo" :class="{ open: isMenuOpen }" alt="greenherald-logo"
+            ref="navLogoRef" />
         </NuxtLink>
 
         <div class="btn-group" :class="{ open: isMenuOpen }">
@@ -121,65 +53,30 @@
     </Transition>
 
     <Transition name="navMenu">
-      <ul
-        class="open-menu"
-        @click="isMenuOpen = false"
-        v-if="isMenuOpen"
-        :class="{ open: isMenuOpen }"
-      >
+      <ul class="open-menu" @click="isMenuOpen = false" v-if="isMenuOpen" :class="{ open: isMenuOpen }">
         <div class="container">
           <div class="bar">
-            <NuxtLink to="/">
-              <img
-                src="/assets/images/logo.svg"
-                class="nav-logo"
-                :class="{ open: isMenuOpen }"
-                alt="greenherald-logo"
-                ref="navLogoRef"
-              />
-            </NuxtLink>
             <div class="menu">
               <button class="menu-btn" @click="isMenuOpen = !isMenuOpen">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="menu-icon"
-                  :class="{ open: isMenuOpen }"
-                >
-                  <path
-                    d="M4 5H20"
-                    stroke="#7E6B47"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M4 12H20"
-                    stroke="#7E6B47"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M4 19H20"
-                    stroke="#7E6B47"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                  class="menu-icon" :class="{ open: isMenuOpen }">
+                  <path d="M4 5H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                  <path d="M4 12H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                  <path d="M4 19H20" stroke="#7E6B47" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
                 </svg>
-                <span
-                  :key="isMenuOpen"
-                  class="menu-btn-text"
-                  :style="{ color: isMenuOpen && 'white' }"
-                >
+                <span :key="isMenuOpen" class="menu-btn-text" :style="{ color: isMenuOpen && 'white' }">
                   {{ isMenuOpen ? "Close" : "Menu" }}
                 </span>
               </button>
             </div>
+
+            <NuxtLink to="/">
+              <img src="/assets/images/logo.svg" class="nav-logo" :class="{ open: isMenuOpen }" alt="greenherald-logo"
+                ref="navLogoRef" />
+            </NuxtLink>
 
             <div class="btn-group" :class="{ open: isMenuOpen }">
               <button class="signin-btn" @click="goToSignin">Sign in</button>
@@ -188,49 +85,28 @@
           </div>
           <div class="content">
             <li class="link">
-              <NuxtLink
-                to="#upcoming-events"
-                @click.prevent="$lenis.scrollTo('##upcoming-events')"
-                >Events
+              <NuxtLink to="#upcoming-events" @click.prevent="$lenis.scrollTo('##upcoming-events')">Events
               </NuxtLink>
             </li>
             <li class="link">
-              <NuxtLink
-                to="#storyContainer"
-                @click.prevent="$lenis.scrollTo('#storyContainer')"
-                >Stories
+              <NuxtLink to="#storyContainer" @click.prevent="$lenis.scrollTo('#storyContainer')">Stories
               </NuxtLink>
             </li>
             <li class="link">
-              <NuxtLink
-                to="#smallSteps"
-                @click.prevent="$lenis.scrollTo('#smallSteps')"
-                >How to Join
+              <NuxtLink to="#smallSteps" @click.prevent="$lenis.scrollTo('#smallSteps')">How to Join
               </NuxtLink>
             </li>
             <li class="link">
-              <NuxtLink to="#alumni" @click.prevent="$lenis.scrollTo('#alumni')"
-                >The Board</NuxtLink
-              >
+              <NuxtLink to="#alumni" @click.prevent="$lenis.scrollTo('#alumni')">The Board</NuxtLink>
             </li>
             <li class="link">
-              <NuxtLink to="#about" @click.prevent="$lenis.scrollTo('#about')"
-                >About Us</NuxtLink
-              >
+              <NuxtLink to="#about" @click.prevent="$lenis.scrollTo('#about')">About Us</NuxtLink>
             </li>
             <li class="link">
-              <NuxtLink
-                to="#benefits"
-                @click.prevent="$lenis.scrollTo('#benefits')"
-                >Benefits</NuxtLink
-              >
+              <NuxtLink to="#benefits" @click.prevent="$lenis.scrollTo('#benefits')">Benefits</NuxtLink>
             </li>
             <li class="link">
-              <NuxtLink
-                to="#membership"
-                @click.prevent="$lenis.scrollTo('#membership')"
-                >Membership</NuxtLink
-              >
+              <NuxtLink to="#membership" @click.prevent="$lenis.scrollTo('#membership')">Membership</NuxtLink>
             </li>
 
             <div class="btn-group link" :class="{ open: isMenuOpen }">
@@ -319,7 +195,7 @@ nav,
   @include clamp-property("padding-inline", 1.25, 8.12);
   @include clamp-property("padding-block", 1, 1);
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
   align-items: center;
 
   .menu {
@@ -327,7 +203,7 @@ nav,
 
     @media screen and (min-width: 1024px) {
       justify-content: start;
-      flex: 1;
+      // flex: 1;
     }
 
     .menu-btn {
@@ -358,18 +234,18 @@ nav,
 
     .nav-logo.open {
       filter: brightness(0) invert(1);
+
+
     }
   }
 
   .btn-group {
-    flex: 1;
+    // flex: 1;
     display: flex;
     justify-content: end;
     gap: 0.5rem;
 
-    @media screen and (max-width: 1024px) {
-      display: none;
-    }
+
 
     .signin-btn,
     .join-btn {
@@ -465,7 +341,15 @@ nav,
 
   @media screen and (max-width: 1024px) {
     justify-content: space-between;
-    flex-direction: row-reverse;
+    flex-direction: row;
+
+    .btn-group {
+      width: max-content;
+
+      .join-btn {
+        display: none;
+      }
+    }
   }
 }
 
@@ -521,6 +405,10 @@ nav,
 
         .nav-logo {
           display: block;
+        }
+
+        .btn-group {
+          display: none;
         }
       }
     }

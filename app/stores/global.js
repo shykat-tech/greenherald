@@ -11,6 +11,7 @@ export const useGlobalStore = defineStore('global', {
         isFormSubmitting: false,
         formSubmissionError: null,
         formSubmissionSuccess: false,
+        membershipPlan: null, // object representing selected membership plan
         
         // Alumni-specific form data
         alumniFormData: {
@@ -53,6 +54,7 @@ export const useGlobalStore = defineStore('global', {
         showAlumniFields: (state) => state.alumniStatus === true,
         showNonAlumniFields: (state) => state.alumniStatus === false,
         isAlumniStatusSet: (state) => state.alumniStatus !== null,
+        getMembershipPlan: (state) => state.membershipPlan,
     },
 
     actions: {
@@ -66,6 +68,12 @@ export const useGlobalStore = defineStore('global', {
             this.openModalType = ''
 
             document.documentElement.style.removeProperty("--modal-bg-color");
+        },
+        setMembershipPlan(plan) {
+            this.membershipPlan = plan
+            if(this.isModalOpen) {
+                this.closeModal()
+            }
         },
         
         setAlumniStatus(status) {

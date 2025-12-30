@@ -6,7 +6,7 @@
       <div class="top-package-card">
         <div class="package-detail-block">
           <div class="package-title">
-            <p>Lifetime</p>
+            <p>{{ globalStore.getMembershipPlan.title }}</p>
 
             <div class="popular-badge">
               <svg
@@ -47,7 +47,10 @@
             Change plan
           </h5>
           <div>
-            <h3>BDT <span> 5000,000 </span></h3>
+            <h3>
+              {{ globalStore.getMembershipPlan.currency }} &nbsp;
+              <span> {{ globalStore.getMembershipPlan.price }} </span>
+            </h3>
           </div>
         </div>
       </div>
